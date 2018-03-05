@@ -122,7 +122,8 @@ Element.prototype.typewriter = function() {
     d.innerHTML = "";
     var e = setInterval(function() {
         var f = c.substr(b, 1);
-        if (f == "<") {="" b="c.indexOf("">", b) + 1
+        if (f == "<") {
+            b = c.indexOf(">", b) + 1
         } else {
             b++
         }
@@ -200,4 +201,4 @@ function getQueryString(name) {
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return null;
-}</")>
+}

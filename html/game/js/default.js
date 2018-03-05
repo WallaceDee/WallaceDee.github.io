@@ -55,7 +55,43 @@
     function getRank(cheat) {
         var r = Math.random();
         var result = 0;
-        if (r <= 0="3000," 1="2000," 2="1000," 3="" 4="5000," 5="500," 6="800," odds[0])="" {="" result="award_index[0];" }="" else="" if="" (odds[0]="" <="" r="" &&="" (odds[1]="" (odds[2]="" (odds[3]="" (odds[4]="" (odds[5]="" (odds[6]="" (cheat="" (result="==" ||="" 7))="" return="" getrank(true);="" result;="" 7寻龙="" function="" roll()="" var="" ms="1;" (index=""> 8) {
+        if (r <= odds[0]) {
+            result = award_index[0];
+        } else if (odds[0] < r && r <= odds[1]) {
+            result = award_index[1];
+        } else if (odds[1] < r && r <= odds[2]) {
+            result = award_index[2];
+        } else if (odds[2] < r && r <= odds[3]) {
+            result = award_index[3];
+        } else if (odds[3] < r && r <= odds[4]) {
+            result = award_index[4];
+        } else if (odds[4] < r && r <= odds[5]) {
+            result = award_index[5];
+        } else if (odds[5] < r && r <= odds[6]) {
+            result = award_index[6];
+        } else if (odds[6] < r && r <= odds[7]) {
+            result = award_index[7];
+        }
+        if (cheat && (result === 3 || result === 7)) {
+            return getRank(true);
+        } else {
+            return result;
+        }
+    }
+
+
+    //0=3000,
+    //1=2000,
+    //2=1000,
+    //3=锦囊,
+    //4=5000,
+    //5=500,
+    //6=800,
+    //7寻龙
+    function roll() {
+
+        var ms = 1;
+        if (index > 8) {
             ms = 100;
         }
         if (index > 16) {
@@ -201,4 +237,4 @@
     setInterval(function() {
         countNum();
     }, 2000);
-})();</=>
+})();
