@@ -1,0 +1,254 @@
+html,
+body {
+    min-width: 1080px;
+    background-color: #143390
+}
+
+.calendar {
+    display: none
+}
+
+.flatpickr-month {
+    color: #fff
+}
+
+.flatpickr-month svg {
+    fill: #fff
+}
+
+.flatpickr-next-month svg:hover,
+.flatpickr-prev-month svg:hover {
+    fill: #000
+}
+
+.flatpickr-calendar.arrowTop:before,
+.flatpickr-calendar.arrowTop:after {
+    display: none;
+    content: none
+}
+
+.row-content {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    box-sizing: border-box;
+    height: 21rem;
+    margin-top: 1.5rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .5rem;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center
+}
+
+.row-content.row-bg {
+    background-color: #162f83
+}
+
+.logo {
+    width: 49rem;
+    height: 3.25rem;
+    margin: 0 auto;
+    margin-top: 1rem;
+    margin-bottom: .2rem;
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+    background-size: 100% auto
+}
+
+.sub-title {
+    font-family: Arial;
+    font-size: 2rem;
+    margin-bottom: .8rem;
+    text-align: center;
+    color: #fff
+}
+
+.container {
+    position: relative;
+    width: 90%;
+    margin: 0 auto
+}
+
+.top-tag {
+    font-size: 1rem;
+    position: absolute;
+    top: -1rem;
+    left: 5rem;
+    padding: .5rem 2rem;
+    color: #143290;
+    border-radius: .2rem;
+    background: -webkit-linear-gradient(left, #fff, #b3b2b9)
+}
+
+#line {
+    width: 75%;
+    height: 20rem
+}
+
+.calendar-wrapper {
+    width: 25%
+}
+
+#liquidfill {
+    width: 34rem;
+    height: 34rem
+}
+
+#liquidfill canvas {
+    margin-top: -7rem!important;
+    margin-left: -19.85rem!important;
+    left: 50%!important;
+}
+
+.liquidfill-wrapper {
+    overflow: hidden;
+    height: 21rem
+}
+
+#pie {
+    width: 18rem;
+    height: 18rem;
+    margin: 1rem auto 0 auto
+}
+
+.bottom-tag-wrapper {
+    position: absolute;
+    bottom: 0;
+    bottom: -1.4rem;
+    width: 100%;
+    height: 2rem;
+    text-align: center
+}
+
+.bottom-tag-wrapper span {
+    font-size: 1rem;
+    padding: .5rem 2rem;
+    color: #143290;
+    border-radius: .2rem;
+    background: -webkit-linear-gradient(left, #fff, #b3b2b9)
+}
+
+.row-child {
+    position: relative;
+    width: 33%;
+    height: 21rem;
+    margin-right: 1.5rem;
+    border-radius: .5rem;
+    background-color: #162f83
+}
+
+.row-child:last-child {
+    margin-right: 0
+}
+
+.pie-legend {
+    position: absolute;
+    top: .37rem;
+    left: 50%;
+    margin-left: .8rem
+}
+
+.pie-legend ul {
+    list-style: none
+}
+
+.pie-legend ul li span:first-child {
+    display: inline-block;
+    width: .5rem;
+    height: .5rem;
+    margin-right: .5rem;
+    border-radius: 50%;
+    background-color: #eee
+}
+
+.pie-legend ul li {
+    font-size: .8rem;
+    height: 1.1rem;
+    margin-top: .9rem;
+    margin-bottom: .9rem;
+    color: #fff
+}
+
+#rank ul {
+    padding: 1rem;
+    list-style: none
+}
+
+#rank ul li {
+    font-size: .7rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    box-sizing: border-box;
+    height: 1.8rem;
+    color: #fff;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center
+}
+
+#rank ul li .co-name {
+    overflow: hidden;
+    width: 10rem;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+#rank ul li .bar {
+    position: relative;
+    width: 55%;
+    height: .5rem;
+    margin-right: .5rem;
+    margin-left: .5rem;
+    border-radius: .5rem;
+    background-color: rgba(255, 255, 255, 0.1)
+}
+
+#rank ul li .bar>div {
+    height: .5rem;
+    border-color: #fff;
+    border-radius: .5rem
+}
+
+#rank ul li .count {
+    width: 10%
+}
+
+html.white-theme,
+.white-theme body {
+    background-color: #34136e
+}
+
+.white-theme .top-tag,
+.white-theme .bottom-tag-wrapper span {
+    color: #270562
+}
+
+.white-theme .row-child,
+.white-theme .row-content.row-bg {
+    background-color: #3e216d
+}
+
+.white-theme .flatpickr-day.disabled,
+.white-theme .flatpickr-day.disabled:hover,
+.white-theme .flatpickr-day.nextMonthDay,
+.white-theme .flatpickr-day.prevMonthDay {
+    color: #8d8d8d
+}
+
+#rank.short-key ul li .bar {
+    width: 70%
+}
+
+#rank.short-key ul li .co-name {
+    width: 4rem
+}
