@@ -1,0 +1,20 @@
+﻿用户端	user
+
+	单人点餐        solo
+        扫码          scan-code
+        支付成功    pay-success
+
+    单桌点餐        single-table
+        支付          s-table-pay
+
+    我的预约            my-subscribe
+    我的预约详情页     my-subscribe-detail
+
+    用户订单        user-order
+    单桌详情页   s-table-order
+    单人详情页   solo-order
+
+    预约      subscribe
+    预约订单中心  subscribe-order-center
+    预约联系信息  subscribe-imfor
+    排队信息    sub-info

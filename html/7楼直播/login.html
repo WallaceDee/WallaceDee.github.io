@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>巨景聚牛股直播中心</title>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/redirect.js" type="text/javascript"></script>
+    <link rel="alternate icon" type="image/png" href="images/logo.png">
+    <link href="css/default.css" rel="stylesheet">
+    <style>
+    html,
+    body {
+        background-color: #D94B41;
+        overflow: hidden;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="title"><i class="icon icon-title"></i></div>
+    <div class="login-wrapper">
+        <p>房间被锁！请输入密码登录</p>
+        <div>
+            <input id="name" type="text" placeholder="输入昵称">
+            <input id="pwd" type="password" placeholder="输入密码">
+        </div>
+        <div id="tips" class="error-tips"><span>!</span><em></em></div>
+        <div><a id="btn" class="login-btn">登　录</a></div>
+    </div>
+    <div class="bar-bg"><span></span> <span></span> <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <script>
+    $("#btn").click(function(event) {
+        var $tips = $("#tips");
+        $tips.removeClass("wrongPwd enterPwd wrongName");
+
+        var name = $("#name").val();
+        var password = $("#pwd").val();
+
+        var regex = /^[\u4e00-\u9fa50-9A-Za-z]+$/;
+        var result = regex.test(name);
+        if (result === false||name.length>8) {
+            $tips.addClass('wrongName');
+        } else {
+            if (password === "") {
+                $tips.addClass('enterPwd');
+            } else {
+                $.ajax({
+                    type: "post",
+                    url: "/API/Login.ashx?id=2",
+                    data: {
+                        pwd: password,
+                        g: g
+                    },
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        if (data.ret == "ok") {
+                            window.location.href = "index.html?g=" + g;
+                            localStorage.setItem("username", name);
+                        } else {
+                            $tips.addClass('wrongPwd');
+                        }
+                    }
+                });
+            }
+        }
+    });
+    </script>
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?79e2f318b2d36b24fed645e6fef5c1a7";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</body>
+
+</html>

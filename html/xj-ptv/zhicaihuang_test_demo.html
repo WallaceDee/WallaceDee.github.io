@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"
+          id="viewport"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title></title>
+    <style type="text/css">
+        *{ margin:0px;padding :0px;}
+        html,body {width: 100%; height: 100%;margin:0; padding:0;font-size: 62.5%; font-family:
+        "Microsoft YaHei", \5b8b\4f53, Arial, sans-serif;color: #363636;background:#f2f2f2;}
+        body{overflow-y:auto;}
+        div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p{padding:0;
+        margin:0;}
+        ol,ul {list-style:none;}
+        li{list-style-type:none;}
+        img{vertical-align:top;border:0;}
+        h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight:normal;}
+        button,textarea{border:none; outline：none; -webkit-appearance: none;}
+        address,cite,code,em,th,i{font-weight:normal; font-style:normal;}
+        .hx a,.hx em,.fB{font-weight:bold;}
+        .clearfix{clear: both;*zoom:1;}
+        .clearfix:after{display:block; overflow:hidden;clear:both;height:0;font-size: 0;
+        visibility:hidden;content:".";}
+        a,a:hover,a:active,a:visited {text-decoration:none;}
+        div{margin: 10px 10px;font-size: 30px;cursor: pointer;border: 1px solid red;display:
+        inline-block; border-radius: 5px;}
+        #result{display: block; bottom:30%;right:0;width:50%;height:auto;background:
+        deepskyblue;position: fixed;font-size: 18px;line-height: 30px;border-radius: 5px;color:
+        white;opacity: 0.8;word-break: break-all;}
+        #getinfo{display: block; bottom:10%;left:0;width:100%;height:auto;background: red;position:
+        fixed;font-size: 18px;line-height: 30px;border-radius: 5px;color: white;opacity:
+        0.8;word-break: break-all;}
+        #photo{display: block; bottom:0;right:0;max-width:20%;max-height:20%;position:
+        fixed;font-size: 18px;line-height: 30px;opacity: 0.8;}
+    </style>
+</head>
+<body>
+<p style="background:green;font-weight:900;font-size:20px;">App</p>
+
+<div id="setTitle">设置标题内容</div>
+<div id="setTitleColor">设置标题内容颜色</div>
+<div id="showTopbar">显示顶部header</div>
+<div id="dismissTopbar">隐藏顶部header</div>
+<div id="setTitleBackgroundColor">设置顶部header背景颜色</div>
+<div id="showBack1">显示返回按钮</div>
+<div id="showBack0">隐藏返回按钮</div>
+<div id="showTabbBar1">显示底部tab选项卡</div>
+<div id="showTabbBar0">隐藏底部tab选项卡</div>
+<!--<div id="getLocinformation">获取定位信息</div>-->
+<!--<div id="getCityCode">获取城市编码信息</div>-->
+<!--<div id="getCity">获取城市信息</div>-->
+<div id="getImage">获取本地图片或调用摄像头</div>
+<div id="pickPicture">打开本地图库</div>
+<div id="takePhoto">打开摄像头</div>
+<div id="exitApp">退出APP</div>
+<div id="getScreen">获取屏幕分辨率</div>
+<div id="setRightBtnBackground1">显示右边按钮</div>
+<div id="setRightBtnBackground0">隐藏右边按钮</div>
+
+
+<!--<div id="getContacts">打开通讯录</div>-->
+<!--<div id="setTitleColor">设置html5应用标题颜色</div>-->
+
+<p style="background:green;font-weight:900;font-size:20px;">Preference</p>
+
+<div id="put">存储</div>
+<div id="get">取值</div>
+
+<p style="background:green;font-weight:900;font-size:20px;">Dialog</p>
+
+<div id="showWaitDialog">弹出等待对话框</div>
+<div id="dismissDialog">消失对话框</div>
+<div id="alert">弹框</div>
+
+
+<p style="background:green;font-weight:900;font-size:20px;">Toast</p>
+
+<div id="makeText">提醒框</div>
+
+<p style="background:green;font-weight:900;font-size:20px;">Contacts</p>
+
+<div id="tel">打电话</div>
+
+
+
+<span id="result"></span>
+<span id="getinfo"></span>
+<img id="photo" src="" alt="">
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/adios.js"></script>
+<script type="text/javascript">
+window.onload = function (){
+
+    $('#setTitle').on('click',function(){
+		App.setTitle("test1");
+		$('#result').html("设置标题内容");
+	});
+
+	$('#setTitleColor').on('click',function(){
+	    App.setTitleColor("#0000ff");
+		$('#result').html("设置标题内容颜色");
+	});
+
+	$('#showTopbar').on('click',function(){
+		App.showTopbar();
+		$('#result').html("显示顶部header");
+	});
+
+	$('#dismissTopbar').on('click',function(){
+		App.dismissTopbar();
+		$('#result').html("隐藏顶部header");
+	});
+
+	$('#setTitleBackgroundColor').on('click',function(){
+		App.setTitleBackgroundColor('#87CEFF');
+		$('#result').html("设置顶部header背景颜色");
+	});
+
+	 $('#showBack1').click(function(){
+        App.showBack('1');
+        $('#result').html("显示返回按钮");
+    });
+
+    $('#showBack0').click(function(){
+        App.showBack('0');
+        $('#result').html("隐藏返回按钮");
+    });
+
+
+    $('#showTabbBar1').click(function(){
+        App.showTabbBar('1');
+        $('#result').html("显示底部tab选项卡");
+    });
+
+    $('#showTabbBar0').click(function(){
+        App.showTabbBar('0');
+        $('#result').html("隐藏底部tab选项卡");
+    });
+
+    $('#getLocinformation').on('click',function(){
+        $('#result').html("获取定位信息？&nbsp;"+JSON.stringify(App.getLocinformation()));
+	});
+
+	 $('#getCity').on('click',function(){
+         App.getCity(function(result){
+              $('#result').html("获取城市？&nbsp;"+result.city);
+         });
+    });
+
+	$('#getCityCode').on('click',function(){
+       $('#result').html("");
+        App.getCityCode(function(result){
+            $('#result').html("获取城市编码？&nbsp;"+result.city);
+
+        });
+    });
+
+	$('#getImage').on('click',function(){
+		App.getImage();
+		$('#result').html("获取本地图片或调用摄像头");
+	});
+
+	$('#pickPicture').on('click',function(){
+		App.pickPicture();
+		$('#result').html("获取本地图片");
+	});
+
+	$('#takePhoto').on('click',function(){
+		App.takePhoto();
+		$('#result').html("调用摄像头");
+	});
+
+	$('#exitApp').on('click',function(){
+		$('#result').html("退出app");
+		App.exitApp();
+	});
+
+	$('#getScreen').on('click',function(){
+		$('#result').html("获取屏幕分辨率"+JSON.stringify(App.getScreen()));
+	});
+
+	 $('#setRightBtnBackground1').click(function(){
+        App.setRightBtnBackground('testadapp.html','billhistory');
+    });
+
+    $('#setRightBtnBackground0').click(function(){
+        App.setRightBtnBackground('','');
+    });
+
+
+	// $('#getAppId').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.getAppId();
+	// 	$('#result').html("获取应用ID&nbsp;"+JSON.stringify(App.getAppId()));
+	// });
+	// $('#getClientVersion').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.getClientVersion();
+	// 	$('#result').html("获取应用ID&nbsp;"+JSON.stringify(App.getClientVersion()));
+	// });
+    
+	$('#getContacts').on('click',function(){
+		$('#result').html("");
+		App.getContacts();
+		$('#result').html("打开联系人");
+	});
+	// $('#autoLogin').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.autoLogin();
+	// 	$('#result').html("验证SessionKey超时后调用自动登录函数&nbsp;"+JSON.stringify(App.autoLogin()));
+	// });
+	// $('#getSessionKey').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.getSessionKey();
+	// 	$('#result').html("获取应用SessionKey&nbsp;"+JSON.stringify(App.getSessionKey()));
+	// });
+	// $('#getVersion').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.getVersion();
+	// 	$('#result').html("获取版本号&nbsp;"+JSON.stringify(App.getVersion()));
+	// });
+	// $('#getHome').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.getHome();
+	// 	$('#result').html("获取html5应用目录&nbsp;"+JSON.stringify(App.getHome()));
+	// });
+	// $('#getSecurityKey').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.getSecurityKey();
+	// 	$('#result').html("获取html5应用请求平台需要的key&nbsp;"+JSON.stringify(App.getSecurityKey()));
+	// });
+	$('#overrideBackPressed').on('click',function(){
+		$('#result').html("");
+		App.overrideBackPressed(true);
+		$('#result').html("截断android 返回键事件");
+	});
+	$('#unoverrideBackPressed').on('click',function(){
+		$('#result').html("");
+		App.overrideBackPressed(false);
+		$('#result').html("解除截断android 返回键事件");
+	});
+
+	$('#setKeyEventListener').on('click',function(){
+		$('#result').html("");
+		App.setKeyEventListener();
+		$('#result').html("设置硬键盘监听");
+	});
+	$('#onKeyEvent').on('click',function(){
+		$('#result').html("");
+		App.onKeyEvent();
+		$('#result').html("按键事件监听");
+	});
+
+	$('#setTitleBackgroundPath').on('click',function(){
+		$('#result').html("");
+		var imgdata = 'images/huankuan-bg.png';
+		App.setTitleBackgroundPath(imgdata);
+		$('#result').html("设置html5应用背景图片");
+	});
+
+	$('#setTopBarImage').on('click',function(){
+		$('#result').html("");
+		var imgdata = 'images/right.png';
+		App.setTopBarImage(imgdata,'','success','right');
+		$('#result').html("设置html5应用右上角图片及事件");
+	});
+	$('#showTopBarImage').on('click',function(){
+		$('#result').html("");
+		App.showTopBarImage();
+		$('#result').html("显示html5应用右上角图片");
+	});
+	$('#hideTopBarImage').on('click',function(){
+		$('#result').html("");
+		App.hideTopBarImage();
+		$('#result').html("隐藏标题栏图片");
+	});
+
+	// $('#gotoback').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.gotoback('true','../index.html');
+	// });
+	// $('#jumpToRealnameVerify').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.jumpToRealnameVerify();
+	// });
+	// $('#jumpToAccountRecharge').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.jumpToAccountRecharge();
+	// });
+	// $('#execWhenReturnAndAppear').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.execWhenReturnAndAppear();
+	// });
+	// $('#jumpToNativeView').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.jumpToNativeView();
+	// });
+	// $('#jumpToBindCard').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.jumpToBindCard();
+	// });
+	// $('#jumpToUpdate').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.jumpToUpdate();
+	// });
+	// $('#openSafeKeyBoard').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.openSafeKeyBoard();
+	// 	$('#result').html("打开安全键盘");
+	// });
+	// $('#getCommonRequestParams').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.getCommonRequestParams();
+	// });
+	// $('#jumpToBankcardReg').on('click',function(){
+	// 	$('#result').html("");
+	// 	App.jumpToBankcardReg();
+	// });
+
+    
+    $('#readBankCard').on('click',function(){
+        $('#result').html("");
+            BankCard.readBankCard(function(result){
+                $('#result').html("获取银行卡信息？&nbsp;"+result.strResult);
+            });
+    });
+
+	$('#jumpView').on('click',function(){
+		$('#result').html("");
+		App.jumpView();
+		$('#result').html("返回原生页面");
+	});
+	$('#put').on('click',function(){
+		$('#result').html("");
+		var data = {'content' : '存储测试内容呢'};
+		Preference.put('info',data,"userFlag");
+		$('#result').html("存储key为info,内容为data");
+	});
+	$('#get').on('click',function(){
+		$('#result').html("");
+		var datalist = Preference.get('info','',"userFlag");
+		$('#result').html("获取info内容"+JSON.stringify(datalist));
+	});
+	$('#showWaitDialog').on('click',function(){
+		$('#result').html('');
+		Dialog.showWaitDialog('对话框标题','对话框内容');
+		$('#result').html("弹出等待框");
+	});
+	$('#dismissDialog').on('click',function(){
+		$('#result').html('');
+		Dialog.dismissDialog(Dialog.showProgressDialog('对话框标题','对话框内容'));
+	});
+	$('#showProgressDialog').on('click',function(){
+		$('#result').html('');
+		Dialog.showProgressDialog('对话框标题','对话框内容');
+	});
+	$('#alert').on('click',function(){
+		$('#result').html('');
+		Dialog.alert('内容内容内容');
+	});
+	$('#getProduct').on('click',function(){
+		$('#result').html("");
+		$('#result').html("获取用户产品号，也就是电话号码"+JSON.stringify(User.getProduct()));
+	});
+	$('#getLocation').on('click',function(){
+		$('#result').html("");
+		$('#result').html("获取用户地区码"+JSON.stringify(User.getLocation()));
+	});
+	$('#getPersonInfo').on('click',function(){
+		$('#result').html("");
+		$('#result').html("获取用户信息"+JSON.stringify(User.getPersonInfo()));
+	});
+	$('#getLoginInfo').on('click',function(){
+		$('#result').html("");
+		$('#result').html("获取登录信息"+JSON.stringify(User.getLoginInfo()));
+	});
+	$('#getLoanInfo').on('click',function(){
+		$('#result').html("");
+		$('#result').html("获取贷款信息"+JSON.stringify(User.getLoanInfo()));
+	});
+	$('#makeText').on('click',function(){
+		$('#result').html("");
+		Toast.makeText("Toast提示",5000);
+		$('#result').html("Toast提示");
+	});
+	$('#openContacts').on('click',function(){
+		$('#result').html("");
+		Contacts.openContacts();
+		$('#result').html("打开联系人");
+	});
+	$('#tel').on('click',function(){
+		$('#result').html("");
+		Contacts.tel("13112345678");
+		$('#result').html("打电话");
+	});
+	$('#digest').on('click',function(){
+		$('#result').html("");
+		var MD5 = MessageDigest.digest('md5','测试');
+		$('#result').html("摘要算法"+MD5);
+	});
+    
+    $('#getCity').on('click',function(){
+        $('#result').html("");
+            App.getCity(function(result){
+                $('#result').html("获取城市？&nbsp;"+result.city);
+                //alert(result.city);
+        });
+    });
+
+    
+}
+	//通讯录回调
+	function returnContacts(data){
+		$('#getinfo').html(data);
+	};
+	// 调用app的打开文件夹的回调
+    function sendImageString(str) {
+    	$('#getinfo').html('');
+    	tmpImg = 'data:image/jpg;base64, '+str;
+    	$('#photo').attr('src',tmpImg);
+    };
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>红包</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="css/reset.css">
+    <link href="css/animate.min.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <style>
+    html,
+    body {}
+    
+    .red-packet {
+        opacity: 0;
+        padding-top: 4.5rem;
+    }
+    
+    .red-packet .packet-img {
+        width: 9rem;
+        position: relative;
+        height: 9.9rem;
+        margin: 0 auto;
+    }
+    
+    .red-packet .packet-img .packet-bottom {
+        position: absolute;
+        width: 9rem;
+        height: 9.9rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-image: url(image/open-no.png);
+        left: 50%;
+        margin-left: -4.5rem;
+        z-index: 10;
+        transition: all .3s;
+        -webkit-transition: all .3s;
+        /* Safari 和 Chrome */
+    }
+    
+    .red-packet .packet-img .packet-bottom-opened {
+        position: absolute;
+        width: 9rem;
+        height: 9.9rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-image: url(image/open-before.png);
+        left: 50%;
+        margin-left: -4.5rem;
+        z-index: 10;
+        /*-webkit-animation:packet-bottom-opened 0.5s ease 1.4s 1 alternate;*/
+        /*-webkit-animation-timing-function:cubic-bezier(0.25,0.1,0.25,1);*/
+    }
+    
+    .red-packet .packet-img .packet-mid {
+        cursor: pointer;
+        position: absolute;
+        width: 3rem;
+        height: 3rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-image: url(image/open_btn.png);
+        left: 50%;
+        margin-left: -1.5rem;
+        z-index: 100;
+        top: 1.9rem;
+   
+    }
+    
+    .red-packet .packet-img .packet-mid-move {
+        -webkit-animation: open 0.2s linear 0.5s infinite alternate;
+        -webkit-animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+        animation: open 0.2s linear 0.5s infinite alternate;
+        animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    
+    @keyframes open {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(0.9);
+        }
+    }
+    
+    @-webkit-keyframes open {
+        0% {
+            -webkit-transform: scale(1);
+        }
+        100% {
+            -webkit-transform: scale(0.9);
+        }
+    }
+    
+    .red-packet .packet-img .packet-top-bg {
+        position: absolute;
+        width: 9rem;
+        height: 4.15rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-image: url(image/open-back-1.png);
+        left: 50%;
+        margin-left: -4.5rem;
+        top: 0;
+        z-index: 8;
+    }
+    
+    .red-packet .packet-img .packet-top-opened {
+        position: absolute;
+        width: 9rem;
+        height: 4.12rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-image: url(image/open-back-2.png);
+        left: 50%;
+        margin-left: -4.5rem;
+        top: 0;
+        opacity: 0;
+        z-index: 3;
+        transition: all .2s;
+        -webkit-transition: all .2s;
+        /* Safari 和 Chrome */
+    }
+    
+    .red-packet .packet-img .award {
+        position: absolute;
+        width: 5rem;
+        height: 6rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        left: 50%;
+        margin-left: -2.5rem;
+        top: 3.5rem;
+        opacity: 0;
+        z-index: 8;
+    }
+    
+    .red-packet .packet-img .award img {
+        vertical-align: middle;
+        position: absolute;
+        width: 70%;
+        top: 1.6rem;
+        left: 15%;
+    }
+    
+    #draw-btn {
+        text-align: center;
+        font-size: 0.65rem;
+        color: #333;
+    }
+    
+    .red-packet.came {
+        opacity: 1;
+    }
+    
+    .opened.red-packet .packet-img .packet-top-opened {
+        opacity: 1;
+        top: -4.12rem;
+    }
+    
+    .opened.red-packet .packet-bottom {
+        opacity: 0;
+    }
+    
+    .opened.red-packet .packet-bottom-opened {
+        opacity: 1;
+    }
+    
+    .opened.red-packet .packet-mid {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <a href="javascript:;" id="draw-btn">点击打开</a>
+    <div class="red-packet">
+        <div class="packet-img">
+            <div class="packet-top-bg"></div>
+            <div class="packet-top-opened"></div>
+            <div class="packet-mid packet-mid-move"></div>
+            <div class="packet-bottom-opened"></div>
+            <div class="packet-bottom"></div>
+            <div class="award"><img src="image/open-hagen.jpg"></div>
+        </div>
+    </div>
+    <script>
+    $("#draw-btn").click(function() {
+        $(".red-packet").removeClass("bounceInUp animated").addClass('bounceInUp animated came');
+    });
+
+    $(".packet-mid").on("click", function() {
+        $(".red-packet").addClass('opened');
+    });
+    </script>
+</body>
+
+</html>

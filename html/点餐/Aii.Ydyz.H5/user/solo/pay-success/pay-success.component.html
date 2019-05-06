@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <script src="../../../js/jquery-3.2.1.min.js"></script>
+  <script src="../../../js/flexible.debug.js"></script>
+  <script src="../../../js/flexible_css.debug.js"></script>
+  <script src="../../../js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="pay-success.component.css">
+</head>
+
+<body>
+
+<section>
+  <img src="../../../img/gou.png">
+  <!--<img src="../../../../assets/img/cha.png">-->
+  <div class="pay-ok-box" *ngIf="true">
+    <p class="pob-p1" *ngIf="true">您的排位号码是:<span>001</span></p>
+    <p class="pob-p2" *ngIf="true">商家提示需要先支付:<span class="pob-p2-span1">¥</span><span class="pob-p2-span2">99.25</span></p>
+    <!--<p class="pob-p2">您点的菜单已通知商家服务台</p>-->
+    <div class="pob-button-box">
+      <div>
+        <div class="pbb-public pbb-one">立即支付</div>
+        <div class="pbb-public" onclick="payReminder()">线下支付</div>
+      </div>
+
+      <div style="display: none">
+        <div class="pbb-public">我要加菜</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="pay-error" style="display: none">
+    对不起，服务器遇到点麻烦，请联系商家点餐。
+  </p>
+</section>
+
+
+
+<!--线下支付提示-->
+<div class="layer-box" id="notice-pay" style="display: none">
+  <div class="tanchuang_wrap">
+    <div class="lightbox" onclick="cancelNoticePay()"></div>
+    <div class="notice-pay">
+      <div class="layer-solo-pay">
+        <div class="lsp-top">
+          <p class="lspt-tip">提示</p>
+          <p class="lspt-info">请线下联系商家付款，并提醒商家更新订单状态</p>
+        </div>
+        <div class="lsp-bottom">
+          <div onclick="cancelNoticePay()">取消</div>
+          <div>确定</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script src="pay-success.js"></script>
+</html>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>巨景狗年大吉</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="js/rem.js"></script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        background-image: url(images/bg.jpg);
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        font-family: Helvetica, sans-serif;
+        overflow: hidden;
+    }
+
+    a {
+        color: #ffffff;
+    }
+
+
+
+    .element {
+        width: 180px;
+        /* 120 160 */
+        height: 180px;
+
+
+        text-align: center;
+        cursor: default;
+        background-size: cover;
+        background-position: center;
+        border-radius: 20px;
+    }
+
+    .element:hover {
+        box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.75);
+    }
+
+    .element img {
+        width: 100px;
+        height: 100px;
+    }
+
+
+
+    button {
+        color: rgba(127, 255, 255, 0.75);
+        background: transparent;
+        outline: 1px solid rgba(127, 255, 255, 0.75);
+        border: 0px;
+        padding: 5px 10px;
+        cursor: pointer;
+        position: absolute;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+    }
+
+    button:hover {
+        background-color: rgba(0, 255, 255, 0.5);
+    }
+
+    button:active {
+        color: #000000;
+        background-color: rgba(0, 255, 255, 0.75);
+    }
+
+
+
+    .hidden {
+        display: none;
+    }
+
+    .popup {
+        background-color: rgba(0, 0, 0, .5);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 99;
+        width: 100%;
+        height: 100%;
+    }
+
+    .popup .content {
+        width: 4.5rem;
+        height: 6.20rem;
+        background-image: url(images/popup_bg.png);
+        background-size: 100% auto;
+        left: 50%;
+        margin-left: -2.25rem;
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .popup .content .avatar {
+        display: block;
+        background-color: #fff;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: .5rem;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .popup .content h1 {
+        padding: 0 0 0 1.2rem;
+        color: #fff;
+        font-size: .26rem;
+    }
+
+    .popup .content h1.type {
+        font-size: .45rem;
+        text-align: center;
+        padding-left: 0;
+        margin-top: .8rem;
+        color: #de1c31;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .win-list {
+        width: 35%;
+        float: right;
+    }
+
+    .win-list h1 {
+        font-size: 20px;
+        color: #fff;
+        margin-bottom: 10px;
+        color: #ffc000;
+    }
+
+    .win-list ul {
+        padding-left: 30px;
+        list-style: none;
+        overflow: auto;
+    }
+
+    .win-list ul li {
+        font-size: 14px;
+        color: #fff;
+        width: 16.6%;
+        float: left;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .win-list ul li span {
+        width: 30px;
+        height: 30px;
+        display: block;
+        border-radius: 50%;
+        background-size: cover;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .win-list .list1 li span {
+        width: 60px;
+        height: 60px;
+    }
+
+    .win-list .list1 li {
+        width: 33%;
+        text-align: center;
+    }
+
+    .win-list .list2 li span {
+        width: 45px;
+        height: 45px;
+    }
+
+    .win-list .list2 li {
+        width: 20%;
+        text-align: center;
+    }
+
+    .win-list .list3 li span {
+        width: 40px;
+        height: 40px;
+    }
+
+    .win-list .list3 li {
+        width: 20%;
+        text-align: center;
+    }
+     .win-list p{
+        text-align: left;
+        white-space:nowrap;
+     }
+    </style>
+    <link rel="stylesheet" href="css/animate.min.css">
+</head>
+
+<body>
+    <div id="container"></div>
+    <div class="popup hide bounceIn animated">
+        <div class="content">
+            <h1 class="type">xxx</h1>
+            <span class="avatar"></span>
+            <h1>姓名：<span class="name">xxx</span></h1>
+            <h1>部门：<span class="department">xxx</span></h1>
+        </div>
+        <div class="win-list">
+            <h1>一等奖:</h1>
+            <ul class="list1">
+                <li>
+                    <p>暂无中奖者</p>
+                </li>
+            </ul>
+            <h1>二等奖:</h1>
+            <ul class="list2">
+                <li>
+                    <p>暂无中奖者</p>
+                </li>
+            </ul>
+            <h1>三等奖:</h1>
+            <ul class="list3">
+                <li>
+                    <p>暂无中奖者</p>
+                </li>
+            </ul>
+            <h1>四等奖:</h1>
+            <ul class="list4">
+                <li>
+                    <p>暂无中奖者</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/tween.min.js"></script>
+    <script src="js/TrackballControls.js"></script>
+    <script src="js/CSS3DRenderer.js"></script>
+    <script src="js/jquery.signalR-2.1.2.min.js"></script>
+    <script src="signalr/hubs"></script>
+    <script>
+    var personArray = new Array;
+    var table = new Array;
+    var camera, scene, renderer;
+    var controls;
+
+    var objects = [];
+    var targets = { normal: [], mix: [], sphere: [], helix: [], grid: [] };
+
+    var localWinList = [];
+
+    if (getCache("localWinList") !== null) {
+        localWinList = JSON.parse(getCache("localWinList"));
+    }
+
+    localStorage.setItem("pwd", 888888);
+
+    var pwd = localStorage.getItem("pwd");
+    var award_id = 1;
+    $.ajax({
+        type: "get",
+        url: "http://2018.gu0018.com/API/GetAllNotWin.ashx",
+        data: {
+            pwd: pwd,
+            id: 1
+        },
+        dataType: "text",
+        success: function(data) {
+            //传过来的TM就不是标准json
+            var list = JSON.parse(data.replace(/\'/g, "\"")).data;
+
+            for (var i = 0; i < list.length; i++) {
+                personArray.push({
+                    image: "http://2018.gu0018.com" + list[i].Pic
+                });
+            }
+            console.log(personArray);
+            for (var i = 0; i < personArray.length; i++) {
+                table[i] = new Object();
+                if (i < personArray.length) {
+                    table[i] = personArray[i];
+                    table[i].src = personArray[i].thumb_image;
+                }
+                table[i].p_x = i % 20 + 1;
+                table[i].p_y = Math.floor(i / 20) + 1;
+            }
+            init();
+            animate();
+        }
+    });
+
+
+
+    function init() {
+
+        camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.z = 3500;
+        // camera.position.y = 500;
+        scene = new THREE.Scene();
+
+        // table
+
+        for (var i = 0; i < table.length; i++) {
+            var element = document.createElement('div');
+            element.className = 'element';
+            element.style.backgroundImage = 'url(' + table[i].image.replace(/\s/g, "%20") + ')';
+            var object = new THREE.CSS3DObject(element);
+            object.position.x = Math.random() * 4000 - 2000;
+            object.position.y = Math.random() * 4000 - 2000;
+            object.position.z = Math.random() * 4000 - 2000;
+            scene.add(object);
+
+            objects.push(object);
+
+            // 表格需要坐标进行排序的
+            var object = new THREE.Object3D();
+            object.position.x = (table[i].p_x * 140) - 1330;
+            object.position.y = -(table[i].p_y * 180) + 990;
+
+            targets.normal.push(object);
+
+        }
+
+        // sphere
+
+        var vector = new THREE.Vector3();
+        var spherical = new THREE.Spherical();
+
+        for (var i = 0, l = objects.length; i < l; i++) {
+
+            var phi = Math.acos(-1 + (2 * i) / l);
+            var theta = Math.sqrt(l * Math.PI) * phi;
+
+            var object = new THREE.Object3D();
+
+            spherical.set(1000, phi, theta);
+
+            object.position.setFromSpherical(spherical);
+
+            vector.copy(object.position).multiplyScalar(2);
+
+            object.lookAt(vector);
+
+            targets.sphere.push(object);
+
+        }
+
+        // helix
+
+        var vector = new THREE.Vector3();
+        var cylindrical = new THREE.Cylindrical();
+
+        for (var i = 0, l = objects.length; i < l; i++) {
+
+            var theta = i * 0.21 + Math.PI;
+            var y = -(i * 8) + 450;
+
+            var object = new THREE.Object3D();
+
+            // 参数一 圈的大小 参数二 左右间距 参数三 上下间距
+            cylindrical.set(1300, theta, y);
+
+            object.position.setFromCylindrical(cylindrical);
+
+            vector.x = object.position.x * 2;
+            vector.y = object.position.y;
+            vector.z = object.position.z * 2;
+
+            object.lookAt(vector);
+
+            targets.helix.push(object);
+
+        }
+
+        // grid
+
+        for (var i = 0; i < objects.length; i++) {
+
+            var object = new THREE.Object3D();
+
+            object.position.x = ((i % 5) * 400) - 800; // 400 图片的左右间距  800 x轴中心店
+            object.position.y = (-(Math.floor(i / 5) % 5) * 300) + 500; // 500 y轴中心店
+            object.position.z = (Math.floor(i / 25)) * 200 - 800; // 300调整 片间距 800z轴中心店
+
+            targets.grid.push(object);
+
+        }
+
+
+
+        // grid
+
+        for (var i = 0; i < objects.length; i++) {
+
+            var object = new THREE.Object3D();
+
+            object.position.x = Math.random() * 4000 - 2000;
+            object.position.y = Math.random() * 4000 - 2000;
+            object.position.z = Math.random() * 4000 - 2000;
+
+            targets.mix.push(object);
+
+        }
+
+        //渲染
+        renderer = new THREE.CSS3DRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.domElement.style.position = 'absolute';
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        // 鼠标控制
+        controls = new THREE.TrackballControls(camera, renderer.domElement);
+        controls.rotateSpeed = 0.5;
+        controls.minDistance = 500;
+        controls.maxDistance = 6000;
+        controls.addEventListener('change', render);
+
+        transform(targets.helix, 2000);
+
+
+        window.addEventListener('resize', onWindowResize, false);
+
+    }
+
+    function transform(targets, duration) {
+
+        TWEEN.removeAll();
+
+        for (var i = 0; i < objects.length; i++) {
+
+            var object = objects[i];
+            var target = targets[i];
+
+            new TWEEN.Tween(object.position)
+                .to({ x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration)
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
+
+            new TWEEN.Tween(object.rotation)
+                .to({ x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration)
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
+
+        }
+
+        new TWEEN.Tween(this)
+            .to({}, duration * 2)
+            .onUpdate(render)
+            .start();
+
+    }
+
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        render();
+
+    }
+
+    var zflag = true;
+    var isDrawing = false;
+
+    function animate() {
+
+        // 让场景通过x轴或者y轴旋转  & z
+
+        if (camera.position.z <= 500) {
+            zflag = false;
+
+        } else if (camera.position.z > 3500) {
+            zflag = true;
+
+        }
+        if (zflag) {
+            camera.position.z -= 5;
+        } else {
+            camera.position.z += 5;
+        }
+        if (isDrawing) {
+            scene.rotation.y += 0.04;
+        } else {
+            scene.rotation.y += 0.003;
+        }
+
+
+        requestAnimationFrame(animate);
+
+        TWEEN.update();
+
+        controls.update();
+
+        // 渲染循环
+        render();
+
+    }
+
+    function render() {
+
+        renderer.render(scene, camera);
+
+    }
+
+    // 自动更换
+    var ini = 0;
+    setInterval(function() {
+        ini = ini >= 3 ? 0 : ini;
+        ++ini;
+        switch (ini) {
+            case 1:
+                transform(targets.sphere, 1000);
+                break;
+            case 2:
+                transform(targets.helix, 1000);
+                break;
+            case 3:
+                transform(targets.grid, 1000);
+                break;
+        }
+    }, 18000);
+
+
+
+    var chat = $.connection.myHub;
+    var sortList = [];
+    // 这里是注册集线器调用的方法,和1.0不同的是需要chat.client后注册,1.0则不需要
+    chat.client.BroadMsg = function(msg) {
+        var data = JSON.parse(msg).msg;
+        if (data.msgType === 1) {
+            isDrawing = false;
+            transform(targets.mix, 2000);
+            var info = data.data;
+            localWinList.push(info);
+            setCache("localWinList", JSON.stringify(localWinList));
+            sortList = classifyArrayByField("IsWin", localWinList);
+
+            for (var i = 0; i < sortList.length; i++) {
+                switch (sortList[i].IsWin) {
+                    case 1:
+                        showListOnListByClassName("list1", sortList[i].data);
+                        break;
+                    case 2:
+                        showListOnListByClassName("list2", sortList[i].data);
+                        break;
+                    case 4:
+                        showListOnListByClassName("list3", sortList[i].data);
+                        break;
+                    case 5:
+                        showListOnListByClassName("list4", sortList[i].data);
+                        break;
+                }
+            }
+
+
+            $(".popup .content .avatar").css('background-image', 'url(' + 'http://2018.gu0018.com' + info.Pic.replace(/\s/g, "%20") + ')');
+            $(".popup .content .name").html(info.Name);
+            $(".popup .content .department").html(info.Department);
+            var temp_type = "";
+            switch (info.IsWin) {
+                case 1:
+                    temp_type = "一等奖";
+                    break;
+                case 2:
+                    temp_type = "二等奖";
+                    break;
+                case 4:
+                    temp_type = "三等奖";
+                    break;
+                case 5:
+                    temp_type = "四等奖";
+                    break;
+                case 11:
+                    temp_type = "摇一摇";
+                    break;
+            }
+            $(".popup .content .type").html(temp_type);
+            setTimeout(function() { $(".popup").removeClass('hide'); }, 2000);
+            setTimeout(function() { chat.server.sendMess(JSON.stringify({ msgType: -1 })); }, 4000);
+
+        } else if (data.msgType === 0) {
+            isDrawing = true;
+            $(".popup").addClass('hide');
+        } else if (data.msgType === -2) {
+            $(".popup").addClass('hide');
+        }
+    };
+
+    $.connection.hub.start().done(function() {
+
+    });
+
+    function getCache(name, isSession) {
+        var result = null;
+        if (isSession === undefined || isSession === false) {
+            result = JSON.parse(localStorage.getItem(name));
+        } else {
+            result = JSON.parse(sessionStorage.getItem(name));
+        }
+        return result;
+    }
+
+    function setCache(name, object, isSession) {
+        if (isSession === undefined || isSession === false) {
+            localStorage.setItem(name, JSON.stringify(object));
+        } else {
+            sessionStorage.setItem(name, JSON.stringify(object));
+        }
+    }
+
+    function classifyArrayByField(field, array) {
+        var map = {},
+            result = [];
+        for (var i = 0; i < array.length; i++) {
+            var temp_list = array[i];
+            if (!map[eval("temp_list." + field)]) {
+                var temp = {};
+                eval("temp." + field + "=temp_list." + field + ";");
+                temp.data = [temp_list];
+                result.push(temp);
+                map[eval("temp_list." + field)] = temp_list;
+            } else {
+                for (var j = 0; j < result.length; j++) {
+                    var temp_list1 = result[j];
+                    if (eval("temp_list1." + field) === eval("temp_list." + field)) {
+                        temp_list1.data.push(temp_list);
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+
+
+    function showListOnListByClassName(className, arr) {
+        var temp_html = "";
+        for (var i = 0; i < arr.length; i++) {
+            temp_html += '<li><span style="background-image:url(' + 'http://2018.gu0018.com' + arr[i].Pic.replace(/\s/g, "%20") + ')"></span>' + arr[i].Name + '</li>'
+        }
+        $("." + className).html(temp_html);
+    }
+    setInterval(function() {
+        chat.server.sendMess(JSON.stringify({ msgType: 999 }));
+    }, 10000);
+    document.onkeydown = function(event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) { // enter 键
+            //要做的事情
+            location.href = "result.html"
+        }
+        if (e && e.keyCode == 38) { // up
+
+            localWinList = JSON.parse($.ajax({
+                async: false,
+                type: "get",
+                url: "http://2018.gu0018.com/API/GetWinList.ashx"
+            }).responseText);
+
+            setCache("localWinList", JSON.stringify(localWinList));
+
+            sortList = classifyArrayByField("IsWin", localWinList);
+            $(".popup").removeClass('hide');
+            for (var i = 0; i < sortList.length; i++) {
+                switch (sortList[i].IsWin) {
+                    case 1:
+                        showListOnListByClassName("list1", sortList[i].data);
+                        break;
+                    case 2:
+                        showListOnListByClassName("list2", sortList[i].data);
+                        break;
+                    case 4:
+                        showListOnListByClassName("list3", sortList[i].data);
+                        break;
+                    case 5:
+                        showListOnListByClassName("list4", sortList[i].data);
+                        break;
+                }
+            }
+            $(".popup").removeClass('hide');
+        }
+        if (e && e.keyCode == 40) { // down 键
+
+            $(".popup").addClass('hide');
+        }
+    };
+    </script>
+</body>
+
+</html>

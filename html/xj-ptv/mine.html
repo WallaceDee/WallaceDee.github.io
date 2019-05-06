@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title></title>
+<link rel="stylesheet" href="css/sm.min.css"/>
+<link rel="stylesheet" href="css/swiper.min.css"/>
+<link rel="stylesheet" href="css/xj.css"/>
+</head>
+<body>
+<div class="page" id="page-mine">
+  <div class="content">
+    <div class="page-index xj-mine">
+      <div class="xj-mine-head">
+        <div class="xj-mine-info">
+          <div class="head-img"><a href="personal_profile.html"><span style="background-image: url(img/demo/user_head_img.png);"></span></a> </div>
+          <div class="head-name">
+          <a class="sign-in-btn" style="color:#fff;">
+            <p>请登录</p>
+            <p>&nbsp;</p>
+            <span class="level">VIP1</span></a> </div>
+          <div class="head-qrCode"><a href="my_qrCode.html" style="display: block; padding-top:10px;"><img src="img/icon_bak/qrcode.png"><img src="img/icon_bak/icon_right_arrow.png"></a></div>
+        </div>
+        <div class="topnav">
+          <div class="topnav-item">
+            <p>0</p>
+            <p>余额</p>
+          </div>
+          <div class="topnav-item" >
+          <a href="points.html"  style="color:#fff;">
+            <p>0</p>
+            <p>积分</p>
+          </a>
+          </div>
+          <div class="topnav-item"> </div>
+        </div>
+      </div>
+      <img class="xj-mine-banner" src="img/icon_bak/myIndex-banner.png"> 
+      <div class="xj-mine-list">
+      <ul>
+      <li ><a href="my_order.html">
+      <span style="background-image: url(img/icon_bak/icon_order.png);"></span>我的订单
+      </a>
+      </li>
+        <li>
+        <a href="booking.html">
+      <span style="background-image: url(img/icon_bak/icon_schedule.png);"></span> 我的预约
+      </a>
+      </li>
+      </ul>
+      </div>
+      </div>
+  </div>
+  <script type="text/html" id="tmp_mine_info">
+    <div class="xj-mine-info">
+      <div class="head-img"><a href="personal_profile.html"><span style="background-image: url(img/demo/user_head_img.png);"></span></a> </div>
+      <div class="head-name">
+        <a class="sign-in-btn" style="color:#fff;">
+          <p>{{ list.member.name }}</p>
+          <p>{{ list.member.mobileNo}}</p>
+          <span class="level">VIP1</span></a> </div>
+      <div class="head-qrCode"><a href="my_qrCode.html" style="display: block; padding-top:10px;"><img src="img/icon_bak/qrcode.png"><img src="img/icon_bak/icon_right_arrow.png"></a></div>
+    </div>
+    <div class="topnav">
+      <div class="topnav-item">
+        <p>{{ list.balance}}</p>
+        <p>余额</p>
+      </div>
+      <div class="topnav-item">
+        <a href="points.html" style="color:#fff;">
+          <p>{{list.bonusPoint}}</p>
+          <p>积分</p>
+        </a>
+      </div>
+      <div class="topnav-item"> </div>
+    </div>
+  </script>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/sm.min.js"></script>
+<script src="js/template.js"></script>
+<script src="js/adios.js"></script>
+</body>
+</html>

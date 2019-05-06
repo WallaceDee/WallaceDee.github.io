@@ -1,0 +1,203 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 20px;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+@media only screen and (min-width:400px) {
+    html {
+        font-size: 21.33px!important
+    }
+}
+
+@media only screen and (min-width:414px) {
+    html {
+        font-size: 22.08px!important
+    }
+}
+
+@media only screen and (min-width:480px) {
+    html {
+        font-size: 25.6px!important
+    }
+}
+
+body,
+html {
+    max-width: 640px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+body {
+    background-color: #fff;
+}
+
+html {
+    background-color: #333;
+}
+
+.flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex
+}
+
+.flex-item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1
+}
+
+
+
+body {
+    font-family: 'Microsoft YaHei';
+    min-width: 320px
+}
+
+.right {
+    float: right
+}
+
+.left {
+    float: left
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: relative
+}
+
+
+
+.main {
+    position: relative
+}
+
+iframe {
+    height: 15rem;
+    width: 100%;
+}
+
+.footer {
+    font-family: sans-serif;
+    background-color: #bf2217;
+    text-align: right;
+    color: #fff;
+    line-height: 30px;
+    font-size: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: .5rem;
+}
+
+.footer .qr-code-wrapper {
+    position: absolute;
+    right: 5px;
+    bottom: 0;
+    width: 155px
+}
+
+.footer .qr-code-wrapper img {
+    display: block;
+    width: 70px;
+}
+
+.footer .container {
+    max-width: 980px
+}
+
+.footer .qr-code-wrapper img,
+.footer .qr-code-wrapper span {
+    float: right
+}
+
+.footer .qr-code-wrapper span {
+    writing-mode: vertical-lr;
+    margin-top: 40px;
+    letter-spacing: 5px
+}
+
+
+.footer .container {
+    width: 350px;
+    height: 70px;
+}
+
+
+
+
+.footer p {
+    width: 350px;
+    line-height: 20px;
+    transform: scale(.8, .8) translateX(-50px);
+}
+
+.footer .info-wrapper {
+    width: 280px;
+    float: left;
+}
+
+@media screen and (max-width:374px) {
+    .footer .qr-code-wrapper img {
+        display: none;
+    }
+    .footer .container {
+        width: 280px;
+    }
+}
+
+.desc {
+    margin-left: .75rem;
+    margin-right: .75rem;
+    font-size: .8rem;
+    line-height: 1.5rem;
+    text-indent: 1.5rem;
+    padding: .75rem .75rem .75rem 2.75rem;
+    box-shadow: 2px 2px 10px 0px #999;
+    border-top-left-radius: .5rem;
+    color: #333;
+    position: relative;
+}
+
+.desc:before {
+    content: "视频介绍";
+    display: block;
+    position: absolute;
+    left: 0;
+
+    text-indent: 0;
+    writing-mode: vertical-lr;
+    letter-spacing: 5px;
+    text-align: center;
+    background-color: #ccc;
+    padding-top: 1rem;
+    width: 1.8rem;
+    font-size: .8rem;
+    padding-left: .2rem;
+    border-top-left-radius: .5rem;
+    top: 0;
+    padding-bottom: .5rem;
+}
+
+.desc:after {
+    content: '';
+    position: absolute;
+    right: auto;
+    top: auto;
+    bottom: 0;
+    left: 2rem;
+    height: 100%;
+    width: 1px;
+    background-color: #e7e7e7;
+    display: block;
+    z-index: 15;
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>离牛股只差一步</title>
+    <script>
+    (function(doc, win) {
+        "use strict";
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function() {
+                var clientWidth = docEl.clientWidth;
+                var htmlFontSize = 20;
+                var designWidth = 640;
+                if (!clientWidth) return;
+                docEl.style.fontSize = htmlFontSize * (clientWidth / designWidth) + 'px';
+                var reality = Number(docEl.style.fontSize.substr(0, docEl.style.fontSize.length - 2));
+                var theory = htmlFontSize * (clientWidth / designWidth);
+                if (reality != theory) { docEl.style.fontSize = htmlFontSize * theory / reality * (clientWidth / designWidth) + 'px' }
+            };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false)
+    })(document, window);
+    </script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: "Microsoft YaHei"
+    }
+
+    .bg,
+    .fun-desc,
+    .sub-title,
+    .title {
+        background-image: url(images/sprite.png);
+        background-size: 32rem 30.2rem;
+        background-repeat: no-repeat
+    }
+
+    .title {
+        height: 8rem;
+        width: 28rem;
+        background-position: 0 0;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 5.75rem;
+    }
+
+    .sub-title {
+        font-size: 1.1rem;
+        height: 2rem;
+        line-height: 2rem;
+        text-align: center;
+        background-position: 0 -7rem;
+        color: #fff;
+        background-position: 0 -8rem;
+        width: 23.5rem;
+        margin: 2rem auto 3rem
+    }
+
+    .qrcode-img {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        width: 17rem;
+        height: 17rem
+    }
+
+    .tips {
+        color: #888;
+        font-size: 1.2rem;
+        line-height: 2rem;
+        margin-top: 2rem;
+        margin-bottom: 1.8rem;
+        font-weight: 500
+    }
+
+    .fun-desc,
+    .tips {
+        text-align: center
+    }
+
+    .fun-desc {
+        font-family: SimHei;
+        height: 2.5rem;
+        background-position: 0 -7rem;
+        line-height: 2.5rem;
+        color: #fff;
+        width: 23.5rem;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.1rem;
+        border-radius: 1.5rem
+    }
+
+    .fun-desc em {
+        font-style: normal;
+        margin-left: 2px;
+        margin-right: 2px
+    }
+
+    .bg {
+        width: 100%;
+        height: 20rem;
+        background-position: 0 -10.2rem;
+        position: fixed;
+        bottom: 0;
+        z-index: -1;
+        background-color: #fff
+    }
+
+    .icon-chcek {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.5rem;
+        background-image: url(images/sprite.png);
+        background-position: -32.5rem 0;
+        background-size: 34rem auto;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
+
+    .top-tips {
+        background-color: #E4E4E4;
+        line-height: 1.5rem;
+        height: 2.4rem;
+        box-sizing: border-box;
+        color: #26b006;
+        font-size: 1.1rem;
+        line-height: 2.4rem
+    }
+
+    .top-tips>span {}
+    </style>
+</head>
+
+<body>
+    <div class="top-tips"><span class="icon-chcek"></span>此二维码安全，可放心扫码添加。</div>
+    <div class="title"></div>
+    <div class="sub-title">请再次扫描二维码，超级牛股等着你！</div>
+    <img class="qrcode-img" src="http://www.gu0018.com/images/contact_qrcode.jpg" alt="QRcode">
+    <div class="tips">
+        <p>长按上方二维码2-3秒</p>
+        <p>点击《添加到通讯录》</p>
+    </div>
+    <div class="fun-desc">免费热点剖析<em>|</em>每日赠股<em>|</em>个股诊断<em>|</em>解套方案</div>
+    <div class="bg" style=""></div>
+    <script>
+    </script>/
+</body>
+
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <script src="../../../js/jquery-3.2.1.min.js"></script>
+  <script src="../../../js/flexible.debug.js"></script>
+  <script src="../../../js/flexible_css.debug.js"></script>
+  <script src="../../../js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="user-order.component.css">
+</head>
+
+<body>
+
+<section>
+  <nav class="clearFloat">
+    <button class="top-button" onclick="changeClassL(this)">
+      未结束
+    </button>
+
+    <button onclick="changeClassR(this)">
+      已结束
+    </button>
+  </nav>
+
+  <div class="user-order-list">
+    <!--以下为for循环列表div-->
+    <div class="uol-no-end" id="uol-no-end" style="display: block">
+      未结束
+      <a>
+        <div class="user-order-loop">
+          <div class="uol-first clearFloat">
+            <span>商</span>
+            <span>家:</span>
+            <span>庆江米线</span>
+
+            <span>999</span>
+            <span>号牌:</span>
+          </div>
+
+          <div class="uol-second clearFloat">
+            <span>订单时间:</span>
+            <span>12:00</span>
+
+            <span>25.25</span>
+            <span>¥</span>
+          </div>
+        </div>
+      </a>
+
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+    </div>
+
+    <!--已结束-0----------------------------------------------------------------------------------------------------->
+    <div class="uol-end" id="uol-end" style="display: none">
+      已结束
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+
+      <div class="user-order-loop">
+        <div class="uol-first clearFloat">
+          <span>商</span>
+          <span>家:</span>
+          <span>庆江米线</span>
+
+          <span>999</span>
+          <span>号牌:</span>
+        </div>
+
+        <div class="uol-second clearFloat">
+          <span>订单时间:</span>
+          <span>12:00</span>
+
+          <span>25.25</span>
+          <span>¥</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+<script src="user-order.js"></script>
+</html>
+
+
+
+

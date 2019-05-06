@@ -1,0 +1,261 @@
+@charset "utf-8";
+body{
+	margin:0; 
+	padding:0;
+	width:100%;
+	font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Verdana,Arial,sans-serif;
+    font-size: 12px;
+	background:url(../images/header_bg.jpg) repeat-x scroll center top #ffffff;
+	}
+
+.head_main_div{
+	width:960px; 
+	height:90px;
+	margin:0 auto; 
+	position:relative; 
+	top:0px; 
+	left:0px;
+	}
+a{
+	color:#0071c7;
+	}
+
+a img{
+	border:none;
+}
+	
+.head_main_div img{
+	padding-right:210px;
+	}
+
+.head_main_div span{
+	padding-left:20px;
+	}
+.head_main_div span img{
+	padding-right:0;
+	cursor:pointer;
+	}
+.headLink{
+	position:relative;
+	top:0px;
+	top:-3px\9;
+	*top:0px;
+	}
+a{
+	color:#0071c7;
+	cursor:pointer;
+	text-decoration:none;
+	}
+a:hover{
+	text-decoration:underline;
+	}
+img, p{
+	border:0;
+	padding:0;
+	margin:0;
+	}
+.header_iframe{
+	margin:0 auto; 
+	width:100%;
+	height:90px;
+	}
+
+a, img, div, ul, li, form, span, input{
+	padding:0;
+	margin:0;
+	}
+ul li{
+	list-style:none;
+	}
+input{
+	vertical-align:middle;
+	}
+#MAIN .middle_bg ul li span.h1{
+	position:absolute; 
+	top:15px; 
+	left:245px;
+	width:159px;
+	height:28px;
+	border:none;
+	}
+
+input.long_input{
+	width:280px; 
+	height:18px;
+	padding:5px;
+	background:none; 
+	border:0;
+	}
+
+input.short_input{
+	width:122px; 
+	height:18px;
+	padding:5px;
+	background:none; 
+	border:0;
+	}
+	
+input.short_input2{
+	width:122px; 
+	height:18px;
+	padding:5px;
+	border:1;
+	}	
+	
+
+.left{
+	float:left;
+	}
+.right{
+	float:right;
+	}
+.clear{
+	clear:both;
+	}
+#MAIN{
+	width:960px;
+	height:auto !important;
+	height:520px;
+	min-height:520px;
+	margin:0 auto;
+	position:relative;
+	}
+
+.middle_right{
+	float:right;
+	padding-right:10px;
+	}
+.middle_left{
+	float:left;
+	padding-left:10px;
+	}
+.id_notice p{
+	padding:5px 0 5px 0;
+	}
+/*
+首页
+
+*/
+#MAIN .middle_bg {
+    width: 920px;
+    background: url(../images/middle_bg.jpg) repeat-x;
+    float: left;
+    padding-top: 30px;
+    position: relative;
+}
+
+
+#MAIN .middle_bg .title{
+	padding:0 0 20px 10px;
+	}
+#MAIN .middle_bg .tab_bar_1{
+	width:897px; 
+	margin:0 auto;
+	}
+
+#MAIN .middle_bg ul{
+	width:895px;
+	border-top:none;
+	margin:0 auto;
+	padding:30px 0 0px 0;
+	position:relative;
+	}
+#MAIN .middle_bg ul li{
+	height:42px;
+	padding:15px 0 0 20px;
+	position:relative;
+	}
+#MAIN .middle_bg ul li img{
+	cursor:pointer;
+	}
+
+
+#MAIN .middle_bg ul li span.spanTxt{
+	display:inline-block;
+	width:72px;
+	text-align:right;
+	}
+
+#MAIN .middle_bg ul li.li_bottom{
+	padding-bottom:30px;
+	}	
+#MAIN .middle_bg ul li div.errorTxt img{
+	padding-right:10px;
+	}
+
+.li_checked{
+	background-color:#d1eeff;
+	}
+.li_error{
+	background-color:#ffffff;
+	}
+.li_ok{
+	background-color:#ffffff;
+	}
+ul, li {
+	margin:0; 
+	padding:0; 
+	list-style-type:none;
+}
+
+#lrzj{
+	width:500px; 
+	padding:0px; 
+	background:#fefefe; 
+	margin:0 auto; 
+	border:1px solid #c4cddb;
+	border-top-color:#d3dbde;
+	border-bottom-color:#bfc9dc;
+	box-shadow:0 1px 1px #ccc;
+	border-radius:5px;
+	position:relative;
+}
+
+h1 {
+	margin:0;
+	padding:10px 0;
+	font-size:24px; 
+	text-align:center;
+	background:#eff4f7;
+	border-bottom:1px solid #dde0e7;
+	box-shadow:0 -1px 0 #fff inset;
+	border-radius:5px 5px 0 0; /* otherwise we get some uncut corners with container div */
+	text-shadow:1px 1px 0 #fff;
+}
+
+form ul li {
+	margin:10px 20px;
+	
+}
+form ul li:last-child {
+	text-align:center;
+	margin:20px 0 25px 0;
+}
+input {
+	padding:10px 10px;
+	border:1px solid #d5d9da;
+	border-radius:5px;
+	box-shadow: 0 0 5px #e8e9eb inset;
+	width:328px; /* 400 (parent) - 40 (li margins) -  10 (span paddings) - 20 (input paddings) - 2 (input borders) */
+	font-size:1em;
+	outline:0; /* remove webkit focus styles */
+}
+input:focus {
+	border:1px solid #b9d4e9;
+	border-top-color:#b6d5ea;
+	border-bottom-color:#b8d4ea;
+	box-shadow:0 0 5px #b9d4e9;
+}
+.clause_main {
+    width: 900px;
+    margin: 0 auto;
+    line-height: 20px;
+    height: 560px;
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+    border: 1px solid #b2c1ea;
+}
+.denglu{
+	margin-top: 50px;
+}

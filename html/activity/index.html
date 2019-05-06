@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>加牛人微信免费送3支牛股</title>
+
+<link href="files/Common.css" rel="stylesheet" type="text/css">
+<link href="files/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="files/jquery.min.js"></script>
+<script type="text/javascript" src="files/simpleslide.js"></script>
+</head>
+<body>
+<script>
+$(function(){
+    $(".close").click(function () {
+           $(".fixedBox").hide();
+	});
+});		
+       
+
+</script>
+<div class="fixedBox" id="fixedBox">
+  <div class="close"></div>
+  <div class="qrcode"><img class="wxImg" src="files/qrcode.jpg"></div>
+  <div class="info">
+    <p>打开微信扫一扫</p>
+    <p>添加微信号：<code class="wxnumber">jncj168</code></p>
+    <p>免费领取3支<font color="#ffea01">“F点”</font>牛股</p>
+  </div>
+</div>
+<div style="background: url(files/top.jpg) center top no-repeat;">
+  <div class="w1024" style="background: url(files/top.jpg) center top no-repeat;height:665px;"></div>
+</div>
+<div style="background: url(files/index_02.gif) center top no-repeat;">
+  <div class="w1024" style="background: url(files/index_02.gif) center top no-repeat;height:701px;">
+    <div class="w1024" style=" padding-top:35px;">
+      <div class="btn">
+        <p class="btn_txt">↓↓打开微信并添加好友↓↓</p>
+        <code class="wxnumber">jncj168</code>
+        <p>加牛人微信，每天3支牛股</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="background: url(files/index_03.gif) center top no-repeat;">
+  <div class="w1024" style="background: url(files/index_03.gif) center top no-repeat;height:150px;"></div>
+</div>
+<div style="margin:0 auto;width: 1024px; " class="video-wrapper">
+ <video src="files/video.mp4" controls="controls" poster="files/video_preview.jpg" style="width: 100%;"></video>
+</div>
+<div style="background: url(files/index_04.gif) center top no-repeat;">
+  <div class="w1024" style="background: url(files/index_04.gif) center top no-repeat;height:500px;"></div>
+</div>
+<div style="background: url(files/index_05.gif) center top no-repeat;">
+  <div class="w1024" style="background: url(files/index_05.gif) center top no-repeat;height:150px;"></div>
+</div>
+<div style="background: url(files/index_06.gif) center top no-repeat;">
+  <div class="w1024" style="background: url(files/index_06.gif) center top no-repeat;height:483px;">
+    <div class="w1024" style="background:#FFFFFF;height:483px;">
+      <ul class="btn_case">
+        <li class="">湖南天雁</li>
+        <li class="">天山股份</li>
+        <li class="on">北新路桥</li>
+      </ul>
+      <ul class="case">
+        <li class=""> <img src="files/img00.jpg" alt="" style="width: 640px;height: 320px;"></li> <li class=""> <img src="files/img01.jpg" alt="" style="width: 640px;height: 320px;"></li>
+        <li class="on"> <img src="files/img02.jpg" alt="" style="width: 640px;height: 320px;"> </li>
+       
+      </ul>
+    </div>
+  </div>
+</div>
+<div style="background: url(files/index_07.gif) center top no-repeat;">
+  <div class="w1024" style="background: url(files/index_07.gif) center top no-repeat;height:436px;">
+    <div class="w1024" style=" padding-top:35px; position:relative;height:436px;">
+      <div class="btn">
+            <p class="btn_txt">↓↓打开微信并添加好友↓↓</p>
+        <code class="wxnumber">jncj168</code>
+        <p>加牛人微信，每天3支牛股</p>
+      </div>
+      <div style="position:absolute; height: 180px; width:180px; right: 10px; top: 222px; "> <img class="wxImg" src="files/qrcode.jpg" style="height: 175px; width:175px;border:2px #FFFFFF solid"> </div>
+    </div>
+  </div>
+</div>
+<div style="background-color: #941111;">
+  <div class="w1024" style="background-color: #941111;color:#D9D9D9; text-align:center; font-size:12px; line-height:21px; padding-top:25px; padding-bottom:30px; ">
+    <p>投资有风险 入市需谨慎</p>
+    <p>从事证券投资或期货交易，请通过合法证券期货经营机构进行。</p>
+    <p>合法机构名单可到中国证监会网站（www.csrc.gov.cn）查询</p>
+    <p class="company"></p>
+    <p><span class="address"></span>   <span class="tel"></span></p>
+  </div>
+</div>
+<script>
+
+
+var wname=["angel5five","CXM303518","FR201587","HTX3039","HTX15602403051","jujing118","juniugu","yudou---666","yy952711111","z15626423909","F15521460434","MVP199411","YWT5207314","YWT52073141","z1552146051","z13265123495","z15521440523","z15521446312","z15521451176","z15521453087"];
+var index = Math.floor((Math.random()*wname.length)); 
+console.log(index);
+var result=wname[index];
+$(".wxImg").attr("src","files/qrcode/"+result+".jpg");
+$(".wxnumber").html(result);
+</script>
+</body></html>

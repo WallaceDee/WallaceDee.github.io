@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>喜聚PTV</title>
+<link rel="stylesheet" href="css/sm.min.css"/>
+<link rel="stylesheet" href="css/swiper.min.css"/>
+<link rel="stylesheet" href="css/xj.css"/>
+</head>
+<body>
+<div class="page" id="page-index">
+    <div class="content">
+        <div class="page-index xj-index">
+            <div class="xj-index-head">
+                <div class="xj-index-info">
+                    <div class="head-img">
+                        <span style="background-image: url(img/demo/user_head_img.png);"></span>
+                    </div>
+                    <div class="head-name">
+                        <p>请登录</p>
+                        <p>&nbsp;</p>
+                    </div>
+                </div>
+                <div class="topnav">
+                    <div class="topnav-item">
+                        <p>0</p>
+                        <p>余额</p>
+                    </div>
+                    <div class="topnav-item">
+                        <p>0</p>
+                        <p>积分</p>
+                    </div>
+                    <div class="topnav-item">
+                        <p>0</p>
+                        <p>订单</p>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons-tab xj-index-tab">
+                <a href="#tab1" class="tab-link button active" data-tab="today">
+                    <div>
+                        <i class="xj-icon xj-icon-today"></i>
+                        <p>今日特价<br/><span>距结束&nbsp;09:06:10</span></p>
+                    </div>
+                </a>
+                <a href="#tab2" class="tab-link button tomorrow" data-tab="tomorrow">
+                    <div>
+                        <i class="xj-icon xj-icon-tomorrow"></i>
+                        <p>明日预告<br/><span>明日&nbsp;10点开抢</span></p>
+                    </div>
+                </a>
+            </div>
+            <div class="tabs xj-index-swiper">
+                <div class="xj-tab-content today">
+                    <div class="swiper-container xj-swiper-today">
+                        <div class="swiper-wrapper">
+
+                        </div>
+                        <div class="swiper-pagination swiper-pagination-today"></div>
+                    </div>
+                </div>
+                <div class="xj-tab-content tomorrow" style="display: none;">
+                    <div class="swiper-container xj-swiper-tomorrow">
+                        <div class="swiper-wrapper">
+
+                        </div>
+                        <div class="swiper-pagination swiper-pagination-tomorrow"></div>
+                    </div>
+                    <div class="xj-swiper-btn-tip">
+                        <p>将在本轮开始前15分钟提醒您</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="xj-index-vip">
+                <div class="xj-vip-head">
+                    <a href="vip.html">
+                        <img src="img/index_vip_head.jpg" alt=""/>
+                    </a>
+                </div>
+                <div class="xj-vip-lists">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="xj-index-reserve">
+                <div class="xj-reserve-head">
+                    <a href="reserve.html">
+                        <img src="img/index_reserve_head.jpg" alt=""/>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="text/html" id="tmp_vip_item">
+        {{ each list as $list i }}
+        {{ if i<3 }}
+        <li class="xj-vip-item">
+            <a href="discount_detail.html?id={{ $list.id }}">
+                <img src="{{ $list.image  }}" alt=""/>
+                <div class="xj-vip-item-info">
+                    <p>{{ $list.description.substring(0,7)+'...' }}</p>
+                    <span>({{ $list.brief.substring(0,5) }})</span>
+                </div>
+            </a>
+        </li>
+        {{ /if }}
+        {{ /each }}
+    </script>
+    <script type="text/html" id="tmp_today_item">
+        {{ each list as $list i }}
+        <div class="swiper-slide">
+            <a {{ if $list.quantity > 0 }} href="limit_sale_now.html?id={{ $list.id }}" {{ /if }} >
+                <div class="xj-room-card">
+                    <div class="room-card-img">
+                        <img src="{{ $list.image }}" alt=""/>
+                    </div>
+                    <div class="room-card-info">
+                        <h3>{{ $list.name }}</h3>
+                        <p>{{ $list.description.substring(0,7)+'...' }}</p>
+                        <div class="room-card-info-price">
+                            <p>￥{{ $list.price }}&nbsp;<s>￥{{ $list.originalPrice }}</s></p>
+                            <span>剩余{{ $list.quantity }}</span>
+                        </div>
+                    </div>
+                    <div class="room-card-btn">
+                        <div {{ if $list.quantity <= 0 }} class="xj-disabled" {{ /if }}>
+                            <p>限量{{ $list.totalQuantity }}份</p>
+                            {{ if $list.quantity > 0 }}
+                            马上抢
+                            {{ else }}
+                            已抢完
+                            {{ /if }}
+                        </div>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+        {{ /each }}
+    </script>
+    <script type="text/html" id="tmp_tomorrow_item">
+        {{ each list as $list i }}
+        <div class="swiper-slide">
+            <div class="xj-room-card" data-go="limit_sale_tomorrow.html?id={{ $list.id }}">
+                <div class="room-card-img">
+                    <img src="{{ $list.image }}" alt=""/>
+                </div>
+                <div class="room-card-info">
+                    <h3>{{ $list.name }}</h3>
+                    <p>(17:30-20:45)</p>
+                    <div class="room-card-info-price">
+                        <p>￥{{ $list.price }}&nbsp;<s>￥{{ $list.originalPrice }}</s></p>
+                        <span>10:00准时开抢</span>
+                    </div>
+                </div>
+                <div class="room-card-btn">
+                    <div>
+                        <p>限量{{ $list.totalQuantity }}份</p>
+                        <span>提醒</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ /each }}
+    </script>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/sm.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/template.js"></script>
+<script src="js/adios.js"></script>
+</body>
+</html>

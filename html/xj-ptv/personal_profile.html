@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" href="css/sm.min.css"/>
+<link rel="stylesheet" href="css/xj.css"/>
+</head>
+
+<body>
+<div class="page" id="page-personalProfile">
+  <div class="content">
+    <div class="xj-personal-profile">
+      <div class="xj-profile-list list-block">
+        <ul>
+          <li >
+            <div class="setting-title item-content">
+              <div class="item-inner">账号</div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">会员ID</div>
+                <div class="item-input">
+                  <input type="text" value="" readonly>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">会员级别</div>
+                <div class="item-input">
+                  <input type="text" value="暂无等级" readonly>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li >
+            <div class="setting-title item-content">
+              <div class="item-inner">基本资料</div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">头像</div>
+                <div class="item-input head-img-wrapper">
+                  <div class="head-img-border"> <img src="img/demo/user_head_demo_img.png"></div>
+                  <span  class="icon-right-arrow"></span> </div>
+              </div>
+            </div>
+          </li>
+          <li onclick="$.popup('.popup-modify-nickname')">
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">昵称</div>
+                <div class="item-input modify-wrapper"><span  class="icon-right-arrow"></span> </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">性别</div>
+                <div class="item-input modify-wrapper"><span  class="icon-right-arrow"></span> </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label">生日</div>
+                <div class="item-input modify-wrapper"><span  class="icon-right-arrow"></span> </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- ModifyNickName Popup -->
+      <div class="popup popup-modify-nickname">
+      <div class="popup-modify-content">
+      <p class="popup-modify-title">设置名字</p>
+      <input class="nickname-val popup-modify-input" type="text" maxlength="14">
+      <div class="popup-modify-btn">
+    <a>确定</a>
+    <a class="close-popup">取消</a>
+		</div>
+		</div>
+      </div>
+      <!--end of ModifyNickName Popup --> 
+    </div>
+  </div>
+  <script type="text/html" id="tmp_personal_profile">
+    <ul>
+      <li >
+        <div class="setting-title item-content">
+          <div class="item-inner">账号</div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-inner">
+            <div class="item-title label">会员ID</div>
+            <div class="item-input">
+              <input type="text" value="{{ list.member.mobileNo}}" readonly>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-inner">
+            <div class="item-title label">会员级别</div>
+            <div class="item-input">
+              <input type="text" value="暂无等级" readonly>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li >
+        <div class="setting-title item-content">
+          <div class="item-inner">基本资料</div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content select-picture-actions">
+          <div class="item-inner">
+            <div class="item-title label">头像</div>
+            <div class="item-input head-img-wrapper">
+              <div class="head-img-border"> <img src="img/demo/user_head_demo_img.png"></div>
+              <span  class="icon-right-arrow"></span> </div>
+          </div>
+        </div>
+      </li>
+      <li class="modify-nickname-btn">
+        <div class="item-content">
+          <div class="item-inner">
+            <div class="item-title label">昵称</div>
+            <div class="item-input modify-wrapper">{{ list.member.name }}<span  class="icon-right-arrow"></span> </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-inner">
+            <div class="item-title label">性别</div>
+            <div class="item-input modify-wrapper"><input class="gander-picker" type="text" value="{{if list.member.gender==1}}男{{else}}女
+              {{/if}}"/><span  class="icon-right-arrow"></span> </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-inner">
+            <div class="item-title label">生日</div>
+            <div class="item-input modify-wrapper"><input class="birthday-picker" type="text" value="{{date_Format(list.member.birthday).date}}" /><span  class="icon-right-arrow"></span> </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </script> 
+</div>
+<script src="js/zepto.min.js"></script> 
+<script src="js/sm.min.js"></script> 
+<script src="js/template.js"></script> 
+<script src="js/adios.js"></script>
+</body>
+</html>

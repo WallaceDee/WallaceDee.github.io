@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>vue练习2</title>
+    <link rel="stylesheet" href="">
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+ <div id="example">
+ 	<p>Original message:"{{message}}"</p>
+ 	<p>Computed reversed message:"{{reversedMessage}}"</p>
+ </div>
+<script>
+	var data={a:1};
+	var vm=new Vue({
+		data:data
+	});
+	console.log(vm.a===data.a);
+	vm.a=2;
+	console.log(data.a);
+	data.a=3;
+	console.log(vm.a);
+
+	var vm2 = new Vue({
+  data: {
+    a: 1
+  },
+  created: function () {
+    // `this` 指向 vm 实例
+    console.log('a is: ' + this.a)
+  }
+});
+	var vm3=new Vue({
+		el:"#example",
+		data:{
+			message:"Hello"
+		},
+		computed:{
+			reversedMessage:function(){
+				//this 指向vm data
+				return this.message.split("").reverse().join("");
+			}
+		}
+
+	});
+</script>
+</body>
+
+</html>

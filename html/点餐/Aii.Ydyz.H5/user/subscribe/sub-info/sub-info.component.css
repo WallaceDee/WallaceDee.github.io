@@ -1,0 +1,212 @@
+html, body, section {
+  background-color: #ffffff !important;
+}
+section {
+  position: relative;
+  padding: 0 1.28rem;
+  background-color: #ffffff;
+}
+.si-img-box {
+  width: 100%;
+  text-align: center;
+}
+.si-img {
+  display: inline-block;
+  margin-top: 1.867rem;
+  margin-bottom: 1.227rem;
+  width: 1.707rem;
+  height: 1.707rem;
+  text-align: center;
+}
+.si-box-notice {
+  width: 100%;
+  margin-bottom: 0.493rem;
+}
+.si-box-notice h1 {
+  font-size: 0.4rem;
+  font-weight: bold;
+  line-height: 0.813rem;
+  color: #111111;
+  /*letter-spacing: 0.013rem;*/
+}
+.si-box-notice p {
+  font-size: 0.4rem;
+  font-weight: bold;
+  line-height: 0.813rem;
+  color: #111111;
+  /*letter-spacing: 0.013rem;*/
+}
+.ain-number {
+  color: #f1545a;
+}
+.sbi-notice {
+  font-size: 0.4rem;
+  line-height: 0.4rem;
+  color: #f03b42;
+  letter-spacing: 0.013rem;
+}
+.sub-info-box p {
+  line-height: 0.733rem;
+  color: #666666;
+  font-size: .4rem;
+  letter-spacing: 0.027rem;
+}
+.sub-info-box {
+  margin-bottom: 0.987rem;
+}
+.sun-business-info {
+  margin-bottom: 2.56rem;
+}
+.sun-business-info p {
+  line-height: 0.667rem;
+  font-size: .347rem;
+  color: #111111;
+  letter-spacing: .027rem;
+}
+.sub-link-box span:nth-child(1) {
+  float: left;
+  color: #f03b42;
+  font-size: .347rem;
+  line-height: .35rem;
+  letter-spacing: 0.013rem;
+  border-bottom: .027rem solid #f03b42;
+}
+.sub-link-box span:nth-child(2) {
+  float: right;
+  font-size: .347rem;
+  line-height: .35rem;
+  color: #007aff;
+  letter-spacing: 0.013rem;
+  border-bottom: .027rem solid #007aff;
+
+}
+/*弹出*/
+.layer-box {
+  width: 100%;
+  /*height: 100%;*/
+}
+.tanchuang_wrap{
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  left: 0;
+  top: 0;
+  z-index:100;
+  display:block;
+  text-align: center;
+}
+.lightbox{
+  width: 100%;
+  z-index:101;
+  height: 100%;
+  background-color: rgba(55, 55, 55, 0.6) !important;
+  filter:alpha(Opacity=1);
+  -moz-opacity:1;
+  opacity: 1;
+  position:absolute;
+  left: 0;
+  top: 0;
+}
+.tanchuang_neirong{
+  width: 100%;
+  height: 1.3rem;
+  line-height: 1.3rem;
+  background-color: #FFFFFF;
+  position:absolute;
+  z-index:105;
+  top: 2.24rem;
+}
+.tanchuang_neirong img {
+  width: 1.013rem;
+  height: 1.013rem;
+  border-radius: 0.08rem;
+  margin-right: 0.4rem;
+  margin-top: 0.16rem;
+  float: left;
+  margin-left: 1.706rem;
+}
+.tanchuang_neirong span {
+  float: left;
+  color: #333333;
+  font-size: 0.373rem;
+  letter-spacing: 0.013rem;
+}
+.tanchuang_neirong-reset {
+  width: 7.227rem;
+  height: 4.16rem;
+  background-color: #FFFFFF;
+  position:absolute;
+  left: 50%;
+  margin-left: -3.613rem;
+  z-index:105;
+  top: 5.107rem;
+  border-radius: 0.347rem;
+  /*padding-left: 0.4rem;*/
+  /*padding-right: 0.4rem;*/
+}
+.sub-layer-div {
+  width: 7.227rem;
+  /*width: 100%;*/
+  height: 3rem;
+  display: table-cell;
+  border-bottom: 0.013rem solid #d1d1d1;
+  box-sizing: border-box;
+  position: relative;
+}
+.sub-layer-div img {
+  width: 1.04rem;
+  height: 1.04rem;
+  vertical-align: middle;
+  position: absolute;
+  left: 1.16rem;
+  top:1.267rem;
+}
+.sub-layer-div div {
+  width: 3.547rem;
+  position: absolute;
+  top: 0.627rem;
+  right: 1.173rem;
+
+}
+.sub-layer-div h1 {
+  font-size: 0.48rem;
+  line-height: .48rem;
+  color: #111111;
+  letter-spacing: 0.013rem;
+  margin-bottom: 0.213rem;
+}
+.sub-layer-div div p {
+  font-size: 0.4rem;
+  line-height: 0.48rem;
+  text-align: left;
+  letter-spacing: 0.013rem;
+}
+.sub-layer-button {
+  width: 100%;
+  height: 1.173rem;
+}
+.alb-confirm {
+  width: 50%;
+  height: 1.173rem;
+  line-height: 1.173rem;
+  background-color: #ffffff;
+  border-right: 0.014rem #d1d1d1 solid;
+  box-sizing: border-box;
+  text-align: center;
+  float: left;
+  font-size: 0.427rem;
+  color: #007aff;
+  border-bottom-left-radius: 0.347rem;
+}
+
+.alb-consider {
+  width: 50%;
+  float: left;
+  background-color: #ffffff;
+  text-align: center;
+  height: 1.173rem;
+  line-height: 1.173rem;
+  font-size: 0.427rem;
+  color: #007aff;
+  border-radius: 0.347rem;
+}

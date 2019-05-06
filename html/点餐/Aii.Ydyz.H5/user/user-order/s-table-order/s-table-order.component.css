@@ -1,0 +1,223 @@
+section {
+  width: 100%;
+  height: auto;
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 1.173rem;
+
+}
+
+/*已结束订单盒子*/
+.order-number {
+  width: 100%;
+  margin-top: 0.267rem;
+  margin-bottom: 0.24rem;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  border-top: 0.013rem solid #cccccc;
+  border-bottom: 0.013rem solid #cccccc;
+  box-sizing: border-box;
+  padding-left: 0.32rem;
+  padding-right: 0.373rem;
+}
+.order-number span {
+  font-size: 0.4rem;
+  color: #111111;
+  letter-spacing: 0.013rem;
+  float: left;
+}
+.order-number span:nth-child(1) {
+  margin-right: 0.267rem;
+}
+.order-number img {
+  float: right;
+  width: 0.48rem;
+  height: 0.48rem;
+  margin-top: 0.38rem;
+}
+
+/*<!--订单状态盒子-->*/
+.order-status {
+  height: 2.027rem;
+  border-top: 0.013rem solid #cccccc;
+  border-bottom: 0.013rem solid #cccccc;
+  box-sizing: border-box;
+  padding-left: 0.32rem;
+  padding-right: 0.373rem;
+  margin-bottom: 0.24rem;
+}
+.os-first {
+  height: 1.227rem;
+  line-height: 1.227rem;
+}
+.os-first span {
+  font-size: 0.427rem;
+  color: #111111;
+  letter-spacing: 0.013rem;
+  float: left;
+  /*line-height: 0.427rem;*/
+}
+.os-first button {
+  width: 1.333rem;
+  height: 0.587rem;
+  text-align: center;
+  line-height: 0.587rem;
+  border: 0.027rem solid #fa821e;
+  border-radius: 0.053rem;
+  background-color: #ffffff;
+  font-size: 0.347rem;
+  color: #fa821e;
+  letter-spacing: 0.013rem;
+  float: right;
+  margin-top: 0.32rem;
+}
+.os-second {
+  height: 0.347rem;
+  line-height: 0.347rem;
+
+}
+.os-second span {
+  font-size: 0.347rem;
+  letter-spacing: 0.013rem;
+}
+.os-second span:nth-child(1), .os-second span:nth-child(2) {
+  float: left;
+  color: #666666;
+}
+.os-second span:nth-child(1) {
+  margin-right: 0.267rem;
+}
+.os-second span:nth-child(2) {
+  margin-right: 1.813rem;
+}
+.os-second span:nth-child(3), .os-second span:nth-child(4) {
+  float: left;
+  color: #333333;
+}
+.os-second span:nth-child(5), .os-second span:nth-child(6) {
+  float: right;
+  color: #ff5643;
+}
+.os-second span:nth-child(6) {
+  margin-right: 0.133rem;
+}
+
+/*订单信息盒子*/
+.order-info {
+  height: auto;
+  /*height: 3.053rem;*/
+  border-top: 0.013rem solid #cccccc;
+  border-bottom: 0.013rem solid #cccccc;
+  box-sizing: border-box;
+  padding-left: 0.32rem;
+  padding-right: 0.373rem;
+  margin-bottom: 0.253rem;
+}
+.oi-first {
+  height: 1.053rem;
+  line-height: 1.053rem;
+  border-bottom: 0.013rem solid #cccccc;
+  box-sizing: border-box;
+  text-align: left;
+}
+.oi-first span {
+  font-size: 0.347rem;
+  color: #999999;
+}
+.oi-first span:nth-child(1) {
+  margin-right: 0.267rem;
+}
+.oi-second {
+  padding-top: 0.187rem;
+  padding-bottom: 0.293rem;
+}
+.ois-loop {
+  height: 0.747rem;
+  line-height: 0.747rem;
+  display: table;
+  width: 100%;
+}
+.ois-loop span {
+  font-size: 0.347rem;
+  letter-spacing: 0.013rem;
+  color: #111111;
+}
+.ois-loop img {
+  width: 0.613rem;
+  height: 0.613rem;
+  border-radius: 0.067rem;
+  vertical-align: middle;
+  float: left;
+  margin-right: 0.4rem;
+}
+.ois-loop span:nth-child(3), .ois-loop span:nth-child(2) {
+  float: left;
+}
+.ois-loop span:nth-child(4), .ois-loop span:nth-child(5), .ois-loop span:nth-child(6) {
+  float: right;
+}
+.ois-loop span:nth-child(6){
+  font-size: 0.293rem;
+}
+.ois-loop span:nth-child(5) {
+  margin-right: 0.1074rem;
+}
+.ois-loop span:nth-child(6) {
+  margin-right: 2.027rem;
+  color: #999999;
+}
+
+/*备注*/
+.t-remark-box {
+  width: 100%;
+  height: 3.787rem;
+  padding-left: 0.32rem;
+  padding-right: 0.373rem;
+  border-top: 0.013rem #cccccc solid;
+  border-bottom: 0.013rem #cccccc solid;
+  box-sizing: border-box;
+}
+.t-remark-box h1 {
+  width: 100%;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  font-size: 0.4rem;
+  margin-top: 0.453rem;
+  margin-bottom: 0.32rem;
+  text-align: left;
+  letter-spacing: 0.013rem;
+  color: #111111;
+}
+.trb-div {
+  width: 100%;
+  height: 2.133rem;
+  border: 0.014rem solid #cccccc;
+  box-sizing: border-box;
+  border-radius: 0.08rem;
+  padding: 0.293rem;
+  overflow: auto;
+  font-size: 0.347rem;
+  color: #333333;
+  letter-spacing: 0.013rem;
+}
+.trb-div::-webkit-scrollbar {
+  display: none;
+}
+.title-back {
+  width: 100%;
+  height: 1.173rem;
+  background-color: #f03b42;
+  display: table;
+  line-height: 1.173rem;
+}
+.title-back img{
+  width: .5rem;
+  vertical-align: middle;
+  margin-left: .213rem;
+}
+.title-back span {
+  font-size: .453rem;
+  color: #ffffff;
+  vertical-align: middle;
+  margin-left: .213rem;
+}

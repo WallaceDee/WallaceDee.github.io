@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>2017全国民间股王争霸赛</title>
+    <meta name="author" content="Wallace Chan">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    html {
+        font-size: 20px;
+    }
+
+    @media only screen and (min-width:400px) {
+        html {
+            font-size: 21.33px!important;
+        }
+    }
+
+    @media only screen and (min-width:414px) {
+        html {
+            font-size: 22.08px!important;
+        }
+    }
+
+    @media only screen and (min-width:480px) {
+        html {
+            font-size: 25.6px!important;
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #1b2e70;
+        }
+        body {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+    }
+    </style>
+</head>
+
+<body class="mobile">
+    <div class="content">
+        <ul class="btn-list">
+            <li><a href="#">总决赛区入口</a></li>
+            <li><a href="#">华东赛区入口</a></li>
+            <li><a href="#">华南赛区入口</a></li>
+            <li><a href="#">西北赛区入口</a></li>
+            <li><a href="#">华中赛区入口</a></li>
+        </ul>
+        <div class="box">
+            <h1 title="比赛流程"></h1>
+            <ul class="stage-list">
+                <li>
+                    <span>海选<br>阶段</span>
+                    <p>特邀参赛选手以自有真实账户进行实盘操作，操作周期为一个月，资金不限，最终以账户的收益率前200名股民进入下一阶段预赛</p>
+                </li>
+                <li>
+                    <span>预赛<br>阶段</span>
+                    <p>海选阶段晋级的200名选手利用文档以及语音向主办方说明海选阶段的选股方法，操作思路，选取思路清晰，选股方法可行的股民20名进入决赛。</p>
+                </li>
+                <li>
+                    <span>决赛<br>阶段</span>
+                    <p>晋级决赛的20名选手通过语音和视频的方式与全国观众展示自己的选股方法，炒股经验，获取全国观众的投票，票数最多的6名选手进入争霸赛，周期为两个月。</p>
+                </li>
+                <li>
+                    <span>争霸赛<br>阶段</span>
+                    <p>晋级争霸赛的5名选手通过语音和视频展示自己的：
+                        <br>
+                        <span>1</span>选股方法　　<span>2</span>炒股经验
+                        <br>
+                        <span>3</span>推荐个股　　<span>4</span>个股诊断
+                        <br>
+                        <span>5</span>大盘分析
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <p class="footer">本活动真实有效，最终解释权归 “聚鑫资讯“所有 </p>
+     <div class="popup hide">
+       <form action="">
+        <span class="close">x</span>
+        <h1>请输入密码：</h1>
+        <input type="password" placeholder="请输入密码">
+        <button type="button">确定</button>
+        </form>
+    </div>
+    <div class="popup-drop hide"></div>
+    <script src="js/default.js"></script>
+    <script>
+    if (!(device.android || device.ios || device.isWeixin)) {
+        window.location.href = "index.html"
+    }
+		    var button_list = document.querySelectorAll(".btn-list a");
+
+    console.log(button_list);
+    for (var i = 0; i < button_list.length; i++) {
+        button_list[i].addEventListener("click", function() {
+            document.querySelector(".popup").classList.remove("hide");
+            document.querySelector(".popup-drop").classList.remove("hide");
+            document.body.style.overflow="hidden";
+        });
+    }
+
+    var close_btn = document.querySelector(".popup .close");
+    close_btn.addEventListener("click", function() {
+        document.querySelector(".popup").classList.add("hide");
+        document.querySelector(".popup-drop").classList.add("hide");
+		 document.body.style.overflow="auto";
+    });
+    </script>
+</body>
+
+</html>

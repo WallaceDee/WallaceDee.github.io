@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>巨景年会抽奖端</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="author" content="Wallace Chan">
+    <link rel="stylesheet" href="css/default.css">
+    <style>
+    body,
+    html {
+        height: 100%;
+    }
+
+    .bg {
+        background-image: url(images/m_bg.jpg);
+        background-size: 100% auto;
+        background-position: 0 0;
+        height: 100%;
+    }
+
+    .pwd {
+        border-right: 0;
+        border-bottom: 0;
+        border-top: 3px solid #8A2424;
+        border-left: 3px solid #8A2424;
+        height: 45px;
+        font-size: .8rem;
+        width: 11rem;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: .5rem;
+        box-sizing: border-box;
+        padding-right: .5rem;
+        outline: none;
+        margin-bottom: 1rem;
+    }
+
+    .login-btn {
+        display: block;
+        width: 11rem;
+        height: 3rem;
+        background-image: url(images/login_btn.png);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .begin-btn {
+        display: block;
+        width: 11rem;
+        height: 3rem;
+        background-image: url(images/begin_btn.png);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .login-form {
+        padding-top: 12rem;
+    }
+
+    .begin-form {
+        padding-top: 15rem;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .draw-btn {
+        display: block;
+        width: 8rem;
+        height: 8rem;
+        background-image: url(images/btns.png);
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .draw-btn.stop {
+        background-position: 0 -8rem;
+    }
+
+    .draw-form {
+        padding-top: 9rem;
+    }
+
+    .result>span {
+
+        display: block;
+        width: 5rem;
+        height: 5rem;
+        background-color: #eee;
+        margin-right: auto;
+        margin-left: auto;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .result p {
+        padding-left: 32%;
+        margin-bottom: .5rem;
+        margin-top: .5rem;
+        font-size: .8em;
+        color: #fff;
+    }
+
+
+    .type-wrapper {
+        display: block;
+        font-size: 16px;
+        color: #fff;
+        padding-left: 32%;
+    }
+
+
+    .type-wrapper li {
+        list-style: none;
+        margin-bottom: .5rem;
+    }
+
+    input[type=radio]+span,
+    input[type=radio] {
+        display: none;
+    }
+
+    input[type=radio]:checked+span {
+        display: inline-block;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="bg">
+        <div class="login-form">
+            <input class="pwd" type="password" placeholder="请输入密码">
+            <a class="login-btn"></a>
+        </div>
+        <div class="begin-form hide">
+            <a class="begin-btn"></a>
+        </div>
+        <div class="draw-form hide">
+            <div class="result"><span></span>
+                <p>　中奖者：<span class="name">xxx</span></p>
+                <p>　　部门：<span class="department">xxx</span></p>
+                <p　 class="type-wrapper">当前奖品:
+                    <ul style="display: inline-block;">
+                        <li>
+                            <input type="radio" name="type" value="1" disabled><span>一等奖</span>
+                        </li>
+                        <li>
+                            <input type="radio" name="type" value="2" disabled><span>二等奖</span>
+                        </li>
+                        <li>
+                            <input type="radio" name="type" value="4" disabled><span>三等奖</span>
+                        </li>
+                        <li>
+                            <input type="radio" name="type" value="5" disabled><span>四等奖</span>
+                        </li>
+                        <li>
+                            <input type="radio" name="type" value="11" disabled><span>摇一摇</span>
+                        </li>
+                    </ul>
+                    </p>
+            </div>
+            <a class="draw-btn"></a>
+        </div>
+    </div>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/jquery.signalR-2.1.2.min.js"></script>
+    <script src="signalr/hubs"></script>
+    <script>
+    var pwd = 888888;
+
+    var all_list = {};
+    var loop = null;
+
+    var isDrawing = false;
+
+    function getParameter(key) {
+        var url = window.location.search;
+        var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+        var result = url.substr(1).match(reg);
+        return result ? decodeURIComponent(result[2]) : null;
+    }
+    console.log(getParameter("type"));
+    var curr_type = getParameter("type");
+    $("input[name='type'][value='" + curr_type + "']").prop('checked', true);
+
+
+    function getEmList() {
+        return JSON.parse($.ajax({
+            async: false,
+            type: "get",
+            url: "http://2018.gu0018.com/API/GetAllNotWin.ashx",
+            data: {
+                pwd: pwd,
+                id: curr_type
+            }
+        }).responseText.replace(/\'/g, "\"")).data;
+    }
+
+
+    $(".login-btn").click(function(event) {
+        /* Act on the event */
+        if ($(".pwd").val() == pwd) {
+            $(".login-form").addClass('hide');
+            $(".begin-form").removeClass('hide');
+        } else {
+            alert("密码错误!");
+        }
+    });
+    $(".draw-btn").click(function(event) {
+        event.preventDefault();
+        /* Act on the event */
+        if (isDrawing) {
+            alert("别急，大屏幕正在显示结果！");
+            return false;
+        }
+
+        if ($(this).hasClass('stop')) {
+            $(this).removeClass('stop');
+            var curr_type = $("[name='type']:checked").val();
+            $.ajax({
+                type: "get",
+                url: "http://2018.gu0018.com/API/GetWin.ashx",
+                data: {
+                    pwd: pwd,
+                    id: curr_type
+                },
+                dataType: "text",
+                success: function(data) {
+                    data = JSON.parse(data.replace(/\'/g, "\""));
+                    if (data.ret == 0) {
+                        clearInterval(loop);
+                        $(".result>span").css("background-image", "url(" + "http://2018.gu0018.com" + data.data.Pic.replace(/\s/g, "%20") + ")");
+                        $(".result .name").html(data.data.Name);
+                        $(".result .department").html(data.data.Department);
+                        data.msgType = 1;
+                        chat.server.sendMess(JSON.stringify(data));
+                        isDrawing = true;
+                    }
+                }
+            });
+        } else {
+            chat.server.sendMess(JSON.stringify({ msgType: 0 }));
+            all_list = getEmList();
+            console.log(all_list);
+
+
+            var index = 0;
+            if (all_list.length != 0) {
+                all_list.sort(randomsort);
+                $(this).addClass('stop');
+                loop = setInterval(function() {
+                    index = index >= all_list.length ? 0 : index;
+                    $(".result>span").css("background-image", "url(" + "http://2018.gu0018.com" + all_list[index].Pic.replace(/\s/g, "%20") + ")");
+                    $(".result .name").html(all_list[index].Name);
+                    $(".result .department").html(all_list[index].Department);
+                    index++;
+                }, 100);
+            } else {
+                $(".result>span").css("background-image", "url()");
+                $(".result .name").html("xxx");
+                $(".result .department").html("xxx");
+                alert("当前奖品已经抽完了!");
+                chat.server.sendMess(JSON.stringify({ msgType: -2 }));
+            }
+        }
+    });
+    //-1完成展示 0关闭展示 1抽奖展示 2对话 3签到信息 4进入抽奖页
+
+    $(".begin-btn").click(function(event) {
+        /* Act on the event */
+        chat.server.sendMess(JSON.stringify({ msgType: 4 }));
+        $(".begin-form").addClass('hide');
+        $(".draw-form").removeClass('hide');
+    });
+
+    function randomsort(a, b) {
+        return Math.random() > .5 ? -1 : 1;
+        //用Math.random()函数生成0~1之间的随机数与0.5比较，返回-1或1
+    }
+
+    var chat = $.connection.myHub;
+    // 这里是注册集线器调用的方法,和1.0不同的是需要chat.client后注册,1.0则不需要
+    $.connection.hub.start(); //链接
+
+    chat.client.BroadMsg = function(msg) {
+        var data = JSON.parse(msg).msg;
+        if (data.msgType === -1) {
+            isDrawing = false;
+        }
+    }
+    setInterval(function() {
+        chat.server.sendMess(JSON.stringify({ msgType: 999 }));
+    }, 10000);
+    </script>
+</body>
+
+</html>

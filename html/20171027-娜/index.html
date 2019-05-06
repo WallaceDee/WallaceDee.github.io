@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>短线牛人圈</title>
+    <link rel="stylesheet" rel="stylesheet" href="css/style.css">
+    <link href="css/fliptimer.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="header">
+        <h2>精选强势股 预期涨幅超<span>40%</span></h2>
+        <h1>第7期短线涨停突击营<span>即将启动</span></h1>
+        <ul>
+            <li>本期时间：2017-11-01</li>
+            <li>本期主题：医疗器械</li>
+            <li>本期目标：每期综合提升5%收益</li>
+            <li>操作提醒：朋友圈第一时间发布买卖点、仓位等策略</li>
+        </ul>
+        <div class="right-content">
+            <img src="images/qrcode.jpg" alt="qrcode" title="扫一扫加微信">
+            <h1>添加牛人助理微信 </h1>
+            <p>领取本期强势股，准时参与布局!</p>
+        </div>
+    </div>
+    <div class="img-content img1"></div>
+    <div class="img-content img2"></div>2
+    <div class="img-content img3"></div>
+    <div class="img-content img4"></div>
+    <div class="img-content img5"></div>
+    <div class="img-content img6">
+        <img src="images/qrcode.jpg" alt="qrcode" title="扫一扫加微信">
+        <div class="dowebok" style="">
+            <div class="hours"></div>
+            <div class="minutes"></div>
+            <div class="seconds"></div>
+        </div>
+    </div>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery.fliptimer.js"></script>
+    <script>
+    $(function() {
+        var d = new Date();
+        var myDate = d.getFullYear() + '/' + (d.getMonth() + 2) + '/' + (d.getDate() + 1) + ' 00:00:00';
+        console.log(myDate);
+        $('.dowebok').flipTimer({
+            direction: 'down',
+            date: myDate
+        });
+    });
+    </script>
+</body>
+
+</html>

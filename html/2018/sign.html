@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>巨景年会签到</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="author" content="Wallace Chan">
+    <link rel="stylesheet" href="css/default.css">
+    <style>
+    body,
+    html {
+        height: 100%;
+    }
+
+    .bg {
+        background-image: url(images/m_bg.jpg);
+        background-size: 100% auto;
+        background-position: 0 0;
+        height: 100%;
+    }
+
+    .id-code {
+        border-right: 0;
+        border-bottom: 0;
+        border-top: 3px solid #8A2424;
+        border-left: 3px solid #8A2424;
+        height: 45px;
+        font-size: .8rem;
+        width: 11rem;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: .5rem;
+        box-sizing: border-box;
+        padding-right: .5rem;
+        outline: none;
+        margin-bottom: 1rem;
+    }
+
+    .submit-btn {
+        display: block;
+        width: 11rem;
+        height: 3rem;
+        background-image: url(images/sign_btn.png);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sign-btn {
+        display: block;
+        width: 11rem;
+        height: 3rem;
+        background-image: url(images/sure_btn.png);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .send-btn {
+        display: block;
+        width: 11rem;
+        height: 3rem;
+        background-image: url(images/send_btn.png);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .id-code-form {
+        padding-top: 12rem;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .info-wrapper {
+        position: absolute;
+        z-index: 2;
+        /* top: .25rem;*/
+        top: -25rem;
+        opacity: .8;
+        left: 0;
+        width: 100%;
+        transition: all .5s;
+    }
+
+    .info-wrapper.show {
+        top: .25rem;
+        opacity: 1;
+    }
+
+    .info-wrapper .content:before {
+        content: "";
+        display: block;
+        width: 2rem;
+        height: 6rem;
+        background-image: url(images/gold.png);
+        background-size: 100% auto;
+        background-position: top center;
+        left: 50%;
+        margin-left: -1rem;
+        position: absolute;
+        top: -5rem;
+        z-index: 99;
+    }
+
+    .info-wrapper .content {
+        position: relative;
+        background-color: rgba(156, 24, 13, .85);
+        width: 90%;
+
+        margin-right: auto;
+        margin-left: auto;
+        border-radius: .25rem;
+        margin-top: 5rem;
+        border-top: 1px solid transparent;
+        padding-bottom: 1rem;
+    }
+
+    .info-wrapper .content .avatar {
+        display: block;
+    width: 9.5rem;
+    height: 9.5rem;
+        background-size: cover;
+        border-radius: .25rem;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 2rem;
+    }
+
+    .info-wrapper .content h1 {
+        color: #fff;
+        padding-left: 31.5%;
+        margin: .5rem 0;
+    }
+
+
+    .speck-form {
+        padding-top: 12rem;
+    }
+
+    textarea {
+        display: block;
+        width: 11rem;
+        resize: none;
+
+        margin-right: auto;
+        margin-left: auto;
+        border-right: 0;
+        border-bottom: 0;
+        border-top: 3px solid #8A2424;
+        border-left: 3px solid #8A2424;
+        outline: none;
+        margin-bottom: 1rem;
+        font-size: .8rem;
+        line-height: 1rem;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="bg">
+        <div class="id-code-form">
+            <input class="id-code" type="text" placeholder="请输入身份证后6位数签到">
+            <a class="submit-btn"></a>
+        </div>
+        <div class="info-wrapper">
+            <div class="content">
+                <span class="avatar" style=""></span>
+                <h1>姓名：<span class="name"></span></h1>
+                <h1>部门：<span class="department"></span></h1>
+                <a data-id="" class="sign-btn"></a>
+            </div>
+        </div>
+        <div class="speck-form hide">
+            <textarea name="" placeholder="请输入留言内容" rows="5"></textarea>
+            <a class="send-btn"></a>
+        </div>
+    </div>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/jquery.signalR-2.1.2.min.js"></script>
+    <script src="signalr/hubs"></script>
+    <script>
+    var info = {};
+    $(".submit-btn").click(function() {
+        var pwd = $(".id-code").val();
+        if (pwd == "") {
+            alert("请输入身份证后6位数签到");
+            return false;
+        }
+        $.ajax({
+            type: "get",
+            url: "http://2018.gu0018.com/API/GetNameByPwd.ashx",
+            data: {
+                pwd: pwd
+            },
+            dataType: "text",
+            success: function(data) {
+                //传过来的TM就不是标准json
+                data = JSON.parse(data.replace(/\'/g, "\""));
+                if (data.ret == 0) {
+                    data = data.data;
+                    info = data;
+                    $(".info-wrapper .name").html(data.Name);
+                    $(".info-wrapper .department").html(data.Department);
+                    $(".info-wrapper .avatar").css("background-image", "url(" + "http://2018.gu0018.com" + data.Pic.replace(/\s/g, "%20") + ")");
+                    $(".info-wrapper .sign-btn").data("id", data.Id);
+                    $(".id-code-form").addClass('hide');
+                    $(".info-wrapper").addClass("show");
+                } else if (data.ret == 1) {
+                    alert("输入有误，请重新输入。");
+                }
+            }
+        });
+    });
+
+
+    //-1完成展示 0关闭展示 1抽奖展示 2对话 3签到信息
+    $(".sign-btn").click(function() {
+        var id = $(this).data("id");
+        $.ajax({
+            type: "get",
+            url: "http://2018.gu0018.com/API/Sign.ashx",
+            data: {
+                id: id
+            },
+            dataType: "text",
+            success: function(data) {
+                //传过来的TM就不是标准json
+                data = JSON.parse(data.replace(/\'/g, "\""));
+                if (data.ret == 0) {
+                    alert("签到成功");
+
+                    info.msgType = 3;
+                    chat.server.sendMess(JSON.stringify(info));
+
+                    $(".info-wrapper").removeClass("show");
+                    $(".speck-form").removeClass("hide");
+                } else if (data.ret == 1) {
+                    alert("您已经签到");
+                    $(".info-wrapper").removeClass("show");
+                    $(".speck-form").removeClass("hide");
+                } else {
+                    alert("签到失败");
+                }
+            }
+        });
+    });
+
+    var chat = $.connection.myHub;
+    // 这里是注册集线器调用的方法,和1.0不同的是需要chat.client后注册,1.0则不需要
+    $.connection.hub.start(); //链接
+
+    $(".send-btn").click(function(event) {
+        /* Act on the event */
+        if ($("textarea").val() == "") {
+            alert("请输入留言内容！");
+            return false;
+        }
+        info.msgType = 2;
+        info.msgContent = $("textarea").val();
+        chat.server.sendMess(JSON.stringify(info));
+    
+        $("textarea").val("");
+           alert("发送成功");
+    });
+
+    </script>
+</body>
+
+</html>

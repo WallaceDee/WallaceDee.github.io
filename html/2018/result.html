@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>巨景狗年大吉</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        background-image: url(images/result_bg.jpg);
+        background-size: 100% auto;
+        background-position: center;
+        margin: 0;
+        font-family: Helvetica, sans-serif;
+        overflow: hidden;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #A40000;
+    }
+
+    .win-list {
+        width: 800px;
+        margin-right: auto;
+        margin-left: auto;
+        box-sizing: border-box;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 180px;
+        overflow: auto;
+        height: 140px;
+        background-position: 0 45px;
+        padding-top: 20px;
+        box-sizing: border-box;
+        width: 800px;
+        border-bottom: 1px solid #ffc000;
+    }
+
+    ul:last-child {
+        border-bottom: none;
+    }
+
+    .list1 {
+        font-size: 50px;
+        font-weight: bold;
+        color: #ffc000;
+        background-image: url(images/1.png);
+        background-repeat: no-repeat;
+    }
+
+    .list1 li {
+        line-height: 100px;
+         float: left; 
+        text-align: center;
+        width: 33%;
+        box-sizing: border-box;
+    }
+
+    .list2 {
+        font-weight: bold;
+        color: #ffc000;
+        background-image: url(images/2.png);
+        background-repeat: no-repeat;
+        font-size: 40px;
+        float: left;
+        position: relative;
+    }
+
+    .list2 li {
+        width: 33%;
+        float: left;
+        text-align: center;
+        line-height: 50px;
+    }
+
+    .list2 li:nth-child(1),
+    .list2 li:nth-child(2) {
+        width: 50%;
+    }
+
+    .list3 {
+        font-weight: bold;
+        color: #ffc000;
+        background-image: url(images/3.png);
+        background-repeat: no-repeat;
+        font-size: 28px;
+        float: left;
+        position: relative;
+    }
+
+    .list3 li {
+        width: 20%;
+        float: left;
+        text-align: center;
+    }
+
+    .list4 {
+        font-weight: bold;
+        color: #ffc000;
+        background-image: url(images/4.png);
+        background-repeat: no-repeat;
+        font-size: 24px;
+        float: left;
+        height: 200px;
+        position: relative;
+    }
+
+    .list4 li {
+        width: 16.6%;
+        float: left;
+        text-align: center;
+    }
+
+    .logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30px;
+        width: 250px;
+    }
+    </style>
+    <link rel="stylesheet" href="css/animate.min.css">
+</head>
+
+<body>
+    <img class="logo" src="images/result_logo.png" alt="">
+    <div class="win-list">
+        <ul class="list1"></ul>
+        <ul class="list2"></ul>
+        <ul class="list3"></ul>
+        <ul class="list4"></ul>
+    </div>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+    var data = JSON.parse($.ajax({
+        async: false,
+        type: "get",
+        url: "http://2018.gu0018.com/API/GetWinList.ashx"
+    }).responseText);
+
+    var sortList = classifyArrayByField("IsWin", data);
+
+    for (var i = 0; i < sortList.length; i++) {
+        switch (sortList[i].IsWin) {
+            case 1:
+                showListOnListByClassName("list1", sortList[i].data);
+                break;
+            case 2:
+                showListOnListByClassName("list2", sortList[i].data);
+                break;
+            case 4:
+                showListOnListByClassName("list3", sortList[i].data);
+                break;
+            case 5:
+                showListOnListByClassName("list4", sortList[i].data);
+                break;
+        }
+    }
+
+    console.log(sortList);
+
+    function classifyArrayByField(field, array) {
+        var map = {},
+            result = [];
+        for (var i = 0; i < array.length; i++) {
+            var temp_list = array[i];
+            if (!map[eval("temp_list." + field)]) {
+                var temp = {};
+                eval("temp." + field + "=temp_list." + field + ";");
+                temp.data = [temp_list];
+                result.push(temp);
+                map[eval("temp_list." + field)] = temp_list;
+            } else {
+                for (var j = 0; j < result.length; j++) {
+                    var temp_list1 = result[j];
+                    if (eval("temp_list1." + field) === eval("temp_list." + field)) {
+                        temp_list1.data.push(temp_list);
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    function showListOnListByClassName(className, arr) {
+        var temp_html = "";
+        for (var i = 0; i < arr.length; i++) {
+            temp_html += '<li>' + arr[i].Name + '</li>'
+        }
+        $("." + className).html(temp_html);
+
+    }
+    // JSON.parse($.ajax({
+    //             async: false,
+    //             type: "get",
+    //             url: "http://2018.gu0018.com/API/GetAllNotWin.ashx",
+    //             data: {
+    //                 pwd: pwd,
+    //                 id: curr_type
+    //             }
+    //         }).responseText.replace(/\'/g, "\"")).data;
+    </script>
+</body>
+
+</html>

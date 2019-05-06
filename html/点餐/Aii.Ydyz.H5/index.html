@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/flexible.debug.js"></script>
+  <script src="js/flexible_css.debug.js"></script>
+  <script src="js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="user/single-table/single-table/single-table.css">
+</head>
+
+<body>
+
+<section>
+  <!--顶部商品展示-->
+  <div class="top">
+    <img src="img/merchan.png">
+    <div class="top-span-box">
+      <span>烧菜/干锅/凉菜/炒菜</span>
+      <span class="top-span-b">（重庆二郎店）</span>
+    </div>
+  </div>
+
+  <!--本桌点餐队伍-->
+  <div class="now-eat-team">
+    <span class="net-span-l">本桌正在点餐的有:</span>
+    <div class="net-img-box">
+      <div style="width: 100rem; line-height: 1.3rem;">
+        <img src="img/dish-messi.png">
+        <img src="img/dish-messi.png">
+        <img src="img/dish-messi.png">
+        <img src="img/dish-messi.png">
+        <img src="img/dish-messi.png">
+        <img src="img/dish-messi.png">
+        <img src="img/dish-messi.png">
+      </div>
+    </div>
+    <span class="net-button-r" onclick="allTable()">
+      <img src="img/right.png" />
+    </span>
+  </div>
+
+
+
+  <!--内容展示区-->
+  <main>
+    <!--左边tab切换-->
+    <nav>
+      <div class="single-nav">
+        炒菜
+      </div>
+      <div class="single-nav">
+        炒菜
+      </div>
+    </nav>
+
+    <!--右边菜品展示-->
+    <div class="detail-right">
+      <p class="d-r-title">
+        炒菜
+      </p>
+      <div (click)="DishName(content)" class="dish-list">
+        <div class="dish-img-box">
+          <img src="img/dish-messi.png">
+          <span>招牌</span>
+        </div>
+
+        <div class="dish-intro">
+          <h2>水煮牛肉（二两）</h2>
+          <p>这里显示菜的介绍，最多显示两行</p>
+          <p class="price">¥25.25</p>
+        </div>
+
+        <div class="modify" style="display:none;">
+          <img src="img/jianhao@2x.png">
+          <span>3</span>
+          <img src="img/add.png">
+        </div>
+
+        <div class="sell-out" style="display: inline-block">
+          售罄
+        </div>
+      </div>
+      <div class="dish-list" onclick="showDetailFood()">
+        <div class="dish-img-box">
+          <img src="img/dish-messi.png">
+          <span>招牌</span>
+        </div>
+
+        <div class="dish-intro">
+          <h2>水煮牛肉（二两）</h2>
+          <p>这里显示菜的介绍，最多显示两行</p>
+          <p class="price">¥25.25</p>
+        </div>
+
+        <div class="modify">
+          <img src="img/jianhao@2x.png">
+          <span>3</span>
+          <img src="img/add.png">
+        </div>
+      </div>
+      <div class="dish-list">
+        <div class="dish-img-box">
+          <img src="img/dish-messi.png">
+          <span>招牌</span>
+        </div>
+
+        <div class="dish-intro">
+          <h2>水煮牛肉（二两）</h2>
+          <p>这里显示菜的介绍，最多显示两行</p>
+          <p class="price">¥25.25</p>
+        </div>
+
+        <div class="modify">
+          <div style="display: inline">
+            <img src="img/jianhao@2x.png">
+            <span>3</span>
+          </div>
+          <img src="img/add.png">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!--底部固定功能区-->
+  <footer>
+    <div class="f-img-box" onclick="shopCart()">
+      <img src="img/gouwuche@2x.png">
+      <span>6</span>
+    </div>
+
+    <div class="button-right" onclick="showRemark()">
+      未选择
+    </div>
+
+    <div class="f-content-center">
+      <!--未选购商品-->
+      <span class="f-span-one">¥</span>
+      <span class="f-span-two">25.25</span>
+      <span class="f-span-three">×3</span>
+    </div>
+  </footer>
+</section>
+
+
+
+
+
+<!--点击菜名的弹层模板-->
+<div class="layer-box" id="showDetailFood" style="display: none">
+  <div class="tanchuang_wrap">
+    <div class="lightbox" onclick="cancelDetail()"></div>
+    <div class="tanchuang_neirong-reset">
+      <div class="layer-dish-img-box">
+        <img class="dish-img" src="img/dish-messi.png">
+        <div class="ld-intro">
+          <p>
+            关于菜品介绍：川菜水煮牛肉，源自古老家传配方，一帆风顺，打你龟儿！我错了！
+          </p>
+        </div>
+      </div>
+      <div class="layer-dish-intro">
+        <div class="ldi-title">
+          <span class="ldi-badge">招牌</span>
+          <span class="ldi-name">水煮牛肉（二两）</span>
+        </div>
+        <div class="ldi-price">
+          <span class="lp-cny">¥</span>
+          <span class="lp-price">25.25</span>
+        </div>
+        <div class="ldi-add-cart">
+          加入购物车
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--单人点餐备注浮层-->
+<div class="layer-box" id="remark" style="display: none">
+  <div class="tanchuang_wrap">
+    <div class="lightbox" onclick="cancelRemark()"></div>
+    <div class="tanchuang_neirong-remark">
+      <div class="remark">
+        <div class="remark-title">
+          <h1>如果对菜有特殊要求请备注：</h1>
+        </div>
+        <div class="remark-c-box">
+          <textarea class="remark-content" name="remarkNum" maxlength="50" onkeyup="checkWordNum(this)" placeholder="请输入备注内容（可不填）"></textarea>
+          <span id="remarkWordNum">0/50字</span>
+        </div>
+
+        <button class="r-confirm-order">
+          确认订单
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--点击购物车弹层-->
+<div class="layer-box" style="display: none">
+  <div class="tanchuang_wrap">
+    <div class="lightbox"></div>
+    <div class="tanchuang_neirong-card">
+      <div class="tnc-top">
+        餐单
+      </div>
+      <div class="tnc-list-box">
+        <!--1-->
+        <div class="tnc-list">
+          <img src="img/dish-messi.png">
+          <span class="tncl-span1">水煮肉片</span>
+          <span class="tncl-span2">(3两)</span>
+          <span class="tncl-price1">¥</span>
+          <span class="tncl-price2">35.55</span>
+
+          <img class="tncl-minus" src="img/jianhao@2x.png" />
+          <strong>6</strong>
+          <img class="tncl-add" src="img/add.png" />
+
+        </div>
+
+        <!--2-->
+        <div class="tnc-list">
+          <img src="img/dish-messi.png">
+          <span class="tncl-span1">水煮肉片</span>
+          <span class="tncl-span2">(3两)</span>
+          <span class="tncl-price1">¥</span>
+          <span class="tncl-price2">35.55</span>
+
+          <img class="tncl-minus" src="img/jianhao@2x.png" />
+          <strong>6</strong>
+          <img class="tncl-add" src="img/add.png" />
+
+        </div>
+
+
+
+
+      </div>
+      <div style="height: 0.267rem"></div>
+    </div>
+  </div>
+</div>
+<!--单人点餐点击购物车浮层-->
+<div class="layer-box" id="cart" style="display: none">
+  <div class="tanchuang_wrap">
+    <div class="lightbox" onclick="cancelCart()"></div>
+    <div class="tanchuang_neirong-cart">
+      <div class="shop-cart-box">
+        <div class="scb-dish-list">
+          <span class="scb-dish-name">
+            <span>水煮肉片</span>
+            <span>（二两）</span>
+          </span>
+          <span class="scb-dish-price">
+            <span>¥</span>
+            <span>52.36</span>
+          </span>
+          <span class="scb-dish-handle">
+            <img src="img/jianhao@2x.png">
+            <span class="scb-d-number">3</span>
+            <img src="img/add.png">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--即时动态弹层（有人加入餐桌和有人点餐）-->
+<!--单桌弹层手写-->
+<!--监测同桌用户点餐，显示弹层，定时器-->
+<div class="layer-box" style="display: none">
+  <div class="tanchuang_wrap">
+    <div class="lightbox"></div>
+    <div class="online-notice">
+      <img src="img/dish-messi.png" />
+      <span>刚刚张三点加入了本桌点餐队伍</span>
+      <!--<span>刚刚张三点了一份庆江米线</span>-->
+    </div>
+  </div>
+</div>
+
+<!--点击右边箭头，显示该桌所有用户信息-->
+<div class="layer-box" id="allUser" style="display: none">
+  <div class="tanchuang_wrap">
+    <div class="lightbox" onclick="cancelAllTable()"></div>
+    <div class="tanchuang_neirong-right">
+      <!--<div style="margin-bottom: 0.53rem">-->
+      <div class="tnr-top">
+        点餐总人数
+      </div>
+      <div class="tnr-scroll">
+        <div class="tnr-list" style="border: 0 !important;">
+          <img src="img/merchan.png" />
+          <span>蜂王飞得高</span>
+        </div>
+
+        <!--<div class="tnr-list">-->
+        <!--<img src="../../../assets/img/merchan.png" />-->
+        <!--<span>蜂王飞得高</span>-->
+        <!--</div>-->
+
+        <!--<div class="tnr-list">-->
+        <!--<img src="../../../assets/img/merchan.png" />-->
+        <!--<span>蜂王飞得高</span>-->
+        <!--</div>-->
+        <!--<div class="tnr-list">-->
+        <!--<img src="../../../assets/img/merchan.png" />-->
+        <!--<span>蜂王飞得高</span>-->
+        <!--</div>-->
+
+        <!--<div class="tnr-list">-->
+        <!--<img src="../../../assets/img/merchan.png" />-->
+        <!--<span>蜂王飞得高</span>-->
+        <!--</div>-->
+        <!--<div class="tnr-list">-->
+        <!--<img src="../../../assets/img/merchan.png" />-->
+        <!--<span>蜂王飞得高</span>-->
+        <!--</div>-->
+
+        <!--<div class="tnr-list">-->
+        <!--<img src="../../../assets/img/merchan.png" />-->
+        <!--<span>蜂王飞得高</span>-->
+        <!--</div>-->
+        <!--<div class="tnr-list">-->
+        <!--<img src="../../../assets/img/merchan.png" />-->
+        <!--<span>蜂王飞得高</span>-->
+        <!--</div>-->
+
+
+      </div>
+      <div style="height: 0.253rem">
+      </div>
+      <!--</div>-->
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+</body>
+<script src="user/single-table/single-table/single-table.js"></script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

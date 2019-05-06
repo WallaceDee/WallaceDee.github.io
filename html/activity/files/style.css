@@ -1,0 +1,70 @@
+html,body{background-color: #CFD5E5;}
+.btn{width: 400px;padding:0px;margin: 0 auto;}
+.btn p{font-size: 24px;text-align: center;line-height: 30px;}
+.btn .wxnumber{
+	display:block;
+	height:76px;
+	background:url(swx_btn.png) no-repeat;
+	margin:10px 0;
+	line-height: 76px;
+	color:#fff;
+	text-align: left;
+	padding-left: 120px;
+	font-size: 40px;
+}
+.fixedBox{width: 354px;height: 581px;background:url(swx_xfc.png) no-repeat;position: fixed;right: 0px;top: 30px;z-index:9999;}
+.fixedBox .qrcode{width: 200px;height:200px;position: absolute;left: 50%;margin-left: -107px;top:140px;z-index:9999;}
+.fixedBox .qrcode img{width:100%;height:100%;}
+.fixedBox .info{width:100%;position: absolute;bottom: 20px;z-index:9999;}
+.fixedBox p{width:100%;font-size:22px;color:#fff;text-align: center;line-height:38px;}
+.fixedBox .close{
+	position: absolute;
+	right: 10px;
+	top: 28px;
+	z-index:9999;
+	background:url(close.png) no-repeat;
+	height: 50px;
+	width: 50px;
+	 cursor: pointer;
+}    
+
+
+        .btn_case
+        {
+	clear: both;
+	display: block;
+	height: 75px;
+	padding-top: 40px;
+	padding-left: 40px;
+        }
+        .btn_case li
+        {
+            float: left;
+           width: 220px; height: 45px; line-height: 45px; border-radius: 10px; background: #7d88a5; display: inline; margin: 0 30px;color:#fff;
+		   font-size: 20px;
+text-align: center;
+cursor: pointer;font-family: "Microsoft Yahei",Arial;font-weight: bold;
+		   
+        }
+.btn_case .on {background: #e42020;
+}
+
+        .case
+        {
+	text-align: center;
+	display: block;
+	margin-bottom: 15px;
+        }
+        .case li
+        {
+            display: none;
+        }
+        .case .on
+        {
+            display: block;
+        }
+@media only screen and (max-width:1024px) {
+.video-wrapper{
+	min-width: 1024px;
+}
+}

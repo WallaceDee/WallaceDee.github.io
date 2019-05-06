@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>微信领牛股（免费） 赢在开盘前</title>
+    <style>
+    body {
+        margin: 0;
+        min-width: 980px;
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        background-color: #ccc;
+    }
+
+    button {
+        display: block;
+        width: 24.5%;
+        height: 0;
+        padding-bottom: 5%;
+        position: absolute;
+        left: 50%;
+        margin-left: -12.25%;
+        background-image: url(images/button.png);
+        background-repeat: no-repeat;
+        border: none;
+        outline-style: none;
+        background-size: 100% auto;
+        top: 10%;
+    }
+
+    div {
+        position: relative;
+    }
+
+    #pop {
+        position: fixed;
+        z-index: 99;
+        top: 50%;
+        left: 50%;
+        margin-left: -175px;
+        height: 400px;
+        margin-top: -200px;
+        background-color: #fff;
+        width: 350px;
+        text-align: center;
+        border: 5px solid rgba(0, 255, 255, 0);
+        border-radius: 10px;
+    }
+
+    .red {
+        color: #B91627;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .qrcode1 {
+        width: 10%;
+        position: absolute;
+        z-index: 2;
+        right: 22.7%;
+        top: 34%;
+    }
+
+    .qrcode2 {
+        width: 10%;
+        position: absolute;
+        z-index: 2;
+        right: 24.2%;
+        top: 27.5%;
+    }
+
+    .qrcode3 {
+        width: 60%;
+        display: block;
+        text-align: center;
+        margin-left: 20%;
+    }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img src="images/img_01.jpg">
+        <img class="qrcode1" src="images/qrcode.jpg" alt="">
+    </div>
+    <div> <img src="images/img_02.jpg">
+        <button></button>
+    </div>
+    <img src="images/img_03.jpg">
+    <img src="images/img_04.jpg">
+    <div> <img src="images/img_05.jpg">
+        <img class="qrcode2" src="images/qrcode.jpg" alt="">
+        <button style="top: 8%;"></button>
+    </div>
+    <div id="pop" class="hide">
+        <h1 class="red">微信扫一扫</h1>
+        <h2>加微信领牛股</h2>
+        <img class="qrcode3" src="images/qrcode.jpg" alt="">
+        <p>扫一扫添加微信领取或手动添加微信号</p>
+    </div>
+    <script>
+    var button_list = document.querySelectorAll("button");
+    for (var i = 0; i < button_list.length; i++) {
+        button_list[i].addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById("pop").className = "";
+            console.log(111);
+        }, false);
+    }
+    document.addEventListener("click", function() {
+        document.getElementById("pop").className = "hide";
+    }, false);
+    </script>
+</body>
+
+</html>

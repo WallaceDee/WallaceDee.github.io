@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <script src="../../../js/jquery-3.2.1.min.js"></script>
+  <script src="../../../js/flexible.debug.js"></script>
+  <script src="../../../js/flexible_css.debug.js"></script>
+  <script src="../../../js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="sub-info.component.css">
+</head>
+
+<body>
+<section>
+  <div class="si-img-box">
+    <img class="si-img" src="../../../img/clock.png" />
+  </div>
+
+  <div class="si-box-notice">
+    <h1>肖念先生，你好</h1>
+    <p>您在<span>庆江米线</span>的商家预约排队号为:<span class="ain-number">112</span></p>
+  </div>
+
+  <div class="si-box-intro">
+    <p *ngIf="false" class="sbi-notice">商家即将有座位，请尽快前往用餐。</p>
+  </div>
+
+  <div class="sub-info-box">
+    <p>联系电话:1580000000</p>
+    <p>用餐人数:8</p>
+    <p>用餐时间:17:58</p>
+  </div>
+
+  <div class="sun-business-info">
+    <p>商家已接受您的预约。</p>
+    <p>商家联系电话: 15886588844165465</p>
+  </div>
+
+  <div class="sub-link-box">
+    <span>修改联系信息 ></span>
+    <span>取消预约 ></span>
+  </div>
+</section>
+
+
+<div class="layer-box" style="display: block">
+  <div class="tanchuang_wrap">
+    <div class="lightbox"></div>
+    <div class="tanchuang_neirong-reset">
+      <div class="sub-layer-div">
+        <img src="../../../img/dish-messi.png" />
+        <div class="sld-info">
+          <h1>提示</h1>
+          <p>请确认你将取消本次在XXX商家的用餐预约？</p>
+        </div>
+      </div>
+      <div class="sub-layer-button">
+        <div class="alb-confirm">确认取消</div>
+        <div class="alb-consider">再考虑一下</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+
+

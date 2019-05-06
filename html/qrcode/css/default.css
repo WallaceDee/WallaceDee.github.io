@@ -1,0 +1,103 @@
+* {
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    border: 0;
+    outline: 0;
+    background: transparent;
+}
+
+body {
+    line-height: 1;
+}
+
+html {
+    font-size: 20px;
+}
+
+@media only screen and (min-width: 400px) {
+    html {
+        font-size: 21.33333333px !important;
+    }
+}
+
+@media only screen and (min-width: 414px) {
+    html {
+        font-size: 22.08px !important;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    html {
+        font-size: 25.6px !important;
+    }
+}
+
+html,
+body {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+html,
+body {
+    background-color: #fff9e7;
+}
+
+.tips-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 2.25rem;
+    color: #da1817;
+}
+
+.content {
+    margin: .5rem .75rem 0 .75rem;
+    text-align: center;
+}
+
+.sub-text {
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.5rem;
+    margin-top: 1rem;
+    text-align: left;
+    color: #000;
+}
+
+.sub-text > span {
+    font-size: .9rem;
+}
+
+.qrcode-img {
+    width: 80%;
+    margin: .5rem auto;
+}
+
+.text-bg {
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 1.1rem;
+    padding: .8rem 0;
+    text-align: center;
+    color: #de4038;
+}
+
+.text-border {
+    font-size: .9rem;
+    font-weight: bold;
+    display: block;
+    width: 11rem;
+    margin: 0 auto;
+    padding: .5rem 0;
+    text-align: center;
+    color: #de4038;
+    background-color: #fff4d5;
+}
+
+.scan-tips {
+    font-size: .9rem;
+    line-height: 1.2rem;
+}

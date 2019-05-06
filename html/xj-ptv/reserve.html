@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/sm.min.css"/>
+    <link rel="stylesheet" href="css/swiper.min.css"/>
+    <link rel="stylesheet" href="css/xj.css"/>
+
+</head>
+<body>
+<div class="page" id="page-reserve">
+    <div class="content">
+        <div class="xj-reserve xj-room" style="text-align: left;">
+            <div class="xj-reserve-item">
+                <div class="xj-item-label">
+                    进场时间
+                </div>
+                <div class="xj-item-inp">
+                    <input style="padding-left: 0rem;" type="text" id="datetime-picker" />
+                </div>
+            </div>
+            <div class="xj-reserve-item">
+                <div class="xj-item-label">
+                    进场人数
+                </div>
+                <div class="xj-item-inp">
+                    <input type="text" id="xj-reserve-peoplenum" style="width:50%;">
+                </div>
+            </div>
+            <div class="xj-reserve-item">
+                <div class="xj-item-label">
+                    消费模式
+                </div>
+                <div class="xj-item-inp">
+                    <input class="inp_partten" style="text-align: left;width: 100%;color: #969696;" type="text" value="计时模式" disabled>
+                </div>
+            </div>
+            <div class="xj-reserve-pattern">
+                <a class="xj-reserve-pattern-btn" data-mark="1"><i class="xj-icon"></i>计时模式</a>
+                <a class="xj-reserve-pattern-btn" data-mark="2"><i class="xj-icon"></i>套餐</a>
+                <a class="xj-reserve-pattern-btn" data-mark="3"><i class="xj-icon"></i>团购</a>
+            </div>
+            <div class="xj-reserve-item">
+                <div class="xj-item-label">
+                    推荐房间
+                </div>
+                <div class="xj-item-inp">
+                    <a class="xj-item-inp-a open-roomType xj-disabled">选择房型</a>
+                </div>
+            </div>
+            <div class="xj-reserve-item">
+                <div class="xj-item-label">
+                    欢唱时间
+                </div>
+                <div class="xj-item-inp">
+                    <select>
+                        <option value="1">1小时</option>
+                        <option value="2">2小时</option>
+                        <option value="3">3小时</option>
+                        <option value="4">4小时</option>
+                        <option value="5">5小时</option>
+                        <option value="6">6小时</option>
+                    </select>
+                </div>
+            </div>
+            <div class="xj-reserve-submit">
+                <a href="reserve_order.html" class="xj-btn">提交</a>
+            </div>
+        </div>
+        <script type="text/html" id="tmp_roomType_reserveItem">
+        {{ each list as $list i }}
+            <li data-id="{{ $list.id }}">{{ $list.name }}({{ $list.minCapacity }}-{{ $list.maxCapacity }}人)</li>
+        {{ /each }}
+        </script>
+        <div class="popup popup_roomType">
+            <div class="content">
+                <div class="xj-reserve-roomType-list">
+                    <ul>
+                        <li>温馨小房(2ren)</li>
+                        <li>小房(2-4人)</li>
+                        <li>商务小房(2-6人)</li>
+                        <li>温馨小房(2ren)</li>
+                        <li>小房(2-4人)</li>
+                        <li>商务小房(2-6人)</li>
+                        <li>温馨小房(2人)</li>
+                        <li>小房(2-4人)</li>
+                        <li>商务小房(2-6人)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script type="text/html" id="tmp_package_item">
+            {{ each list as $list i }}
+            <div class="xj-package-radio">
+                <div class="xj-package-radio-head" data-id="{{ $list.id }}">
+                    <span class="xj-radio-wrap"><input type="radio" name="package" value="{{ i }}"></span>
+                    <span>{{ $list.name }}</span>
+                </div>
+                <div class="xj-package-radio-content">
+                    <p>
+                        开始时间:{{ date_Format_reserve($list.startTime).time }}-{{ date_Format($list.endTime).time }}&nbsp;&nbsp;&nbsp;
+                        {{ if $list.isFixedTime==-1 }}
+                            ￥{{ $list.price }}/位
+                        {{ else if $list.isFixedTime==1 }}
+                            欢唱时数:3小时
+                        {{ /if }}
+                    </p>
+                    <p>{{ $list.description }}</p>
+                </div>
+            </div>
+            {{ /each }}
+        </script>
+        <div class="popup popup_package">
+            <div class="content">
+                <div class="xj-package-radios">
+
+                </div>
+                <div class="xj-package-sure">
+                    <a>确定</a>
+                </div>
+            </div>
+        </div>
+        <script type="text/html" id="tmp_groupbuy_item">
+        {{ each list as $list i }}
+        <div class="xj-groupbuy-item" data-id="{{ $list.id }}">
+            <span class="xj-radio-wrap"><input type="radio" name="groupbuy" value="1"></span>
+            <i>团</i>
+            <span class="xj-groupbuy-content">{{ $list.description }}</span>
+        </div>
+        {{ /each }}
+        </script>
+        <div class="popup popup_groupbuy">
+            <div class="content">
+                <div class="xj-groupbuy-lists">
+
+                </div>
+                <div class="xj-groupbuy-sure">
+                    <a>确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="js/zepto.min.js"></script>
+<script src="js/sm.min.js"></script>
+<script src="js/template.js"></script>
+<script src="js/adios.js"></script>
+</html>

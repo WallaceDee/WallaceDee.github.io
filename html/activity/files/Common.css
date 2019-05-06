@@ -1,0 +1,647 @@
+/** {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 12px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: "ËÎÌו",sans-serif
+}*/
+BODY
+{
+    margin: 0px;
+    padding: 0px;
+    background-color: #ffffff;
+}
+BODY
+{
+    font-size: 12px;
+    font-family: "ËÎÌו";
+}
+
+DIV
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+DL
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+DT
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+DD
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+UL
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+OL
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+LI
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+H1
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+    font-weight: normal;
+    font-size: 12px;
+}
+H2
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+    font-weight: normal;
+    font-size: 12px;
+}
+H3
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+    font-weight: normal;
+    font-size: 12px;
+}
+H4
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+    font-weight: normal;
+    font-size: 12px;
+}
+H5
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+    font-weight: normal;
+    font-size: 12px;
+}
+H6
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+PRE
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+FORM
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+FIELDSET
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+INPUT
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+TEXTAREA
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+BLOCKQUOTE
+{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-top: 0px;
+}
+TABLE
+{
+    font-size: 12px;
+}
+TD
+{
+    font-size: 12px;
+}
+TR
+{
+    font-size: 12px;
+}
+TH
+{
+    font-size: 12px;
+}
+LI
+{
+    list-style-type: none;
+}
+TABLE
+{
+    margin: 0px auto;
+}
+IMG
+{
+    vertical-align: top;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+    border-bottom-style: none;
+}
+OL
+{
+    list-style-type: none;
+}
+UL
+{
+    list-style-type: none;
+    text-align: left;
+}
+CAPTION
+{
+    text-align: left;
+}
+TH
+{
+    text-align: left;
+}
+
+abbr
+{
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+}
+ACRONYM
+{
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+}
+ADDRESS
+{
+    font-weight: normal;
+    font-style: normal;
+}
+CAPTION
+{
+    font-weight: normal;
+    font-style: normal;
+}
+CITE
+{
+    font-weight: normal;
+    font-style: normal;
+}
+CODE
+{
+    font-weight: normal;
+    font-style: normal;
+}
+DFN
+{
+    font-weight: normal;
+    font-style: normal;
+}
+EM
+{
+    font-weight: normal;
+    font-style: normal;
+}
+TH
+{
+    font-weight: normal;
+    font-style: normal;
+}
+VAR
+{
+    font-weight: normal;
+    font-style: normal;
+}
+A
+{
+    color: #000;
+    text-decoration: none;
+}
+A:visited
+{
+    text-decoration: none;
+}
+A:hover
+{
+    text-decoration: underline;
+}
+A:active
+{
+}
+p
+{
+    margin: 0px;
+    padding: 0px;
+}
+.b
+{
+    font-weight: bolder;
+}
+.blod_er
+{
+    font-weight: bolder;
+}
+.del
+{
+    text-decoration: line-through;
+}
+.red
+{
+    color: #ff0000;
+}
+.yel
+{
+    color: #f8f2aa;
+}
+.yel2
+{
+    color: Yellow;
+    font-size: 12px;
+}
+.blue
+{
+    color: #3D8298;
+}
+.navy
+{
+    color: #0066ff;
+}
+.scarlet
+{
+    color: #701111;
+}
+.orange
+{
+    color: #ffb38c;
+}
+.gray
+{
+    color: #939393;
+}
+.cGreen
+{
+    color: Green;
+}
+.cRed
+{
+    color: #FF0000;
+}
+.size12
+{
+    font-size: 12px;
+}
+.size14
+{
+    font-size: 14px;
+}
+.size16
+{
+    font-size: 16px;
+}
+.size18
+{
+    font-size: 18px;
+}
+.size21
+{
+    font-size: 21px;
+}
+.size24
+{
+    font-size: 24px;
+}
+.bgblack
+{
+    background-color: Black;
+}
+.blank1
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 1px;
+}
+.blank2
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 2px;
+}
+.blank3
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 3px;
+}
+.blank5
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 5px;
+}
+.blank6
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 6px;
+}
+.blank7
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 7px;
+}
+
+.blank8
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 8px;
+}
+
+.blank9
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 9px;
+}
+.blank10
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 10px;
+}
+.blank11
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 11px;
+}
+.blank12
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 12px;
+}
+.blank15
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 15px;
+}
+.blank16
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 16px;
+}
+.blank18
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 18px;
+}
+.blank20
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 20px;
+}
+.blank30
+{
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 20px;
+}
+.left, .l
+{
+    float: left;
+}
+.right, .r
+{
+    float: right;
+}
+.dis
+{
+    display: block;
+}
+.undis
+{
+    display: none;
+}
+
+.bgFFF
+{
+    background-color: #FFFFFF;
+}
+
+.T
+{
+    margin-top: 10px;
+}
+.w1024
+{
+    width: 1024px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+.w1010
+{
+    width: 1000px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+.w1000
+{
+    width: 1000px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+.w980
+{
+    width: 980px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+.w960
+{
+    width: 960px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+.w485
+{
+    width: 485px;
+}
+
+.w840
+{
+    width: 840px;
+}
+.w750
+{
+    width: 750px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+
+.w650
+{
+    width: 650px;
+    margin: 0px auto;
+    overflow: hidden;
+    clear: both;
+}
+.w680
+{
+    width: 680px;
+}
+.w320
+{
+    width: 320px;
+}
+.w355
+{
+    width: 355px;
+}
+.w330
+{
+    width: 330px;
+}
+.w300
+{
+    width: 300px;
+}
+.w270
+{
+    width: 270px;
+}
+.w110
+{
+    width: 110px;
+}
+.w175
+{
+    width: 175px;
+}
+.p10
+{
+    padding: 10px;
+}
+.p10n
+{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.p5
+{
+    padding: 5px;
+}
+
+.loading
+{
+    background: url(../imgs/loading.gif) center center no-repeat;
+}
+.position
+{
+    position: relative;
+}
+.position_r
+{
+    position: relative;
+}
+.position_a
+{
+    position: absolute;
+}

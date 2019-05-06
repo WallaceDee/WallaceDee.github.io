@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>短线牛人圈</title>
+    <link rel="stylesheet" rel="stylesheet" href="css/style.css">
+    <link href="css/fliptimer.css" rel="stylesheet" type="text/css" />
+    <style>
+    .img-content .tab1 {
+        position: absolute;
+        width: 195px;
+        height: 70px;
+        left: 50%;
+        margin-left: -480px;
+        top: 165px;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        z-index: 2;
+        outline: none;
+    }
+
+    .img-content .tab2 {
+        position: absolute;
+        width: 195px;
+        height: 70px;
+        left: 50%;
+        margin-left: -480px;
+        top: 305px;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        z-index: 2;
+        outline: none;
+    }
+
+    .img-content .tab3 {
+        position: absolute;
+        width: 195px;
+        height: 70px;
+        left: 50%;
+        margin-left: -480px;
+        top: 440px;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        z-index: 2;
+        outline: none;
+    }
+
+    .popup {
+        width: 372px;
+        height: 441px;
+        background-image: url(images/popup_bg.png);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-left: -186px;
+        margin-top: -220.5px;
+        text-align: center;
+    }
+
+    .popup img {
+        width: 213px;
+        margin-left: 75px;
+        margin-top: 51px;
+        display: block;
+    }
+
+    .popup button {
+        cursor: pointer;
+        margin-top: 115px;
+        border: none;
+        color: #cb0921;
+        background-color: #fff073;
+        font-size: 22px;
+        padding: 2px 50px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .open-pop {
+        width: 255px;
+        height: 70px;
+        position: absolute;
+        left: 50%;
+        margin-left: 75px;
+        margin-top: 455px;
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        outline: none;
+    }
+
+    .img3 .open-pop {
+        margin-left: -131px;
+        margin-top: 490px;
+    }
+
+    .img-content.img1 .name {
+        position: absolute;
+        left: 50%;
+        top: 513px;
+        font-size: 22px;
+        color: #231b06;
+        font-weight: 600;
+        margin-left: 50px;
+    }
+
+    .img-content.img1 h1 {
+        font-size: 22px;
+        color: #231b06;
+        font-weight: 600;
+        position: absolute;
+        top: 565px;
+        left: 50%;
+        margin-left: -322px;
+    }
+
+    .img-content.img1 h2 {
+        font-size: 22px;
+        color: #231b06;
+        font-weight: 600;
+        position: absolute;
+        top: 565px;
+        left: 50%;
+        margin-left: 50px;
+    }
+    </style>
+</head>
+
+<body>
+    <form action="">
+        <div class="img-content img1">
+            <p><span>2017</span><span>10</span><span>27</span></p>
+            <span class="name">苹果概念</span>
+            <h1>每期综合提升5%收益</h1>
+            <h2>朋友圈第一时间发布买卖点、仓位等策略</h2>
+            <img src="images/qrcode.jpg" alt="qrcode" title="扫一扫加微信">
+        </div>
+        <div class="img-content img2-1">
+            <button class="tab1" data-href="img2-1" type="button"></button>
+            <button class="tab2" data-href="img2-2" type="button"></button>
+            <button class="tab3" data-href="img2-3" type="button"></button>
+            <button class="open-pop" type="button"></button>
+        </div>
+        <div class="img-content img3">
+            <button class="open-pop" type="button"></button>
+        </div>
+        <div class="img-content img4"></div>
+        <div class="img-content img5"></div>
+        <div class="img-content img6">
+            <img src="images/qrcode.jpg" alt="qrcode" title="扫一扫加微信">
+            <div class="dowebok" style="">
+                 <div class="days"></div>
+                <div class="hours"></div>
+                <div class="minutes"></div>
+                <div class="seconds"></div>
+            </div>
+        </div>
+        <div class="popup hide">
+            <img src="images/qrcode.jpg" alt="qrcode" title="扫一扫加微信">
+            <button onclick="$(this).parent().addClass('hide')">确认</button>
+        </div>
+    </form>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery.fliptimer.js"></script>
+    <script>
+    $(function() {
+        var d = new Date();
+        var myDate = "2017/11/01 00:00:00";
+
+        console.log(myDate);
+        $('.dowebok').flipTimer({
+            direction: 'down',
+            date: myDate
+        });
+        $(".tab1,.tab2,.tab3").click(function(event) {
+            /* Act on the event */
+            var $c = $(this).parent(".img-content");
+            $c.removeClass("img2-1 img2-2 img2-3");
+            $c.addClass($(this).data("href"));
+        });
+        var index = 0;
+        setInterval(function() {
+            index++;
+            var i = index % 4;
+            $(".tab" + i).click();
+        }, 5000);
+        $(".open-pop").click(function(event) {
+            /* Act on the event */
+            $(".popup").removeClass("hide");
+        });
+    });
+    </script>
+</body>
+
+</html>

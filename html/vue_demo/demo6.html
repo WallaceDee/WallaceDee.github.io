@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>vue练习6</title>
+    <link rel="stylesheet" href="">
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="counter-event-example">
+        <p>{{total}}</p>
+        <counter-button v-on:increment="incrementTotal"></counter-button>
+        <counter-button v-on:increment="incrementTotal"></counter-button>
+    </div>
+    <script>
+    Vue.component("counter-button", {
+        template: '<button v-on:click="increment">{{counter}}</button>',
+        data: function() {
+            return {
+                counter: 0
+            }
+        },
+        methods: {
+            increment: function() {
+           this.counter += 1
+      this.$emit('increment')
+            }
+        },
+
+    });
+    var vm = new Vue({
+        el: "#counter-event-example",
+        data: {
+            total: 0
+        },
+        methods: {
+            incrementTotal: function() {
+                this.total += 1
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>

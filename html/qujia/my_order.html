@@ -1,0 +1,181 @@
+ <!DOCTYPE html> 
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8"> 
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"> 
+   <title>趣驾</title>
+   <script  src="js/loading.js"></script>
+   <link rel="stylesheet" href="css/sm.css"> 
+   <link rel="stylesheet" href="css/sm-extend.css"> 
+   <link rel="stylesheet" href="css/default.css"></head>
+ <body onload="loading.end();">
+   <script id="loading-init">loading.init();</script>
+   <div class="page-group">
+     <div class="page" id='my-order'>
+       <header class="bar bar-nav">
+         <a class="button button-link button-nav pull-left back" href="/demos/bar">
+           <span class="icon icon-left"></span>
+         </a>
+         <h1 class="title">我的订单</h1>
+       </header>
+
+       <div class="content native-scroll">
+         <div class="list-block cards-list">
+           <ul>
+             <li class="card">
+               <div class="card-header">
+                 <span>2016-03-23 14:42:20</span>
+                 <span class="paid">已支付</span>
+               </div>
+               <div class="card-content">
+                 <div class="card-content-inner">
+                   <div class="list-block media-list inset">
+                     <ul>
+                       <li>
+                         <a href="#" class="item-link item-content">
+                           <div class="item-media">
+                             <img src="images/goods.png" width="44"></div>
+                           <div class="item-inner">
+                             <div class="item-title-row">
+                               <div class="item-title">商品名</div>
+                             </div>
+                             <div class="item-subtitle">商品简介</div>
+                           </div>
+                         </a>
+                       </li>
+                       <li>
+                         <a href="#" class="item-link item-content">
+                           <div class="item-media">
+                               <img src="images/goods.png" width="44"></div>
+                           <div class="item-inner">
+                             <div class="item-title-row">
+                               <div class="item-title">商品名</div>
+                             </div>
+                             <div class="item-subtitle">商品简介</div>
+                           </div>
+                         </a>
+                       </li>
+                     </ul>
+                   </div>
+                 </div>
+               </div>
+               <div class="card-footer">
+                 <span class="total pull-left">
+                   共2件商品
+                   <span>
+                     ￥
+                     <span>200</span>
+                     .00
+                   </span>
+                 </span>
+               </div>
+             </li>
+             <li class="card">
+               <div class="card-header">
+                 <span>2016-03-23 14:42:20</span>
+                 <span class="refund">退款中</span>
+               </div>
+               <div class="card-content">
+                 <div class="card-content-inner">
+                   <div class="list-block media-list inset">
+                     <ul>
+                       <li>
+                         <a href="#" class="item-link item-content">
+                           <div class="item-media">
+                               <img src="images/goods.png" width="44"></div>
+                           <div class="item-inner">
+                             <div class="item-title-row">
+                               <div class="item-title">商品名</div>
+                             </div>
+                             <div class="item-subtitle">商品简介</div>
+                           </div>
+                         </a>
+                       </li>
+                       <li>
+                         <a href="#" class="item-link item-content">
+                           <div class="item-media">
+                                <img src="images/goods.png" width="44"></div>
+                           <div class="item-inner">
+                             <div class="item-title-row">
+                               <div class="item-title">商品名</div>
+                             </div>
+                             <div class="item-subtitle">商品简介</div>
+                           </div>
+                         </a>
+                       </li>
+                     </ul>
+                   </div>
+                 </div>
+               </div>
+               <div class="card-footer">
+                 <span class="total pull-left">
+                   共2件商品
+                   <span>
+                     ￥
+                     <span>200</span>
+                     .00
+                   </span>
+                 </span>
+              
+               </div>
+             </li><li class="card">
+               <div class="card-header">
+                 <span>2016-03-23 14:42:20</span>
+                 <span class="unpaid">未支付</span>
+               </div>
+               <div class="card-content">
+                 <div class="card-content-inner">
+                   <div class="list-block media-list inset">
+                     <ul>
+                       <li>
+                         <a href="#" class="item-link item-content">
+                           <div class="item-media">
+                               <img src="images/goods.png" width="44"></div>
+                           <div class="item-inner">
+                             <div class="item-title-row">
+                               <div class="item-title">商品名</div>
+                             </div>
+                             <div class="item-subtitle">商品简介</div>
+                           </div>
+                         </a>
+                       </li>
+                       <li>
+                         <a href="#" class="item-link item-content">
+                           <div class="item-media">
+                                <img src="images/goods.png" width="44"></div>
+                           <div class="item-inner">
+                             <div class="item-title-row">
+                               <div class="item-title">商品名</div>
+                             </div>
+                             <div class="item-subtitle">商品简介</div>
+                           </div>
+                         </a>
+                       </li>
+                     </ul>
+                   </div>
+                 </div>
+               </div>
+               <div class="card-footer">
+                 <span class="total pull-left">
+                   共2件商品
+                   <span>
+                     ￥
+                     <span>200</span>
+                     .00
+                   </span>
+                 </span>
+                 <span>取消订单</span>
+               </div>
+             </li>
+           </ul>
+         </div>
+       </div>
+     </div>
+   </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/sm.min.js"></script>
+    <script src="js/sm-extend.js"></script>
+    <script src="js/sm-city-picker.min.js"></script>
+    <script src="js/default.js"></script>
+ </body>
+ </html>

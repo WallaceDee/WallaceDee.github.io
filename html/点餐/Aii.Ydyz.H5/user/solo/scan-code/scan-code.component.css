@@ -1,0 +1,13 @@
+body {
+  width: 100%;
+}
+section {
+  width: 100%;
+  background: #ebebeb;
+}
+.scan-code-box {
+  padding: 0.48rem;
+  background-color: #ffffff;
+  margin: 3.76rem 1.067rem 0;
+}
+

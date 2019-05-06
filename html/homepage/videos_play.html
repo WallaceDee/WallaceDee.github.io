@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="zh">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>巨景投顾 聚牛财经-湖南巨景证券投资顾问有限公司广州分公司</title>
+    <meta name="keywords" content="聚牛财经、聚牛股、巨景、湖南巨景广州分公司、广州巨景分公司、巨景分公司、杜咏泉、阿杜老师">
+    <meta name="description" content="湖南巨景证券投资顾问有限公司（简称“巨景投顾”），成立于1993年，是我国最早开展证券投资咨询业务的元老级咨询公司之一，也是中国证监会首批授权证券投资咨询机构[ZX0018]。在中国证券业协会和中国证监会官网上都有公司资质备案。2013年初，公司由北京迁址湖南长沙，并更名为巨景投顾，由此步入再次腾飞的发展新阶段，巨景投顾正致力于成为中国投资顾问行业走向正规化、专业化、实效化的指向标！">
+    <link rel="alternate icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/amazeui.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="js/jquery.min.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body>
+    <script src="js/header.js" type="text/javascript" charset="utf-8"></script>
+    <div class="container videos-page">
+        <div class="videos-bg">
+            <div class="am-container">
+                <h1 class="video-title">&nbsp;</h1>
+            </div>
+            <div class="am-g am-g-fixed">
+                <div class="am-u-sm-8">
+                    <iframe class="video-iframe" height="420" frameborder="0" src="" allowfullscreen></iframe>
+                    <p class="video-desc">&nbsp;</p>
+                </div>
+                <div class="am-u-sm-4">
+                    <div class="videos-list">
+                        <div class="video-list-top"> 相关视频</div>
+                        <ul class="videos-list-content">
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="am-container">
+                <h1>推荐视频</h1>
+                <div class="commend-list-wrapper">
+                    <ul class="commend-list">
+                        <li>
+                            <div style="background-image: url(images/sample/img01.jpg);">
+                                <div class="bottom-col">
+                                    <p>0321今日或将延续震荡上行</p>
+                                </div>
+                            </div>
+                            <p>市场信心回暖，四大指数收光 头阳线，本周能否上探3300 大关？
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+    </div>
+    <script src="js/footer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/amazeui.min.js"></script>
+    <script src="js/default.js"></script>
+    <script>
+    var curr_id = GetQueryString("id");
+    var curr_type = GetQueryString("type");
+    $.ajax({
+        url: "http://www.gu0018.com/Handler/GetArticleById.ashx",
+        data: {
+            id: curr_id
+        },
+        dataType: "json",
+        success: function(data) {
+            $(".video-iframe").attr("src", data.VideoPath);
+            $(".video-title").html(data.Title);
+            $(".video-desc").html(data.Content);
+        }
+    });
+
+    $.ajax({
+        url: "http://www.gu0018.com/Handler/GetArticleByType.ashx",
+        data: {
+            typeid: curr_type,
+            size: 15
+        },
+        dataType: "json",
+        success: function(data) {
+            var temp_html = "";
+            var _prev = "";
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].PicPath != "") {
+                    _prev = data[i].PicPath;
+                } else {
+                    _prev = "images/sample/img08.jpg";
+                }
+                temp_html += ' <li>\
+                                    <a class="open-btn" data-id="' + data[i].Id + '" data-type="' + data[i].ArticleTypeId + '">\
+                                        <div class="prev-img">\
+                                            <div style="background-image: url(' + _prev + ');">\
+                                                <div class="bottom-col">\
+                                                    <p>' + data[i].Title + '</p>\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                        <div class="prev-desc">' + data[i].Content + '\
+                                        </div>\
+                                </li>'
+            }
+            $(".videos-list-content").html(temp_html);
+        }
+    });
+    $(document).on("click", ".open-btn", function() {
+        window.location.href = "videos_play.html?id=" + $(this).data("id") + "&type=" + $(this).data("type");
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+.title-back {
+	width: 100%;
+	height: 1.173rem;
+	background-color: #f03b42;
+	display: table;
+	line-height: 1.173rem;
+}
+.title-back img{
+	width: .5rem;
+	vertical-align: middle;
+	margin-left: .213rem;
+}
+.title-back span {
+	font-size: .453rem;
+	color: #ffffff;
+	vertical-align: middle;
+	margin-left: .213rem;
+}
+.title-back .edit{
+	float: right;
+	margin-top: 0.373rem;
+	margin-right: 0.4rem;
+}
+
+/*商家信息*/
+.business_info{
+	margin-top: 0.266rem;
+	background-color: #fff;
+	padding: 0 0.266rem;
+	border-top: 1px solid #D1D1D1;
+	border-bottom:1px solid #D1D1D1;
+}
+.business_info li{
+	font-size: 0.4rem;
+	width: 100%;
+	height: 1.16rem;
+	line-height: 1.16rem;
+	border-bottom:1px solid #D1D1D1;
+}
+.business_info li:last-child{
+	border-bottom: none;
+}
+.business_info li span{
+	color: #888888;
+}
+.business_info li span img{
+	width: 0.213rem;
+	margin-left: 0.266rem;
+}
+
+
+/*说明*/
+.explain{
+	font-size: 0.4rem;
+	color: #666;
+	text-align: center;
+	margin-top:4.666rem;
+}
+
+
+/*电话编辑*/
+.phone_edit{
+	font-size: 0.4rem;
+	width: 100%;
+	height: 1.16rem;
+	line-height: 1.16rem;
+	background-color: #fff;
+}
+.phone_edit input{
+	width: 9.2rem;
+	height: 1.16rem;
+	line-height: 1.16rem;
+	padding:0 0.4rem;
+}
+
+/*门店介绍*/
+.store_introduction{
+	margin-top: 0.266rem;
+}
+.store_introduction textarea{
+	font-size: 0.266rem;
+	width: 9.2rem;
+	height: 4.533rem;
+	padding: 0.4rem;
+	resize:none;
+}
+
+/*营业执照*/
+.business_license{
+	margin-top: 0.266rem;
+	height: 6.266rem;
+	background-color: #fff;
+}

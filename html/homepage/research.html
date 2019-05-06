@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="zh">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>巨景投顾 聚牛财经-湖南巨景证券投资顾问有限公司广州分公司</title>
+    <meta name="keywords" content="聚牛财经、聚牛股、巨景、湖南巨景广州分公司、广州巨景分公司、巨景分公司、杜咏泉、阿杜老师">
+    <meta name="description" content="湖南巨景证券投资顾问有限公司（简称“巨景投顾”），成立于1993年，是我国最早开展证券投资咨询业务的元老级咨询公司之一，也是中国证监会首批授权证券投资咨询机构[ZX0018]。在中国证券业协会和中国证监会官网上都有公司资质备案。2013年初，公司由北京迁址湖南长沙，并更名为巨景投顾，由此步入再次腾飞的发展新阶段，巨景投顾正致力于成为中国投资顾问行业走向正规化、专业化、实效化的指向标！">
+    <link rel="alternate icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/amazeui.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js "></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js "></script>
+<script src="js/amazeui.ie8polyfill.min.js "></script>
+<![endif]-->
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="js/jquery.min.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body>
+    <script src="js/header.js" type="text/javascript" charset="utf-8"></script>
+    <div class="container research-page">
+        <div class="banner-wrapper">
+            <img src="images/research_banner.jpg" alt="">
+        </div>
+        <div class="section-title"><span>聚牛股·晨报</span></div>
+        <div class="am-g am-g-fixed">
+            <div class="am-u-sm-5 am-u-sm-offset-1">
+                <div class="mor-preview-content-bg">
+                    <div id="wrapper">
+                        <div id="scroller">
+                            <div class="mor-preview-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-5 am-u-end">
+                <div class="details-wrapper">
+                    <div class="details-top"><span class="date-wrapper"></span><span class="week-wrapper"></span>
+                    </div>
+                    <div class="details-content"></div>
+                    <div class="details-bottom" style="display: none;">
+                        <div class="details-bottom-left">
+                            聚牛
+                            <br>股票池
+                        </div>
+                        <div class="details-bottom-content">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="mor-select-wrapper">
+                        <div class="mor-select-content-top">
+                            往期晨报
+                        </div>
+                        <div class="mor-select-content">
+                            <div class="mor-list">
+                                <ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title"><span>聚牛股·午评</span></div>
+        <div class="am-g am-g-fixed">
+            <div class="am-u-sm-4 am-u-sm-offset-1">
+                <div class="noon-caption"></div>
+                <div class="pre-wrapper">
+                    <div class="noon-preview-content">
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-7 am-u-end">
+                <div class="noon-list">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="section-title"><span>聚牛股·收评</span></div>
+        <div class="am-g am-g-fixed">
+            <div class="am-u-sm-4 am-u-sm-offset-1">
+                <div class="over-caption"></div>
+                <div class="pre-wrapper">
+                    <div class="over-preview-content">
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-7 am-u-end">
+                <div class="over-list">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/footer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/amazeui.min.js"></script>
+    <script src="js/default.js"></script>
+    <script>
+    var mor_arr = new Array();
+    $.ajax({
+        url: "http://www.gu0018.com/Handler/GetArticleMorningByType.ashx",
+        data: {
+            typeid: 1,
+            size: 16
+        },
+        dataType: "json",
+        success: function(data) {
+            mor_arr = data;
+
+            var mor_temp_html = " ";
+            for (var i = 0; i < mor_arr.length; i++) {
+                var date = mor_arr[i].CTime.replace(/-/g, "/").split(" ")[0];
+                var tag = date;
+                var t_temp = tag.split("/");
+                t_temp.shift();
+                tag = t_temp.join("/");
+
+                mor_temp_html += '<li><a href="' + mor_arr[i].PicPath + '" title="' + mor_arr[i].Title + '"  data-html="' + mor_arr[i].Content + '" data-pool="' + mor_arr[i].StockPool + '" data-date="' + date + '" data-week="' + mor_arr[i].CWeek + '">' + tag + '</a></li>';
+            }
+            $(".mor-list ul").html(mor_temp_html);
+            mor_init();
+        }
+    });
+
+
+    $(document).on("click ", ".mor-list ul li a", function(e) {
+        // Disables standard link behavior
+        e.preventDefault();
+        $('.mor-list a.selected').removeClass("selected");
+        var $this = $(this);
+        $(this).addClass('selected');
+        var photo_caption = $this.attr('title');
+        var photo_fullsize = $this.attr('href');
+        var photo_preview = photo_fullsize.replace("_fullsize", "_preview");
+        var date = $this.data("date");
+        var html = $this.data("html");
+        var week = $this.data("week");
+        var pool = $this.data("pool");
+        $(".details-top .date-wrapper").html(date);
+        $(".details-top .week-wrapper").html(week);
+        $(".details-content").html(html);
+        if (pool == "") {
+            $(".details-bottom").css("display", "none");
+            $(".details-content").css("border-bottom","1px solid #ed2c2c");
+        } else {
+            $(".details-content").css("border-bottom","none");
+            $(".details-bottom").css("display", "block");
+            $(".details-bottom-content").html(pool);
+        }
+        $('.mor-preview-content img').attr("src", photo_preview);
+        $('.mor-preview-content a').attr({ "title": photo_caption, "href": photo_fullsize });
+
+        myScroll.refresh();
+    });
+
+    var noon_arr = new Array();
+    $.ajax({
+        url: "http://www.gu0018.com/Handler/GetArticleByType.ashx",
+        data: {
+            typeid: 5,
+            size: 16
+        },
+        dataType: "json ",
+        success: function(data) {
+            noon_arr = data;
+            var noon_temp_html = " ";
+            for (var i = 0; i < noon_arr.length; i++) {
+                noon_temp_html += ' <li><a title="' + noon_arr[i].Title + '"href="' + noon_arr[i].PicPath + '"><span></span><em>' + noon_arr[i].Title + '</em></a></li>';
+            }
+            $(".noon-list ul ").html(noon_temp_html);
+            noon_init();
+        }
+    });
+
+    $(document).on("click ", ".noon-list ul li a", function(e) {
+        // Disables standard link behavior
+        e.preventDefault();
+        var photo_caption = $(this).attr('title');
+        var photo_fullsize = $(this).attr('href');
+        var photo_preview = photo_fullsize.replace("_fullsize", "_preview");
+        $('.noon-list a.selected').removeClass("selected");
+        $(this).addClass('selected');
+        $('.noon-preview-content img').attr("src", photo_preview);
+        $('.noon-preview-content a').attr("src", photo_caption);
+        $("a.noon-overlay-link").attr({
+            "title": photo_caption,
+            "href": photo_fullsize
+        });
+    });
+
+
+    var over_arr = new Array();
+    $.ajax({
+        url: "http://www.gu0018.com/Handler/GetArticleByType.ashx",
+        data: {
+            typeid: 7,
+            size: 16
+        },
+        dataType: "json ",
+        success: function(data) {
+            over_arr = data;
+            var over_temp_html = " ";
+            for (var i = 0; i < over_arr.length; i++) {
+                over_temp_html += ' <li><a title="' + over_arr[i].Title + '"href="' + over_arr[i].PicPath + '"><span></span><em>' + over_arr[i].Title + '</em></a></li>';
+            }
+            $(".over-list ul").html(over_temp_html);
+            over_init();
+        }
+    });
+    $(document).on("click ", ".over-list ul li a", function(e) {
+        // Disables standard link behavior
+        e.preventDefault();
+        var photo_caption = $(this).attr('title');
+        var photo_fullsize = $(this).attr('href');
+        var photo_preview = photo_fullsize.replace("_fullsize", "_preview");
+        $('.over-list a.selected').removeClass("selected");
+        $(this).addClass('selected');
+        $('.over-preview-content img').attr("src", photo_preview);
+        $('.over-preview-content a').attr("src", photo_caption);
+        $("a.over-overlay-link").attr({
+            "title": photo_caption,
+            "href": photo_fullsize
+        });
+    });
+    </script>
+</body>
+
+</html>

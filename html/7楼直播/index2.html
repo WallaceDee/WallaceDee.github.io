@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>巨景视频直播中心</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/default.css" charset="utf-8">
+    <link rel="stylesheet" href="css/video-js.min.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="container "><i class="icon icon-title"></i></div>
+    </div>
+    <div class="main">
+        <div id="video-wrapper"> <span class="count"> <i class="icon icon-user"></i>在线：<span>0</span> </span>
+            <video id="video" class="video-js vjs-default-skin" controls webkit-playsinline="true" playsinline="true" style="display: none;">
+            </video>
+        </div>
+        <div class="black-block">
+            <div>
+                <h1>直播暂未开始</h1>
+            </div>
+        </div>
+        <div class="content">
+            <div class="guide"><a class="active"><span>聊天</span></a><a><span>系统消息</span></a><a><span>分析师介绍</span></a></div>
+            <div class="active section chat">
+                <div class="msg-box">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="emoji-wrapper hide">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="msg-input flex">
+                    <div id="face-btn" class="icon icon-emoji"></div>
+                    <input class="msg-text flex-item" type="text" placeholder="说点什么……">
+                    <a class="send">发送</a> </div>
+            </div>
+            <div class="section news"> <img src="./images/list.png" alt="" style="width: 100%;margin-top: .5rem;">
+                <p>聚牛股管理员：在股友交流区，发广告或联系方式(qq/微信/手机)，严重者将被封号！</p>
+            </div>
+            <div class="section teacher">
+                <div class="bg">
+                    <h1>巨景·聚牛股投研团队</h1>
+                </div>
+                <div class="teacher-desc">
+                    <p>　　聚牛股投研团队汇集了来自股票、基金、券商等一线金融机构的多位投资大咖，由“猎庄法师”、聚牛股<span class="tag">首席策略投顾谢正光领衔</span>，强强联合已经成为巨景投顾华南区域最大的投研力量。</p>
+                    <p>　　团队囊括多位顶尖投顾，既有中国第一批股票操盘手<span class="bold">杜咏泉</span>、<span class="bold">夏时柏</span>，具备二十年多年的股票投资经验；也有青年才俊、少壮派精英<span class="bold">吴界</span>、<span class="bold">陈政雄</span>，擅长研发最新的量化炒股模型。</p>
+                    <p>　　多元化的强强组合为全国亿万股民提供最优质的投顾服务，帮助大家买在起涨点，赢赚主升浪！</p>
+                </div>
+                <div class="icon-list">
+                    <ul>
+                        <li>
+                            <p><i class="icon-crow"></i></p>
+                            <p>投资大咖</p>
+                        </li>
+                        <li>
+                            <p><i class="icon-rank"></i></p>
+                            <p>行业领军</p>
+                        </li>
+                        <li>
+                            <p><i class="icon-chart"></i></p>
+                            <p>独创操盘指标</p>
+                        </li>
+                        <li>
+                            <p><i class="icon-cooperation"></i></p>
+                            <p>优质服务</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="info-wrapper">
+                <p class="address">湖南巨景证券投资顾问有限公司广州分公司：中国证监会首批认证证券咨询机构（编号ZX0018）</p>
+                <p class="copyright"><span>1993-2017 湖南巨景证券投资顾问有限公司广州分公司版权所有</span><span>网站备案号：粤ICP备17017433号</span></p>
+                <p>股市有风险，投资需谨慎</p>
+            </div>
+            <div class="qr-code-wrapper">
+                <img src="http://www.gu0018.com/images/contact_qrcode.jpg" alt="">
+                <span>官方微信</span>
+            </div>
+        </div>
+    </div>
+    <script src="js/video.min.js" type="text/javascript"></script>
+    <script src="js/videojs-contrib-hls.min.js" type="text/javascript"></script>
+    <script src="js/videojs-flash.min.js" type="text/javascript"></script>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="scripts/jquery.signalR-2.1.2.min.js" type="text/javascript"></script>
+    <script src="signalr/hubs" type="text/javascript"></script>
+
+    <script>
+        // 声明一个代理引用该集线器,记得$.connection.后面的方法首字母必须要小写,这也是我为什么使用别名的原因
+            var chat = $.connection.myHub;
+            // 这里是注册集线器调用的方法,和1.0不同的是需要chat.client后注册,1.0则不需要
+            chat.client.BroadMsg = function (name) {
+consoloe.log(name)
+            };
+
+    </script>
+</body>
+
+</html>

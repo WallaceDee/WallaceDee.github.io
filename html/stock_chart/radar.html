@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title></title>
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .circle-dashed {
+        -webkit-touch-callout: none;
+        /*系统默认菜单被禁用*/
+        -webkit-user-select: none;
+        /*webkit浏览器*/
+        width: 319px;
+        height: 319px;
+        position: relative;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .circle-dashed:before {
+        content: "";
+        display: block;
+        width: 318px;
+        height: 318px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border: 1px #C1C1C1 dashed;
+        border-radius: 50%;
+    }
+    
+    .circle-dashed:after {
+        content: "";
+        display: block;
+        width: 278px;
+        height: 278px;
+        position: absolute;
+        border: 1px #999 dashed;
+        border-radius: 50%;
+        top: 20px;
+        left: 20px;
+    }
+    
+    .circle {
+        position: relative;
+        width: 240px;
+        height: 240px;
+        margin-left: auto;
+        margin-right: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 50%;
+        box-shadow: 5px 5px 10px #cccccc;
+        overflow: hidden;
+    }
+    
+    .top-circle {
+        position: absolute;
+        width: 240px;
+        height: 120px;
+        border-radius: 120px 120px 0 0;
+        background: linear-gradient(0deg, #E23235, #FD5D5F);
+        z-index: 1;
+        top: 0;
+        left: 0;
+        text-align: center;
+    }
+    
+    .top-circle>span {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 43px;
+        font-size: 26px;
+        color: #fff;
+    }
+    
+    .bottom-circle {
+        z-index: 1;
+        position: absolute;
+        width: 240px;
+        height: 120px;
+        border-radius: 0 0 120px 120px;
+        background: linear-gradient(0deg, #1ED32C, #19A221);
+        bottom: 0;
+        left: 0;
+        text-align: center;
+    }
+    
+    .bottom-circle span {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 40px;
+        font-size: 26px;
+        color: #fff;
+    }
+    
+    .circle-solid-1 {
+        z-index: 2;
+        width: 80px;
+        height: 80px;
+        border: 1px solid #fff;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 99;
+        margin-top: -40px;
+        margin-left: -40px;
+        border-radius: 50%;
+    }
+    
+    .circle-solid-2 {
+        z-index: 2;
+        width: 160px;
+        height: 160px;
+        border: 1px solid #fff;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 99;
+        margin-top: -80px;
+        margin-left: -80px;
+        border-radius: 50%;
+    }
+    
+    .across-dashed {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        transform: rotate(45deg);
+    }
+    
+    .across-dashed:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 1px;
+        height: 100%;
+        top: 0;
+        left: 50%;
+        margin-left: -.5px;
+        border-left: 1px #fff dashed;
+        z-index: 2;
+    }
+    
+    .across-dashed:after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        top: 50%;
+        left: 0;
+        margin-top: -.5px;
+        border-top: 1px #fff dashed;
+        z-index: 2;
+    }
+    
+    .across {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+    
+    .across:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 119px;
+        height: 2px;
+        width: 100%;
+        background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 170, from(rgba(255, 255, 255, 1)), to(rgba(255, 255, 255, 0)));
+    }
+    
+    .across:before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 119px;
+        width: 2px;
+        height: 100%;
+        background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 170, from(rgba(255, 255, 255, 1)), to(rgba(255, 255, 255, 0)));
+    }
+    
+    .center-doc {
+        width: 10px;
+        height: 10px;
+        background-color: rgb(220, 220, 220);
+        position: absolute;
+        z-index: 4;
+        left: 50%;
+        top: 50%;
+        margin-top: -5px;
+        margin-left: -5px;
+        border-radius: 50%;
+        box-shadow: 2px 2px 10px #000;
+    }
+    
+    .num-mess {
+        position: absolute;
+        z-index: 2;
+        opacity: .05;
+        width: 240px;
+        height: 240px;
+        color: #fff;
+    }
+    
+    .num-mess span {
+        position: absolute;
+    }
+    
+    .num-mess span:nth-child(1) {
+        font-size: 100px;
+        top: 150px;
+        left: 140px;
+    }
+    
+    .num-mess span:nth-child(2) {
+        font-size: 60px;
+        top: 10px;
+        left: 150px;
+    }
+    
+    .num-mess span:nth-child(3) {
+        font-size: 50px;
+        top: 50px;
+        left: 50px;
+    }
+    
+    .num-mess span:nth-child(4) {
+        font-size: 80px;
+        top: 80px;
+        left: 20px;
+    }
+    
+    .num-mess span:nth-child(5) {
+        font-size: 80px;
+        top: 80px;
+        left: 150px;
+    }
+    
+    .num-mess span:nth-child(6) {
+        font-size: 70px;
+        top: 0px;
+        left: 20px;
+    }
+    
+    .num-mess span:nth-child(7) {
+        font-size: 60px;
+        top: 80px;
+        left: 80px;
+    }
+    
+    .num-mess span:nth-child(8) {
+        font-size: 60px;
+        top: 100px;
+        left: 200px;
+    }
+    
+    .num-mess span:nth-child(9) {
+        font-size: 90px;
+        top: 150px;
+        left: 60px;
+    }
+    
+    .num-mess span:nth-child(10) {
+        font-size: 70px;
+        top: -10px;
+        left: 100px;
+    }
+    
+    .num-mess span:nth-child(11) {
+        font-size: 60px;
+        top: 50px;
+        left: 200px;
+    }
+    
+    .scan {
+        position: absolute;
+        width: 121px;
+        height: 121px;
+        background: linear-gradient(0deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75));
+        border-radius: 100% 0 0 0;
+        box-sizing: border-box;
+        animation: scan 4s linear infinite;
+        -webkit-animation: scan 4s linear infinite;
+        border-right: 2px solid #fff;
+        z-index: 3;
+        transform-origin: 120px 120px;
+        transform: rotate(315deg);
+    }
+    
+    .scan:before {
+        content: "";
+        display: block;
+        width: 1px;
+        height: 120px;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        box-shadow: 4px 0px 5px #000;
+        z-index: 2;
+        animation: shadow 4s linear infinite;
+        -webkit-animation: shadow 4s linear infinite;
+    }
+    
+    @keyframes scan {
+        0% {
+            transform: rotateZ(0deg);
+            transform-origin: 120px 120px;
+        }
+        100% {
+            transform: rotateZ(360deg);
+            transform-origin: 120px 120px;
+        }
+    }
+    
+    @-webkit-keyframes scan {
+        0% {
+            transform: rotateZ(0deg);
+            transform-origin: 120px 120px;
+        }
+        100% {
+            transform: rotateZ(360deg);
+            transform-origin: 120px 120px;
+        }
+    }
+    
+    @keyframes shadow {
+        0% {
+            right: 2px;
+            top: 2px;
+        }
+        12.5% {
+            right: 0px;
+            top: 0px;
+        }
+        25% {
+            right: 0px;
+            top: -2px;
+        }
+        37.5% {
+            right: 2px;
+            top: -2px;
+        }
+        50% {
+            right: 2px;
+            top: -2px;
+        }
+        62.5% {
+            right: 4px;
+            top: 0px;
+        }
+        75% {
+            right: 4px;
+            top: 2px;
+        }
+        87.5% {
+            right: 2px;
+            top: 2px;
+        }
+        100% {
+            right: 2px;
+            top: 2px;
+        }
+    }
+    
+    @-webkit-keyframes shadow {
+        0% {
+            right: 2px;
+            top: 2px;
+        }
+        12.5% {
+            right: 0px;
+            top: 0px;
+        }
+        25% {
+            right: 0px;
+            top: -2px;
+        }
+        37.5% {
+            right: 2px;
+            top: -2px;
+        }
+        50% {
+            right: 2px;
+            top: -2px;
+        }
+        62.5% {
+            right: 4px;
+            top: 0px;
+        }
+        75% {
+            right: 4px;
+            top: 2px;
+        }
+        87.5% {
+            right: 2px;
+            top: 2px;
+        }
+        100% {
+            right: 2px;
+            top: 2px;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="circle-dashed">
+        <div class="circle">
+            <div class="num-mess">
+                <span>0</span>
+                <span>1</span>
+                <span>0</span>
+                <span>0</span>
+                <span>0</span>
+                <span>1</span>
+                <span>0</span>
+                <span>1</span>
+                <span>1</span>
+                <span>1</span>
+                <span>0</span>
+            </div>
+            <div class="top-circle">
+                <span>持&nbsp;股</span>
+            </div>
+            <div class="bottom-circle"> <span>持&nbsp;币</span> </div>
+            <div class="circle-solid-1"></div>
+            <div class="circle-solid-2"></div>
+            <div class="across-dashed"></div>
+            <div class="across"></div>
+            <div class="center-doc"></div>
+            <div class="scan"></div>
+        </div>
+    </div>
+</body>
+
+</html>

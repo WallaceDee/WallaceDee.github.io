@@ -1,0 +1,28 @@
+.title-back {
+	width: 100%;
+	height: 1.173rem;
+	background-color: #f03b42;
+	display: table;
+	line-height: 1.173rem;
+}
+.title-back img{
+	width: .5rem;
+	vertical-align: middle;
+	margin-left: .213rem;
+}
+.title-back span {
+	font-size: .453rem;
+	color: #ffffff;
+	vertical-align: middle;
+	margin-left: .213rem;
+}
+
+.news{
+	width: 9.2rem;
+	padding: 0.4rem;
+	font-size: 0.4rem;
+	color: #999;
+}
+.news span{
+	color: #ff5643;
+}

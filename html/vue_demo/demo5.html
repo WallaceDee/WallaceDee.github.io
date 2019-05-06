@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>vue练习5</title>
+    <link rel="stylesheet" href="">
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="todo-list">
+        <input v-model="newText" type="text" placeholder="添加todo">
+        <button v-on:click="addTodo">add</button>
+        <ul>
+            <todo-item v-for="(todo,index) in todos" v-bind:title="todo"  v-bind:index="index" v-on:remove="deleteTodo(index)"></todo-item>
+        </ul>
+    </div>
+    <script>
+    Vue.component("todo-item", {
+        props: ['title',"index"],
+        template: '<li>{{title}}<button v-on:click="remove">X</button></li>',
+        methods:{
+            remove:function(){
+                  this.$emit('remove');
+            }
+        }
+    });
+
+    var vm = new Vue({
+        el: "#todo-list",
+        data: {
+            newText: "",
+            todos: [
+                'Do the dishes',
+                'Take out the trash',
+                'Mow the lawn'
+            ]
+        },
+        methods: {
+            addTodo: function() {
+                this.todos.push(this.newText);
+                this.newText = "";
+            },
+            deleteTodo:function(index){
+                console.log(222);
+                this.todos.splice(index, 1);
+            }
+
+        }
+    });
+    </script>
+</body>
+
+</html>

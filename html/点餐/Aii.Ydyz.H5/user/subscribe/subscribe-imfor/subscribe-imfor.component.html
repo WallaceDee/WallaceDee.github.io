@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <script src="../../../js/jquery-3.2.1.min.js"></script>
+  <script src="../../../js/flexible.debug.js"></script>
+  <script src="../../../js/flexible_css.debug.js"></script>
+  <script src="../../../js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="subscribe-imfor.component.css">
+</head>
+
+<body>
+
+<section>
+  <div class="sub-info-box">
+
+    <div class="sib-loop">
+      <div class="sl-top-left">
+        <h1>
+          <span>1.</span>
+          <span>客人称呼</span>
+        </h1>
+        <input type="text" placeholder="请输入您的名字" />
+      </div>
+
+
+      <div class="check-sex-box">
+        <span class="csb-lady" onclick="imageSwitchL(this)" >
+          <img id="ladyImg" src="../../../img/choice2.png" />
+          <!--<img :src="{{sexSrc}}" />-->
+          <span id="ladyName">女士</span>
+        </span>
+
+        <span class="csb-sir" onclick="imageSwitchS(this)">
+          <img id="sirImg" src="../../../img/choice2.png" />
+          <span id="sirName">先生</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="sib-loop distance-before">
+      <h1>
+        <span>2.</span>
+        <span>联系电话</span>
+      </h1>
+      <input type="text" placeholder="请填写联系电话" />
+    </div>
+
+    <div class="sib-loop distance-before">
+      <h1>
+        <span>3.</span>
+        <span>用餐人数</span>
+      </h1>
+      <input type="text" placeholder="请填写用餐人数" />
+    </div>
+
+    <div class="sib-loop distance-before">
+      <h1>
+        <span>4.</span>
+        <span>用餐时间</span>
+      </h1>
+      <input type="text" placeholder="请填写您的用餐时间" />
+    </div>
+
+    <div class="sib-loop distance-before">
+      <h1>
+        <span>5.</span>
+        <span>其他备注</span>
+      </h1>
+      <input type="text" placeholder="请填写备注" />
+    </div>
+  </div>
+  <button class="sub-info-submit">提交信息</button>
+</section>
+
+</body>
+<script src="subscribe-imfor.js"></script>
+</html>
+
+

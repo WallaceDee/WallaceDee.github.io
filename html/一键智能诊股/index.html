@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>一键智能诊股</title>
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="section section-one">
+        <div class="container">
+            <div class="big-spiner">
+                <div class="k-line-bg">
+                    <div class="k-line"></div>
+                </div>
+                <div class="line"></div>
+                <div class="spiner"></div>
+                <div class="title"></div>
+            </div>
+            <div class="question-list">
+                <ul>
+                    <li style="z-index: 2;">买入？</li>
+                    <li style="z-index: 3;">观望？</li>
+                    <li style="z-index: 4;">股票一卖就涨？</li>
+                    <li style="z-index: 5;">股票一买就跌？</li>
+                    <li style="z-index: 6;">持有？</li>
+                    <li style="z-index: 7;">卖出？</li>
+                </ul>
+            </div>
+            <div class="left-result rotateInDownRight animated hide">
+                <div class="code hide"></div>
+                <p class="name hide"></p>
+            </div>
+            <div class="medium-spiner">
+                <span></span>
+                <span></span>
+            </div>
+            <div class="right-result rotateInDownLeft animated hide">
+                <div class="code"></div>
+                <p class="name"></p>
+            </div>
+            <div class="medium-spiner">
+                <span></span>
+                <span></span>
+            </div>
+            <div class="input-content">
+                <div class="little-spiner">
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="large-spiner">
+                    <span></span>
+                    <span></span>
+                </div>
+                <h1>个股操作<span class="scan-wrapper"><span></span></span>一测便知</h1>
+                <input name="code" type="text" placeholder="请输入股票代码或名称" maxlength="8">
+                <a class="submit-btn"></a>
+                <div class="animate-bg"></div>
+                <div class="wheel-spiner"></div>
+                <div class="robot-wrapper">
+                    <div class="robot-body"></div>
+                    <div class="robot-arm"></div>
+                    <div class="screen"></div>
+                    <div class="breathe-light"></div>
+                </div>
+                <div class="list-content">
+                    <ul>
+                        <li>微信号 猛虎猛将 股票 600871 石化油服 的诊股结果已送至您的微信</li>
+                        <li>微信号 老王 股票 601128 常熟银行 的诊股结果已送至您的微信</li>
+                        <li>微信号 谢文霞 股票 000672 上峰水泥 的诊股结果已送至您的微信</li>
+                        <li>微信号 偏爱自由 股票 600890 中房股份 的诊股结果已送至您的微信</li>
+                        <li>微信号 游击大队 股票 000856 冀东装备 的诊股结果已送至您的微信</li>
+                        <li>微信号 南江后生仔 股票 603501 韦尔股份 的诊股结果已送至您的微信</li>
+                        <li>微信号 稳中求进 股票 300618 寒锐钴业 的诊股结果已送至您的微信</li>
+                        <li>微信号 郭炫钧 股票 300676 华大基因 的诊股结果已送至您的微信</li>
+                        <li>微信号 李泽波 股票 300666 江丰电子 的诊股结果已送至您的微信</li>
+                        <li>微信号 飞鹰大将 股票 300601 康泰生物 的诊股结果已送至您的微信</li>
+                        <li>微信号 雨后彩虹 603690 至纯科技 的诊股结果已送至您的微信</li>
+                        <li>微信号 嗨小冷 股票 300725 药石科技 的诊股结果已送至您的微信</li>
+                        <li>微信号 行者无疆 股票 300708 聚灿光电 的诊股结果已送至您的微信</li>
+                        <li>微信号 老陈 股票 603032 德新交运 的诊股结果已送至您的微信</li>
+                        <li>微信号 修行的智慧 股票 603533 掌阅科技 的诊股结果已送至您的微信</li>
+                        <li>微信号 泡泡糖 股票 300706 阿石创 的诊股结果已送至您的微信</li>
+                        <li>微信号 爵士 股票 601313 江南嘉捷 的诊股结果已送至您的微信</li>
+                        <li>微信号 青青草 股票 600903 贵州燃气 的诊股结果已送至您的微信</li>
+                        <li>微信号 查理斯 股票 600519 贵州茅台 的诊股结果已送至您的微信</li>
+                        <li>微信号 长城小兵 股票 600663 上海临港 的诊股结果已送至您的微信</li>
+                        <li>微信号 坏美人 股票 002049 紫光国芯 的诊股结果已送至您的微信</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section section-two">
+        <div class="container">
+            <div class="desc-list">
+                <ul>
+                    <li>
+                        <div>
+                            <h1>十年磨一剑</h1>
+                            <p style="height: 72px;"> 巨景投顾成立多年，作为中国领先的投资服务商，为了使投资盈利变得简单易行，其经过不断的创新研发，成功研发出智能选股系统。智能选股经历上亿次的真实回测，从已知的700种选股策略中成功选出了14种收益率高，稳定，成 功率高的选股策略模型（算法）。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h1>历经股海沉浮</h1>
+                            <p style="height: 72px;">这14种策略从2012年到2017年经历了牛市，雄市，横盘整理，成功跑赢大盘，经过仓位模拟操作其中高收益500%以上。平均成功率达到72%（此成功率是上千万次选股的平均成功率）。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h1>颠覆传统设计</h1>
+                            <p>智能选股系统是基于巨景投顾的大数据研发的，数据量是普通软件的3000倍左右。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h1 style="width: 430px;background-position: 0 -53px;margin-left: -215px;">逐根式扫描拒绝漏网之鱼</h1>
+                            <p>只有大数据才能进行实时运算，普通软件因为数据量不够做不了实时运算，大数据全部股票逐根扫描，秒级运算和选股。
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="section section-three">
+        <div class="container">
+            <div class="left-content">
+                <div class="big-item">
+                    <h1>万润股份<span>002643</span></h1>
+                    <table class="top">
+                        <thead>
+                            <tr>
+                                <th>入选时间</th>
+                                <th>入选价格</th>
+                                <th>止损价格</th>
+                                <th>止盈价格</th>
+                                <th>止盈幅度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>09:27:50</td>
+                                <td>13.84</td>
+                                <td>12.46</td>
+                                <td>14.67</td>
+                                <td class="red">6.0%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>该股由[强势8号]策略选出</p>
+                    <table class="middle">
+                        <tbody>
+                            <tr>
+                                <td>成功<em class="red">15660</em>次</td>
+                                <td><span class="red">12</span>交易日</td>
+                                <td class="red">75.16%</td>
+                            </tr>
+                            <tr>
+                                <td>失败<em class="green">5176</em>次</td>
+                                <td>建议持股</td>
+                                <td>成功率</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="img-wrapper">
+                        <img src="images/img0.png" alt="">
+                        <img src="images/img1.png" alt="">
+                    </div>
+                    <h2>测评概况</h2>
+                    <table class="bottom">
+                        <thead>
+                            <tr>
+                                <th>总成功率</th>
+                                <th>月平均成功率</th>
+                                <th>测试品种数</th>
+                                <th>发出信号品种数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="orange">75.16%</td>
+                                <td>69.74%</td>
+                                <td>3311</td>
+                                <td>2723</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th>共发出指示</th>
+                                <th>成功指示</th>
+                                <th>失败指示</th>
+                                <th>未完成指示</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>21462</td>
+                                <td>15660</td>
+                                <td>5176</td>
+                                <td>626</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="small-item-wrapper">
+                    <ul class="small-item-list">
+                        <li>
+                            <span class="type-name"><table><tbody><tr><td>化工</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <span class="type-name"><table><tbody><tr><td>化工</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <span class="type-name"><table><tbody><tr><td>黄河三角</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <span class="type-name"><table><tbody><tr><td>央企改革</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <span class="type-name" style="letter-spacing: 0;"><table><tbody><tr><td>PM2.5</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right-content">
+                <div class="big-item">
+                    <p>该股由[强势8号]策略选出</p>
+                    <table class="middle">
+                        <tbody>
+                            <tr>
+                                <td>成功<em class="red">15660</em>次</td>
+                                <td><span class="red">12</span>交易日</td>
+                                <td class="red">75.16%</td>
+                            </tr>
+                            <tr>
+                                <td>失败<em class="green">5176</em>次</td>
+                                <td>建议持股</td>
+                                <td>成功率</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="img-wrapper"><img src="images/img2.png" alt=""><img src="images/img3.png" alt=""><img src="images/img4.png" alt=""></div>
+                </div>
+                <div class="small-item-wrapper">
+                    <ul class="small-item-list">
+                        <li>
+                            <span class="type-name"><table><tbody><tr><td>黄河三角</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <span class="type-name"><table><tbody><tr><td>黄河三角</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <span class="type-name"><table><tbody><tr><td>黄河三角</td></tr></tbody></table></span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>名称代码</th>
+                                        <th>市值行业排名</th>
+                                        <th>每股收益/行业排名</th>
+                                        <th>龙头次数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>万润股份</td>
+                                        <td>125亿</td>
+                                        <td>0.23元</td>
+                                        <td>100天成为本行业</td>
+                                    </tr>
+                                    <tr class="orange">
+                                        <td>002643</td>
+                                        <td>29/172</td>
+                                        <td>65/172</td>
+                                        <td>龙头1次</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section section-four">
+        <div class="container">
+            <div class="board-wrapper left">
+                <div class="board">
+                    <div class="info-wrapper">
+                        <h1>总成功率</h1>
+                        <h2 class="orange">75.16%</h2>
+                        <h1>共发出指示</h1>
+                        <p>21462</p>
+                    </div>
+                </div>
+                <div class="board">
+                    <div class="info-wrapper">
+                        <h1 style="font-size: 12px;">发出信号品种数</h1>
+                        <h2>2723</h2>
+                        <h1>未完成指示</h1>
+                        <p>21462</p>
+                    </div>
+                </div>
+                <div class="little-flower-spiner"></div>
+                <div class="flower-spiner"></div>
+            </div>
+            <div class="border-content">
+                <p>该股由[强势8号]策略选出</p>
+                <table class="middle">
+                    <tbody>
+                        <tr>
+                            <td>成功<em class="red">15660</em>次</td>
+                            <td><span class="red">12</span>交易日</td>
+                            <td class="red">75.16%</td>
+                        </tr>
+                        <tr>
+                            <td>失败<em class="green">5176</em>次</td>
+                            <td>建议持股</td>
+                            <td>成功率</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="img-wrapper">
+                    <img src="images/img0.png" alt="">
+                    <img src="images/img1.png" alt="">
+                </div>
+            </div>
+            <div class="board-wrapper right">
+                <div class="board">
+                    <div class="info-wrapper">
+                        <h1>月平均成功率</h1>
+                        <h2>69.74%</h2>
+                        <h1>成功指示</h1>
+                        <p>15660</p>
+                    </div>
+                </div>
+                <div class="board">
+                    <div class="info-wrapper">
+                        <h1 style="font-size: 12px;">测试品种数</h1>
+                        <h2>3311</h2>
+                        <h1>失败指示</h1>
+                        <p>5176</p>
+                    </div>
+                </div>
+                <div class="lighting-spiner"> <span></span><span></span></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="big-img-wrapper">
+                <div class="border-content">
+                    <img src="images/img5.png" alt="">
+                </div>
+                <div class="border-content">
+                    <img src="images/img6.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>投资有风险 选择需谨慎</p>
+        <p>张家港冰鑫电子商务有限公司 备案号： <a target="'_blank" href="http://www.miitbeian.gov.cn">沪ICP备16006463号-8</a></p>
+    </div>
+    <div class="popup flipInX  animated">
+        <div class="loader">
+            <div class="search-animate">
+                <span></span>
+            </div>
+            <div class="tips">
+                <h1>神经元系统正在测股</h1>
+                <p>请稍后<span>......</span></p>
+                <span><em>3</em>s</span>
+            </div>
+        </div>
+        <div class="code hide">
+            <div class="arrow">
+                <h1>扫描二维码</h1>
+                <p>（即可获得诊股报告）</p>
+                <span></span>
+            </div>
+            <div class="code-wrapper"><img src="" alt="二维码"></div>
+        </div>
+    </div>
+    <div class="drop fadeIn animated"></div>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/default.js"></script>
+</body>
+
+</html>

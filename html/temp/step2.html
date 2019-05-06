@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>巨景投顾 客户信息</title>
+    <link rel="stylesheet" href="">
+</head>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    background: -moz-linear-gradient(top, #eee, #fff);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#fff));
+    background-image: -webkit-gradient(linear, left bottom, left top, color-start(0, #eee), color-stop(1, #fff));
+}
+
+.main-container {
+    width: 980px;
+    margin: 100px auto 0 auto;
+}
+
+.main-container .blue-top {
+    overflow: auto;
+    width: 900px;
+    margin: 0 auto;
+    border: 2px solid #3381BF;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    padding: 10px 40px;
+    height: 150px;
+    border-bottom: none;
+}
+
+.main-container .blue-border {
+    width: 900px;
+    margin: 0 auto;
+    border: 1px solid #B2C1EA;
+    padding: 20px;
+    margin-top: -110px;
+}
+
+.main-container .title-h1 {
+    font-size: 22px;
+    text-align: center;
+    width: 900px;
+    margin-bottom: 50px;
+}
+
+.info-content p {
+    margin: 5px 0;
+}
+
+.info-content p>span {
+    display: inline-block;
+    width: 90px;
+}
+
+.info-content input {
+    width: 280px;
+    height: 22px;
+}
+
+.info-content input.small {
+    width: 130px;
+}
+
+.info-content input.file-input {
+    width: 200px;
+}
+
+.info-content {
+    overflow: auto;
+    width: 900px;
+}
+
+.info-content>div {
+    float: left;
+    height: 100%;
+}
+
+.info-content>div>img {
+    background-color: #ccc;
+    color: #fff;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 50px;
+    text-align: center;
+    line-height: 200px;
+}
+
+.info-content .form-content {
+    width: 410px;
+    padding: 0 20px;
+}
+
+.red {
+    color: red;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.main-container .submit-btn {
+    display: block;
+    color: #fff;
+    background-color: #01459A;
+    border: none;
+    font-size: 16px;
+    padding: 10px 30px;
+    margin: 0 auto;
+}
+
+.main-container .tips {
+    font-size: 12px;
+    text-align: right;
+    color: #666;
+}
+</style>
+
+<body>
+    <div class="main-container">
+        <div class="blue-top">
+            <h3 class="left"><span style="color: #0A5CE3;">巨景投顾</span> <span style="color: #0A3E92; font-size: 16px;">客户信息</span></h3>
+            <p class="right red">上传身份证大小不能超过500k，谢谢！</p>
+        </div>
+        <div class="blue-border">
+            <h1 class="title-h1">湖南巨景证券投资顾问有限公司广州分公司证券投资顾问业务客户信息</h1>
+            <div class="info-content">
+                <div><img src="http://avatar.csdn.net/0/5/E/1_woshixuye.jpg" alt="身份证正面"></div>
+                <div class="form-content">
+                    <form action="#" enctype="multipart/form-data">
+                        <p><span>合同编号:　</span>
+                            <input type="text">
+                        </p>
+                        <p><span>客户分类:</span>
+                            <input type="text">
+                        </p>
+                        <p><span>客户姓名:</span>
+                            <input type="text">
+                        </p>
+                        <p><span>服务期限:</span>
+                            <input class="small" type="text">到
+                            <input class="small" type="text">
+                        </p>
+                        <p><span>服务费用:</span>
+                            <input type="text">
+                        </p>
+                        <p><span>身份证号码:</span>
+                            <input type="text">
+                        </p>
+                        <!--  <p><span class="red">身份证正面:</span>
+                            <input class="file-input" type="file">
+                            <button>上传</button>
+                        </p>
+                        <p><span class="red">身份证反面:</span>
+                            <input class="file-input" type="file">
+                            <button>上传</button>
+                        </p>
+                        <p class="tips">上传照片格式为jpg，gif，bmp，png，照片不得超过500k</p> -->
+                        <p class="red"><span>信息提示:</span>已签约成功，查看点击下一页！谢谢！</p>
+                        <!--  <p>
+                            <input type="checkbox" style="width: inherit;vertical-align: middle;">以上信息无误请勾选，若有问题请联系您的投资顾问</p> -->
+                        <button class="submit-btn">下一页</button>
+                    </form>
+                </div>
+                <div><img src="http://avatar.csdn.net/0/5/E/1_woshixuye.jpg" alt="身份证反面"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

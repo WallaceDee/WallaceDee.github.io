@@ -1,0 +1,77 @@
+html, body, section {
+  background-color: #ffffff !important;
+}
+section {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+nav {
+  width: 100%;
+  height: 1.067rem;
+  border: 0.013rem solid #cccccc;
+  box-sizing: border-box;
+  display: flex;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  background-color: #ffffff;
+}
+nav span {
+  text-align: center;
+  line-height: 1.067rem;
+  flex-grow: 1;
+}
+nav a {
+  font-size: .373rem;
+  color: #111111;
+  letter-spacing: .013rem;
+}
+.highlight {
+  border-bottom: .048rem solid #f03b42;
+  display: inline-block;
+  line-height: .7rem;
+  font-size: .373rem;
+  color: #f03b42 !important;
+  letter-spacing: .013rem;
+}
+.loop-box {
+  border-top: .013rem solid #cccccc;
+  border-bottom: .013rem solid #cccccc;
+  width: 100%;
+  height: auto;
+  margin-top: 1.334rem;
+  z-index: 1;
+}
+.all-loop {
+  height: 2.267rem;
+  padding-left: .347rem;
+  position: relative;
+  border-bottom: .013rem solid #cccccc;
+}
+.all :last-child {
+  border-bottom: none;
+}
+.all-loop img {
+  width: 1.653rem;
+  height: 1.653rem;
+  position: absolute;
+  top: .32rem;
+  border-radius: .133rem;
+}
+.all-loop h1 {
+  font-size: .4rem;
+  color: #111111;
+  letter-spacing: .013rem;
+  position: absolute;
+  top: .32rem;
+  left: 2.5rem;
+}
+.all-loop p {
+  font-size: .347rem;
+  color: #666666;
+  letter-spacing: .013rem;
+  position: absolute;
+  top: 1.12rem;
+  left: 2.5rem;
+}

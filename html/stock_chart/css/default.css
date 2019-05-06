@@ -1,0 +1,77 @@
+html {
+    font-size: 20px;
+}
+
+@media only screen and (min-width: 400px) {
+    html {
+        font-size: 21.33333333px !important;
+    }
+}
+
+@media only screen and (min-width: 414px) {
+    html {
+        font-size: 22.08px !important;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    html {
+        font-size: 25.6px !important;
+    }
+}
+
+body,
+html {
+    background-color: #394056;
+}
+
+.suggest-wrapper {
+    padding: 0 .75rem;
+    height: 2rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    display: none;
+    font-size: .75rem;
+    color: #fff;
+}
+
+.suggest-wrapper em {
+    float: left;
+    line-height: 1.8rem;
+}
+
+.suggest-wrapper span {
+    float: left;
+    display: none;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 2rem;
+    text-align: center;
+    background-color: #e62e40;
+    color: #fff;
+    padding: 0rem 1.5rem;
+    border-radius: .25rem;
+}
+
+.suggest-wrapper #b {
+    background-color: #e62e40;
+}
+
+.suggest-wrapper #s {
+    background-color: #14b143;
+}
+
+.name-wrapper {
+    padding: 0 .75rem;
+    color: #fff;
+    margin-top: 1rem;
+}
+
+.name-wrapper h1 {
+    margin-bottom: .2rem;
+}
+
+.name-wrapper h2 {
+    font-size: .8rem;
+    font-weight: normal;
+}

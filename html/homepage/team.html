@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="zh">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>巨景投顾 聚牛财经-湖南巨景证券投资顾问有限公司广州分公司</title>
+    <meta name="keywords" content="聚牛财经、聚牛股、巨景、湖南巨景广州分公司、广州巨景分公司、巨景分公司、杜咏泉、阿杜老师">
+    <meta name="description" content="湖南巨景证券投资顾问有限公司（简称“巨景投顾”），成立于1993年，是我国最早开展证券投资咨询业务的元老级咨询公司之一，也是中国证监会首批授权证券投资咨询机构[ZX0018]。在中国证券业协会和中国证监会官网上都有公司资质备案。2013年初，公司由北京迁址湖南长沙，并更名为巨景投顾，由此步入再次腾飞的发展新阶段，巨景投顾正致力于成为中国投资顾问行业走向正规化、专业化、实效化的指向标！">
+    <link rel="alternate icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/amazeui.min.css" />
+    <link rel="stylesheet" href="css/app.css?v=20180123" />
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="js/jquery.min.js"></script>
+    <!--<![endif]-->
+    <!--[if lte IE 8 ]>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+    <style>
+    .am-pagination a {
+        color: #c3131c!important;
+    }
+
+    .am-pagination>.am-active>a,
+    .am-pagination>.am-active>a:hover,
+    .am-pagination>.am-active>a:focus {
+        color: #fff!important;
+        background-color: #c3131c;
+        border-color: #c3131c;
+    }
+    </style>
+</head>
+
+<body>
+    <script src="js/header.js" type="text/javascript" charset="utf-8"></script>
+    <div class="container team-page conn">
+        <div class="banner-wrapper">
+            <img src="images/team_banner.jpg" alt="">
+        </div>
+        <div class="am-container">
+            <div class="brief">
+                <img src="images/Twenty-years-of-excellence-in-investment-management.png" class="imgo" alt="">
+            </div>
+            <div class="td">
+            </div>
+            <ul class="am-pagination am-pagination-right">
+            </ul>
+        </div>
+    </div>
+    <script src="js/footer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/amazeui.min.js"></script>
+    <script src="js/default.js"></script>
+    <script>
+    var pagesize = 10;
+    var maxpage = 0;
+
+    $.ajax({
+        type: "get",
+        url: "/Handler/GetEmployee.ashx",
+        data: {
+            page: 1
+        },
+        success: function(data) {
+            var temp = data;
+            //结果非常奇怪，传给我的居然不是标准的json格式，引号居然用单引号。。。
+            temp = temp.replace(/'/g, "\"");
+            //测试
+            data = JSON.parse(temp);
+            maxpage = Math.ceil(data.Total / 10);
+            //绘制页数,da
+            var page_html = '<li><a class="min" href="javascript:;" data-page="1">&laquo;</a></li>'
+            for (var i = 0; i < maxpage; i++) {
+                page_html += '<li><a href="javascript:;" data-page="' + (i + 1) + '">' + (i + 1) + '</a></li>';
+            }
+            page_html += ' <li><a class="max" href="javascript:;"  data-page="' + maxpage + '">&raquo;</a></li>'
+            if (maxpage !== 1) {
+                $(".am-pagination").html(page_html);
+            }
+            $(".am-pagination li").eq(1).addClass('am-active');
+            show(data.Data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.status);
+            console.log(XMLHttpRequest.readyState);
+            console.log(textStatus);
+        }
+    });
+
+
+    function show(array) {
+        var teacher_html = "";
+        for (var i = 0; i < array.length; i++) {
+            teacher_html += '<div class="tou">\
+                    <p><span class="avatar" style="background-image:url('+ array[i].ImagePath+')" ></span>\
+                        <span>' + array[i].Name + '</span>\
+                        <span style="font-size: 15px;">' + array[i].EID + '</span>\
+                    </p>\
+                    <p class="pi">\
+                        <label>' + array[i].Position + '</label>' + array[i].Motto + '</p>\
+                </div>'
+        }
+        $(".td").html(teacher_html);
+        return teacher_html;
+    }
+
+
+    $(document).on('click', '.am-pagination a', function(event) {
+        event.preventDefault();
+        /* Act on the event */
+        var $this = $(this);
+        var curr = $this.data("page");
+        $(".am-active").removeClass("am-active");
+        if (!($this.hasClass('min') || $this.hasClass('max'))) {
+            $this.parent().addClass('am-active');
+        } else {
+            if ($this.hasClass('min')) {
+                $("[data-page='1']").not(".min").parent().addClass('am-active');
+            }
+            if ($this.hasClass('max')) {
+                $("[data-page='" + $(".max").data("page") + "']").not(".max").parent().addClass('am-active');
+            }
+        }
+        getDataByPage(curr);
+    });
+
+
+
+    function getDataByPage(page) {
+        $.ajax({
+            type: "get",
+            url: "/Handler/GetEmployee.ashx",
+            data: {
+                page: page
+            },
+            success: function(data) {
+                var temp = data;
+                //结果非常奇怪，传给我的居然不是标准的json格式，引号居然用单引号。。。
+                temp = temp.replace(/'/g, "\"");
+                data = JSON.parse(temp);
+                show(data.Data);
+            }
+        })
+    }
+    </script>
+</body>
+
+</html>

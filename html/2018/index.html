@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>巨景狗年大吉</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="js/rem.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        background-image: url(images/index_bg.png);
+        background-size: 100% auto;
+        background-position: center;
+        margin: 0;
+        font-family: Helvetica, sans-serif;
+        overflow: hidden;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #A40000;
+    }
+
+    .ios .messages {
+        background: transparent;
+        width: 5rem;
+        padding-bottom: 1rem;
+    }
+
+    .ios .messages-content::-webkit-scrollbar {
+        width: 0px
+    }
+
+    .ios .messages-content {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        width: 5rem;
+        background: transparent;
+    }
+
+    .qrcode {
+        width: 3rem;
+        height: 6rem;
+        background-image: url(images/qrcode.png);
+        position: absolute;
+        z-index: 2;
+        right: 1rem;
+        top: 50%;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        transform: translateY(-25%);
+    }
+    </style>
+    <link rel="stylesheet" href="css/animate.min.css">
+</head>
+
+<body class="ios">
+    <div class="messages-content">
+        <div class="messages">
+            <div class="messages-title">欢迎大家留言祝福
+                <br>恭喜发财！
+                <br>谢谢！
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="qrcode"></div>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/jquery.signalR-2.1.2.min.js"></script>
+    <script src="signalr/hubs"></script>
+    <script>
+    var chat = $.connection.myHub;
+    // 这里是注册集线器调用的方法,和1.0不同的是需要chat.client后注册,1.0则不需要
+    //-1完成展示 0关闭展示 1抽奖展示 2对话 3签到信息
+    chat.client.BroadMsg = function(msg) {
+        var data = JSON.parse(msg);
+        if (data.msg.msgType === 3) {
+            $(".messages-content .messages").append('<div class="messages-title">' + data.msg.Department + '-' + data.msg.Name + '已签到 ' + data.time.split(" ")[1] + '</div>');
+            $(".messages-content").finish().animate({ "scrollTop": $('.messages-content')[0].scrollHeight }, 900);
+        } else if (data.msg.msgType === 2) {
+            var temp_html = '<div class="message message-received message-appear-from-bottom message-first message-last message-tail">\
+                <div class="message-avatar" style="background-image:url(' + data.msg.Pic.replace(/\s/g, "%20") + ')"></div>\
+                <div class="message-content">\
+                    <div class="message-name">' + data.msg.Department + '-' + data.msg.Name + '  ' + data.time.split(" ")[1] + '</div>\
+                    <div class="message-bubble">\
+                        <div class="message-text">' + data.msg.msgContent + '</div>\
+                    </div>\
+                </div>\
+            </div>';
+            $(".messages-content .messages").append(temp_html);
+            $(".messages-content").finish().animate({ "scrollTop": $('.messages-content')[0].scrollHeight }, 900);
+        } else if (data.msg.msgType === 4) {
+            window.location.href = "draw_pc.html";
+        }
+    };
+    $.connection.hub.start().done(function() {});
+
+    setInterval(function() {
+        chat.server.sendMess(JSON.stringify({ msgType: 999 }));
+    }, 10000);
+    </script>
+</body>
+
+</html>

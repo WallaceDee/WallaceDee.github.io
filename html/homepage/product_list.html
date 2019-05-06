@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="zh">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>巨景投顾 聚牛财经-湖南巨景证券投资顾问有限公司广州分公司</title>
+    <meta name="keywords" content="聚牛财经、聚牛股、巨景、湖南巨景广州分公司、广州巨景分公司、巨景分公司、杜咏泉、阿杜老师">
+    <meta name="description" content="湖南巨景证券投资顾问有限公司（简称“巨景投顾”），成立于1993年，是我国最早开展证券投资咨询业务的元老级咨询公司之一，也是中国证监会首批授权证券投资咨询机构[ZX0018]。在中国证券业协会和中国证监会官网上都有公司资质备案。2013年初，公司由北京迁址湖南长沙，并更名为巨景投顾，由此步入再次腾飞的发展新阶段，巨景投顾正致力于成为中国投资顾问行业走向正规化、专业化、实效化的指向标！">
+    <link rel="alternate icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/amazeui.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="js/jquery.min.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body>
+    <script src="js/header.js" type="text/javascript" charset="utf-8"></script>
+    <div class="detail">
+        <div class="am-g am-container">
+            <div class="am-u-sm-12">
+                <div style="width: 944px; margin: 0 auto;">
+                    <iframe style="width:700px;height:600px; float: left;" src="" seamless="seamless" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true"></iframe>
+                    <div style="float: right; width:244px; height: 600px; background-color: #eee; ">
+                        <ul class="p-list">
+                            <!-- <li data-url="http://book.yunzhan365.com/ezxi/fwho/index.html">聚牛股内参20170313</li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/footer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/amazeui.min.js"></script>
+    <script src="js/default.js"></script>
+    <script>
+    $(document).on("click", ".p-list li", function(event) {
+        /* Act on the event */
+        $(".p-list li.active").removeClass("active");
+        $(this).addClass('active');
+        var $target = $("iframe");
+        var this_url = $(this).data("url");
+        $target.attr("src", this_url);
+    })
+
+    var p_temp = new String();
+    $.ajax({
+        url: "http://www.gu0018.com/Handler/GetArticleByType.ashx",
+        data: {
+            typeid: 10,
+            size: 15
+        },
+        dataType: "json",
+        success: function(data) {
+            p_aar = data;
+            var p_temp = " ";
+            for (var i = 0; i < p_aar.length; i++) {
+                p_temp += '<li data-url="' + p_aar[i].VideoPath + '">' + p_aar[i].Title + '</li>';
+            }
+            $(".p-list").html(p_temp);
+            $(".p-list li").eq(0).click();
+        }
+    });
+    </script>
+</body>
+
+</html>

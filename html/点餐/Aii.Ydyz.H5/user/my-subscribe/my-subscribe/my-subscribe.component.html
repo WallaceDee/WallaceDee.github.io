@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <script src="../../../js/jquery-3.2.1.min.js"></script>
+  <script src="../../../js/flexible.debug.js"></script>
+  <script src="../../../js/flexible_css.debug.js"></script>
+  <script src="../../../js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="my-subscribe.component.css">
+</head>
+
+<body>
+
+
+
+<nav>
+  <span onclick="todaySubscribeTab(this)"  class="highlight">今日预约</span>
+  <span onclick="monthSubscribeTab(this)" >本月预约</span>
+  <span onclick="historySubscribeTab(this)">历史预约</span>
+</nav>
+
+<section>
+  <div class="today-subscribe-box" id="today-subscribe-box" style="display: block">
+    <div class="template">
+      <h1>预约类型: 排队</h1>
+      <h2>商家: 庆江米线</h2>
+      <h3>预约时间: <span>12:00</span></h3>
+    </div><div class="template">
+    <h1>预约类型: 排队</h1>
+    <h2>商家: 庆江米线</h2>
+    <h3>预约时间: <span>12:00</span></h3>
+  </div><div class="template">
+    <h1>预约类型: 排队</h1>
+    <h2>商家: 庆江米线</h2>
+    <h3>预约时间: <span>12:00</span></h3>
+  </div>
+  </div>
+
+  <div class="month-subscribe-box" id="month-subscribe-box" style="display: none">
+    monthSubscribe
+  </div>
+
+  <div class="history-subscribe-box" id="history-subscribe-box" style="display: none">
+    historySubscribe
+  </div>
+</section>
+
+
+</body>
+<script src="my-subscribe.js"></script>
+</html>
+
+
+
+

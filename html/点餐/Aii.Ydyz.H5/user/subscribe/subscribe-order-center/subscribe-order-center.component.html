@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+  <script src="../../../js/jquery-3.2.1.min.js"></script>
+  <script src="../../../js/flexible.debug.js"></script>
+  <script src="../../../js/flexible_css.debug.js"></script>
+  <script src="../../../js/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="subscribe-order-center.component.css">
+</head>
+
+<body>
+
+<section>
+  <nav>
+    <span onclick="showAllTab($event)"><a class="highlight" >全部</a></span>
+    <span onclick="showHotPotTab($event)"><a>火锅</a></span>
+    <span onclick="showChineseFoodTab($event)"><a>中餐</a></span>
+    <span onclick="showWesternFoodTab($event)"><a>西餐</a></span>
+    <span onclick="dryPotTab($event)"><a>干锅</a></span>
+  </nav>
+
+  <div class="loop-box">
+    <div class="all" *ngIf="showAll">
+      <div class="all-loop">
+        <img src="../../../img/food-one.png">
+        <h1>庆江米线(巴南鱼洞店)</h1>
+        <p>地道、传统手工米线!</p>
+      </div>
+      <div class="all-loop">
+        <img src="../../../img/food-one.png">
+        <h1>庆江米线(巴南鱼洞店)</h1>
+        <p>地道、传统手工米线!</p>
+      </div>
+      <div class="all-loop">
+        <img src="../../../img/food-one.png">
+        <h1>庆江米线(巴南鱼洞店)</h1>
+        <p>地道、传统手工米线!</p>
+      </div>
+    </div>
+
+    <div class="hot-pot" style="display: none">
+      火锅
+    </div>
+
+    <div class="chinese-food" style="display: none">
+      中餐
+    </div>
+
+    <div class="western-food" style="display: none">
+      西餐
+    </div>
+
+    <div class="dry-pot" style="display: none">
+      干锅
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>
+
+
+
+
+

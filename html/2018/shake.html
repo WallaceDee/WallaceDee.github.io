@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8" />
+    <title>摇一摇</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        background-image: url(images/y_bg.jpg);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        overflow: hidden;
+        background-color: #d3312e;
+        border-top: 1px solid transparent;
+    }
+
+    .w {
+        width: 280px;
+        height: 280px;
+        background-image: url(images/y_bg.png);
+        background-size: 100% 100%;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 40%;
+        position: relative;
+    }
+
+    .phone {
+        top: -15px;
+        left: 25px;
+
+        width: 210px;
+        height: 270px;
+        background-image: url(images/y_phone.png);
+        background-size: 100% auto;
+        position: absolute;
+        background-repeat: no-repeat;
+        z-index: 1;
+        -webkit-transform-origin: 200px 260px;
+        transform-origin: 200px 260px;
+        -webkit-animation: shake .2s linear infinite;
+        animation: shake .2s linear infinite;
+    }
+
+    .border {
+        width: 140px;
+        height: 140px;
+        background-image: url(images/y_bg_bottom_right.png);
+        background-size: 100% 100%;
+        position: absolute;
+        z-index: 2;
+        right: 0;
+        bottom: 0;
+    }
+
+    .bottom {
+        background-image: url(images/y_bottom.png);
+        position: absolute;
+        width: 100%;
+        height: 200px;
+        background-position: bottom;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        bottom: -1px;
+    }
+
+    @-webkit-keyframes shake {
+        0% {
+            -webkit-transform: rotate(-10deg);
+            transform: rotate(-10deg);
+        }
+        50% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(10deg);
+            transform: rotate(10deg);
+        }
+    }
+        @keyframes shake {
+        0% {
+            -webkit-transform: rotate(-10deg);
+            transform: rotate(-10deg);
+        }
+        50% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(10deg);
+            transform: rotate(10deg);
+        }
+    }
+
+
+    h1
+    </style>
+</head>
+
+<body>
+    <div class="w">
+        <div class="phone"></div>
+        <div class="border"></div>
+    </div>
+    <div class="bottom"></div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</body>
+
+</html>

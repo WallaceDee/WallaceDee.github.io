@@ -1,0 +1,261 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei"
+}
+
+body,
+html {
+    height: 100%;
+        overflow-x: hidden;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+.bg {
+
+    width: 100%;
+    min-width: 1180px;
+    background-image: url(../images/bg.jpg);
+    background-size: 100% auto;
+    overflow: auto;
+
+    background-repeat: no-repeat;
+    background-color: #D40D12;
+}
+
+.qrcode-wrapper {
+    text-align: center;
+    overflow: auto;
+    width:785px;
+    height: 205px;
+ /*   background-color: #cd0a10;*/
+ background-image: url(../images/qrcode_wrapper.png);background-size:   100% auto ;
+ background-position: center;
+ background-repeat: no-repeat;
+    padding: 10px 10px;
+    margin-top: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    color: #ffd076;
+    letter-spacing: 5px;
+/*    box-shadow: 0 4px 60px #690b0e;*/
+    margin-bottom: 60px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.qrcode-wrapper h3 {
+margin-top: 45px;
+margin-bottom: 20px;
+}
+.qrcode-wrapper h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+}
+
+.qrcode-wrapper>div {
+    width: 50%;
+
+    box-sizing: border-box;
+}
+
+.qrcode-wrapper>div.right {
+    padding-right: 5%;
+}
+
+.qrcode-wrapper>div.left {
+
+    padding-left: 5%;
+}
+
+.qrcode-wrapper>div>img {
+display: block;
+    width: 46%;
+    box-shadow: 0 6px 11px 1px #690b0e;
+    float: right;
+}
+
+.title-wrapper {
+    text-align: center;
+    margin-top: 20px;
+    width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.title-wrapper span {
+    letter-spacing: 2px;
+    position: relative;
+    background-color: #FFB800;
+    border-radius: 5px;
+    border: 1px solid #FFD076;
+    color: #CD0A10;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 0 10px;
+    height: 40px;
+    display: inline-block;
+    line-height: 40px;
+    width: 650px;
+    z-index: 2;
+}
+
+
+
+.dec-wrapper {
+    width: 750px;
+    margin-top: 30px;
+
+    margin-right: auto;
+    margin-left: auto;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.dec-wrapper img {
+    width: 40%;
+}
+
+.dec-wrapper p {
+    width: 60%;
+    box-sizing: border-box;
+}
+
+.dec-wrapper p {
+    color: #FFD076;
+    font-size: 20px;
+    letter-spacing: 2px;
+    padding-left: 40px;
+    line-height: 30px;
+}
+
+.title-wrapper.title2>span {
+    height: 70px;
+    line-height: 34px;
+    padding-top: 5px;
+}
+
+
+
+
+.section-title {
+    color: #FDE427;
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+text-shadow: 0px 5px 10px #3d2a04 ;
+    letter-spacing: 5px;
+    line-height: 40px;
+    margin-top: 40px;
+    width: 1180px;
+    margin-right: auto;
+    margin-left: auto;
+    position: relative;
+}
+
+
+
+.table-wrapper {
+    width: 900px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 2px solid #E37840;
+    border-radius: 8px;
+    margin-top: 50px;
+}
+
+.table-title {
+    font-size: 22px;
+    color: #FFB700;
+    text-align: center;
+    border-bottom: 1px solid #FFE26D;
+    height: 60px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    line-height: 60px;
+}
+
+table tr th,
+table tr td {
+    border-top: 1px solid #7F161A;
+    border-left: 1px solid #7F161A;
+    height: 70px;
+}
+
+table tr td:first-child,
+table thead th:first-child {
+    border-left: none;
+}
+
+table thead th {
+    border-top: none;
+}
+
+table {
+    font-size: 22px;
+    color: #FEE3AC;
+    width: 100%;
+    min-height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-collapse: collapse;
+    padding: 2px;
+}
+
+.bottom {
+    background-image: url(../images/bottom.png);
+    height: 230px;
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-top: 50px;
+    min-width: 1180px;
+}
+
+.bottom>div {
+    width: 1180px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.bottom>div>img {
+
+    float: right;
+    margin-right: 10%;
+    margin-top: 2%;
+    width: 200px;
+}
+
+.copyright {
+    color: #800004;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media screen and (min-width: 1600px) {
+    .qrcode-wrapper h2 {
+        font-size: 32px;
+    }
+    .qrcode-wrapper h3 {
+        font-size: 22px;
+        margin-top: 35px
+    }
+
+}

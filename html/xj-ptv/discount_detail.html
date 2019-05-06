@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/sm.min.css"/>
+    <link rel="stylesheet" href="css/swiper.min.css"/>
+    <link rel="stylesheet" href="css/xj.css"/>
+
+</head>
+<body>
+<div class="page" id="page-DiscountDetail">
+    <div class="content">
+        <div class="xj-discount-detail xj-room-detail">
+
+        </div>
+    </div>
+    <script type="text/html" id="tmp_detail_item">
+        <div class="xj-room-detail-head">
+            <img src="{{ list.image[0] }}" alt=""/>
+            <div class="xj-room-detail-head-tip xj-left">
+                {{ list.name }}
+            </div>
+        </div>
+        <div class="xj-room-detail-info">
+            <div>
+                <div class="xj-info-name"><h3>{{ list.brief }}</h3></div>
+            </div>
+            <div class="xj-info-amount">
+                {{ if list.minPurchaseNum >1 }}
+                <div>￥{{ list.price }}/位&nbsp;&nbsp;<s>￥{{ list.originalPrice }}/位</s></div>
+                {{ else }}
+                <div>￥{{ list.price }}&nbsp;&nbsp;<s>￥{{ list.originalPrice }}</s></div>
+                {{ /if }}
+
+            </div>
+        </div>
+        <div class="xj-room-detail-details">
+            <h3>详情介绍</h3>
+            <div class="card xj-card">
+                <div class="card-header">周一至周日仅售333元</div>
+                <div class="card-content">
+                    <div class="card-content-inner">
+                        <p>欢唱时段:</p>
+                        <p>(13:30-17:45之间劲唱任选3小时欢唱)</p>
+                        <p>仅限使用</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="xj-room-detail-btn">
+            <a href="submit_order.html?id={{ list.id }}">购买</a>
+        </div>
+    </script>
+</div>
+</body>
+<script src="js/zepto.min.js"></script>
+<script src="js/sm.min.js"></script>
+<script src="js/template.js"></script>
+<script src="js/adios.js"></script>
+</html>

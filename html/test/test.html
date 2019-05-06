@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="">
+<!--     <script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script> -->
+<script src="zepto.min.js"></script>
+</head>
+
+<body>
+    <ul class="clearfix" data-type="cityPick">
+        <li class="active_sort_opts" data-id="0">全部</li>
+        <li data-id="88">纽约</li>
+        <li data-id="119">洛杉矶</li>
+        <li data-id="138">拉斯维加斯</li>
+        <li data-id="84">夏威夷</li>
+        <li data-id="120">旧金山</li>
+        <li data-id="105">奥兰多</li>
+        <li data-id="118">西雅图</li>
+    </ul>
+    <script>
+    $(document).on('click',"ul[data-type='cityPick']" ,function() {
+          console.log("父元素ul被点击");
+    });
+    $(document).on('click', "ul[data-type='cityPick'] li", function(e) {
+        e.stopPropagation(); //阻止冒泡 
+        console.log("子元素li被点击");
+         return false;
+    });
+    </script>
+</body>
+
+</html>

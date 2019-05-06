@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" href="css/sm.min.css"/>
+<link rel="stylesheet" href="css/xj.css"/>
+</head>
+
+<body>
+<div class="page" id="page-login">
+  <div class="content">
+    <div class="xj-login"> 
+    	<span class="xj-logo"></span>
+		<input class="phone-number" type="tel" name="tel"  placeholder="输入手机号码" maxlength="11"  >
+		<div class="verify-wrapper"><input class="verify-code" type="tel" name="tel"   placeholder="输入验证码" maxlength="6" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') ">
+		<button class="verify-btn"  onclick="count(this,60)">获取验证码</button>
+	</div>
+	<button class="login-btn">快速登录</button>
+ </div>
+</div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script src="js/sm.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/template.js"></script>
+<script src="js/adios.js"></script>
+</body>
+</html>

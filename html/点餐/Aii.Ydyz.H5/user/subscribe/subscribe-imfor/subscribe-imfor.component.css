@@ -1,0 +1,117 @@
+section {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  position: relative;
+}
+.sub-info-box {
+  height: auto;
+}
+.sub-info-box::-webkit-scrollbar {
+  display: none;
+}
+.sib-loop {
+  /*width: 100%;*/
+  height: 2.32rem;
+  margin-left: 0.76rem;
+  margin-right: 0.733rem;
+  position: relative;
+}
+.sl-top-left {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.sib-loop input {
+  width: 4.453rem;
+  height: 0.907rem;
+  line-height: 0.907rem;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 0.027rem solid #cccccc;
+  font-size: 0.373rem;
+  color: #999999;
+  letter-spacing: 0.027rem;
+}
+.sib-loop h1 {
+  /*height: 0.507rem;*/
+  width: 4.453rem;
+  line-height: 0.507rem;
+  padding-top: 0.52rem;
+  margin-bottom: 0.387rem;
+}
+.sub-info-box h1 span:nth-child(2) {
+  font-size: 0.453rem;
+  color: #111111;
+  letter-spacing: 0.013rem;
+}
+.sub-info-box div:nth-child(1) span:nth-child(1){
+  font-size: 0.507rem;
+  color: #f03b42;
+}
+.sub-info-box div:nth-child(2) span:nth-child(1){
+  font-size: 0.507rem;
+  color: #ff5643;
+}
+.sub-info-box div:nth-child(3) span:nth-child(1){
+  font-size: 0.507rem;
+  color: #fa821e;
+}
+.sub-info-box div:nth-child(4) span:nth-child(1){
+  font-size: 0.507rem;
+  color: #faa51e;
+}
+.sub-info-box div:nth-child(5) span:nth-child(1){
+  font-size: 0.507rem;
+  color: #fac41e;
+}
+.check-sex-box {
+  width: 3.52rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.check-sex-box img {
+  width: 0.36rem;
+  height: 0.36rem;
+  /*margin-right: 0.267rem;*/
+}
+
+.check-sex-box span {
+  float: right;
+  font-size: 0.373rem !important;
+  line-height: 0.373rem !important;
+  color: #007aff;
+}
+.csb-lady span {
+  margin-left: 0.267rem;
+  /*color: #007aff;*/
+}
+.csb-sir span {
+  margin-left: 0.267rem;
+  margin-right: 0.667rem;
+  /*color: #007aff;*/
+}
+.isChooesSex {
+  color: #f03b42 !important;
+}
+.sub-info-submit {
+  position: fixed;
+  bottom: 1.347rem;
+  /*bottom: 0.227rem;*/
+  left: 0.267rem;
+  width: 9.467rem;
+  height: 1.147rem;
+  line-height: 1.147rem;
+  background-color: #f03b42;
+  text-align: center;
+  color: #ffffff;
+  font-size: 0.48rem;
+  letter-spacing: 0.093rem;
+  border-radius: 0.107rem;
+}
+.distance-before {
+  margin-top: .32rem;
+}

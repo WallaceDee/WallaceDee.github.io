@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/msg.css" type="text/css">
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+</head>
+
+<body>
+    <div class="messages">
+        <div class="message message-sent">
+            <div class="message-name">Kate Johnson 2017-06-16 15:33:00</div>
+            <div class="message-text message-voice">
+                <audio controls src="1.mp3"></audio>
+            </div>
+        </div>
+        <div class="message message-received">
+            <div class="message-name">Kate Johnson 2017-06-16 15:33:00</div>
+            <div class="message-text message-voice">
+                <audio controls src="2.mp3"></audio>
+            </div>
+        </div>
+        <div class="message message-sent">
+            <div class="message-name">Kate Johnson 2017-06-16 15:33:00</div>
+            <div class="message-text message-voice">
+                <audio controls src="3.mp3"></audio>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+
+        $(document).on("click", ".message-voice", function(event) {
+
+            event.preventDefault();
+            /* Act on the event */
+            var $this = $(this);
+            var curr_is_playing = $this.hasClass("playing");
+            var is_playing = $(".playing").length;
+            if (curr_is_playing) {
+                $this.removeClass("playing");
+                $this.find("audio")[0].pause();
+            } else {
+                if (is_playing) {
+                    $(".playing audio")[0].pause();
+                    $(".playing").removeClass("playing");
+                    $this.addClass("playing");
+                    $this.find("audio")[0].play();
+                } else {
+                    $this.addClass("playing");
+                    $this.find("audio")[0].play();
+                }
+            }
+        });
+
+        $(document).on("click", ".message-voice .size-btn", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            /* Act on the event */
+            var $this = $(this).parents(".message-voice");
+            $this.toggleClass("open");
+        });
+
+        $(".message-voice audio").each(function(index, el) {
+            var $this = $(el);
+            $this.before('<div class="icon-voice"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>');
+            $this.after('<div class="size-btn" title="最大化/最小化"><span></span></div>');
+            el.addEventListener('canplay', function() {
+                var s = parseInt(el.duration);
+                if (s > 20 && s < 40) {
+                    $this.parent().addClass("medium-size");
+                } else if (s > 40) {
+                    $this.parent().addClass("large-size");
+                }
+                $this.parent().after('<div class="second">' + s + '"</div>');
+            }, false);
+            el.addEventListener('ended', function() {
+                $(el).parents(".playing").removeClass("playing");
+            }, false);
+        });
+
+    });
+    </script>
+</body>
+
+</html>

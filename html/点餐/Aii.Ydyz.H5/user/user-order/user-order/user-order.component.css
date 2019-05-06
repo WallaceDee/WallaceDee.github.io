@@ -1,0 +1,117 @@
+.clearFloat {
+  display: block;
+  content: "";
+  clear: both;
+}
+section {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+nav {
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+}
+nav button {
+  width: 50%;
+  display: inline-block;
+  float: left;
+  height: 1.173rem;
+  line-height: 1.173rem;
+  background-color: #ededed;
+  color: #666666;
+  font-size: 0.4rem;
+  letter-spacing: 0.013rem;
+}
+.top-button {
+  color: #f03b42 !important;
+  background-color: #ffffff !important;
+  border-bottom: 0.053rem solid #f03b42;
+  box-sizing: border-box;
+}
+
+/*循环订单列表*/
+.user-order-list {
+  width: 100%;
+  height: 100%;
+  /*height: 14.933rem;*/
+  margin-top: 1.173rem;
+  margin-bottom: 1.173rem;
+  overflow: auto;
+}
+.user-order-list::-webkit-scrollbar {
+  display:none
+}
+.user-order-loop {
+  height: 2.013rem;
+  border-bottom: 0.013rem solid #cccccc;
+  box-sizing: border-box;
+  padding-left: 0.32rem;
+  padding-right: 0.373rem;
+}
+.uol-first {
+  height: 0.4rem;
+  line-height: 0.4rem;
+  margin-top: 0.48rem;
+  margin-bottom: 0.373rem;
+}
+.uol-no-end a {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+}
+.uol-no-end a:active {
+  background-color: #fffcf2;
+}
+.uol-first span {
+  font-size: 0.4rem;
+  line-height: 0.4rem;
+  color: #333333;
+  letter-spacing: 0.013rem;
+}
+.uol-first span:nth-child(1), .uol-first span:nth-child(2), .uol-first span:nth-child(3) {
+  display: inline-block;
+  float: left;
+}
+.uol-first span:nth-child(4), .uol-first span:nth-child(5) {
+  display: inline-block;
+  float: right;
+}
+.uol-first span:nth-child(1) {
+  margin-right: 0.587rem;
+}
+.uol-first span:nth-child(2) {
+  margin-right: 0.32rem;
+}
+.uol-first span:nth-child(5) {
+  margin-right: 0.373rem;
+}
+.uol-first span:nth-child(4) {
+  /*margin-right: 0.24rem;*/
+  color: #f03b42;
+}
+
+.uol-second span {
+  height: 0.347rem;
+  line-height: 0.347rem;
+  font-size: 0.347rem;
+  letter-spacing: 0.013rem;
+  color: #111111;
+}
+.uol-second span:nth-child(1), .uol-second span:nth-child(2) {
+  float: left;
+}
+.uol-second span:nth-child(3), .uol-second span:nth-child(4) {
+  float: right;
+}
+.uol-second span:nth-child(1) {
+  margin-right: 0.32rem;
+}
+.uol-second span:nth-child(4) {
+  margin-right: 0.373rem;
+}
+/*.uol-second span:nth-child(3) {*/
+  /*margin-right: 0.133rem;*/
+/*}*/

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>聚牛行业龙头精选票池</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="author" content="Wallace Chan">
+    <script src="js/swiper-3.4.2.min.js"></script>
+    <script src="js/default.js"></script>
+    <link rel="stylesheet" href="css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    body,
+    html {
+        background-color: #050100;
+        overflow: hidden;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        z-index: 2;
+    }
+
+    body:before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 10rem;
+        background-color: #000;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-image: url(images/top_bg.jpg);
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        z-index: 0;
+        background-position: top;
+    }
+
+    body:after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 10rem;
+        background-color: #000;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-image: url(images/bottom_bg.jpg);
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        z-index: 0;
+        background-position: bottom;
+    }
+
+    .table-wrapper {
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        background-color: rgba(255, 255, 255, .15);
+        margin-top: 6.5rem;
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+
+    table {
+        color: #fff;
+        font-size: .7rem;
+        text-align: center;
+    }
+
+    table,
+    table tr th,
+    table tr td {
+        border: 1px solid #fbc914;
+    }
+
+    table {
+        width: 96%;
+        text-align: center;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+
+    table tr td {
+        height: 1.25rem;
+        line-height: 1.25rem;
+    }
+
+
+
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .swiper-slide:nth-child(3) {
+        height: 30rem!important;
+        overflow: auto;
+    }
+
+    .swiper-slide table {
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    img {
+        width: 82%;
+        display: block;
+        margin: 2.4rem auto 0 auto;
+    }
+
+    .swiper-button-next {
+        background-image: url(images/arrow.png);
+        width: 25px;
+        height: 25px;
+        background-size: 100%;
+        margin-right: -.65rem;
+        animation: toRight 1s;
+        animation-iteration-count: infinite;
+    }
+
+    .swiper-button-prev {
+        width: 25px;
+        height: 25px;
+        background-size: 100%;
+        margin-left: -.65rem;
+        background-image: url(images/arrow.png);
+        transform: rotate(180deg);
+        animation: toLeft 1s;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes toRight {
+        from {
+            margin-right: -.35rem;
+ 
+            transform: scale(.8);
+        }
+        to {
+            margin-right: -.6rem;
+
+            transform: scale(1);
+        }
+    }
+
+    @keyframes toLeft {
+        from {
+            margin-left: -.35rem;
+
+            transform: scale(.8) rotate(180deg);
+        }
+        to {
+            margin-left: -.6rem;
+        
+            transform: scale(1) rotate(180deg);
+        }
+    }
+    </style>
+</head>
+</head>
+
+<body>
+    <!-- Swiper -->
+    <div class="swiper-container">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="table-wrapper">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>300666.SZ</td>
+                                <td>江丰电子</td>
+                                <td>OLED</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>300678.SZ</td>
+                                <td>中科信息</td>
+                                <td>信息服务 计算机</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>300672.SZ</td>
+                                <td>国科微</td>
+                                <td>集成电路</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>603559.SH</td>
+                                <td>中通国脉</td>
+                                <td>通信 4G5G</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>300685.SZ</td>
+                                <td>艾德生物</td>
+                                <td>生物医药</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>300676.SZ</td>
+                                <td>华大基因</td>
+                                <td>基因工程</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>300618.SZ</td>
+                                <td>寒锐钴业</td>
+                                <td>有色金属</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>603019.SH</td>
+                                <td>中科曙光</td>
+                                <td>人工智能</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>300675.SZ</td>
+                                <td>建科院</td>
+                                <td>建筑材料</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>603896.SH</td>
+                                <td>寿仙谷</td>
+                                <td>中药</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>000868.SZ</td>
+                                <td>安凯客车</td>
+                                <td>新能源汽车 汽车整车</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>300567.SZ</td>
+                                <td>精测电子</td>
+                                <td>苹果概念</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>002830.SZ</td>
+                                <td>名雕股份</td>
+                                <td>移动互联</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>000830.SZ</td>
+                                <td>鲁西化工</td>
+                                <td>化工</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>601888.SH</td>
+                                <td>中国国旅</td>
+                                <td>旅游</td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>002405.SZ</td>
+                                <td>四维图新</td>
+                                <td>电子商务</td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td>300545.SZ</td>
+                                <td>联得装备</td>
+                                <td>工业4.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="table-wrapper">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>18</td>
+                                <td>002194.SZ</td>
+                                <td>武汉凡谷</td>
+                                <td>通信基站</td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>002362.SZ</td>
+                                <td>汉王科技</td>
+                                <td>人脸识别</td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>300656.SZ</td>
+                                <td>民德电子</td>
+                                <td>二维码识别，人工零售</td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td>002008.SZ</td>
+                                <td>大族激光</td>
+                                <td>激光产业</td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td>002222.SZ</td>
+                                <td>福晶科技</td>
+                                <td>量子通信</td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td>002285.SZ</td>
+                                <td>世联行</td>
+                                <td>租售同权</td>
+                            </tr>
+                            <tr>
+                                <td>24</td>
+                                <td>300316.SZ</td>
+                                <td>晶盛机电</td>
+                                <td>蓝宝石</td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td>002451.SZ</td>
+                                <td>摩恩电气</td>
+                                <td>风电</td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td>000792.SZ</td>
+                                <td>盐湖股份</td>
+                                <td>盐湖提锂</td>
+                            </tr>
+                            <tr>
+                                <td>27</td>
+                                <td>300496.SZ</td>
+                                <td>中科创达</td>
+                                <td>虚拟现实</td>
+                            </tr>
+                            <tr>
+                                <td>28</td>
+                                <td>600196.SH</td>
+                                <td>复星医药</td>
+                                <td>互联网医疗</td>
+                            </tr>
+                            <tr>
+                                <td>29</td>
+                                <td>601318.SH</td>
+                                <td>中国平安</td>
+                                <td>保险</td>
+                            </tr>
+                            <tr>
+                                <td>30</td>
+                                <td>002415.SZ</td>
+                                <td>海康威视</td>
+                                <td>安防</td>
+                            </tr>
+                            <tr>
+                                <td>31</td>
+                                <td>600519.SH</td>
+                                <td>贵州茅台</td>
+                                <td>白酒</td>
+                            </tr>
+                            <tr>
+                                <td>32</td>
+                                <td>000786.SZ</td>
+                                <td>北新建材</td>
+                                <td>装配式建筑</td>
+                            </tr>
+                            <tr>
+                                <td>33</td>
+                                <td>600231.SH</td>
+                                <td>凌钢股份</td>
+                                <td>螺纹钢</td>
+                            </tr>
+                            <tr>
+                                <td>34</td>
+                                <td>601113.SH</td>
+                                <td>华鼎股份</td>
+                                <td>智能纤维</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="table-wrapper">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>35</td>
+                                <td>603899.SH</td>
+                                <td>晨光文具</td>
+                                <td>文具</td>
+                            </tr>
+                            <tr>
+                                <td>36</td>
+                                <td>002813.SZ</td>
+                                <td>路畅科技</td>
+                                <td>无人驾驶</td>
+                            </tr>
+                            <tr>
+                                <td>37</td>
+                                <td>603288.SH</td>
+                                <td>海天味业</td>
+                                <td>调味品</td>
+                            </tr>
+                            <tr>
+                                <td>38</td>
+                                <td>000333.SZ</td>
+                                <td>美的集团</td>
+                                <td>家电</td>
+                            </tr>
+                            <tr>
+                                <td>39</td>
+                                <td>300520.SZ</td>
+                                <td>科大国创</td>
+                                <td>国产软件</td>
+                            </tr>
+                            <tr>
+                                <td>40</td>
+                                <td>603180.SH</td>
+                                <td>金牌厨柜</td>
+                                <td>家具</td>
+                            </tr>
+                            <tr>
+                                <td>41</td>
+                                <td>300467.SZ</td>
+                                <td>迅游科技</td>
+                                <td>互联网游戏；王者荣耀</td>
+                            </tr>
+                            <tr>
+                                <td>42</td>
+                                <td>000537.SZ</td>
+                                <td>广宇发展</td>
+                                <td>土地流转</td>
+                            </tr>
+                            <tr>
+                                <td>43</td>
+                                <td>300649.SZ</td>
+                                <td>杭州园林</td>
+                                <td>美丽中国</td>
+                            </tr>
+                            <tr>
+                                <td>44</td>
+                                <td>300142.SZ</td>
+                                <td>沃森生物</td>
+                                <td>疫苗；生物医药</td>
+                            </tr>
+                            <tr>
+                                <td>45</td>
+                                <td>000717.SZ</td>
+                                <td>韶钢松山</td>
+                                <td>普钢</td>
+                            </tr>
+                            <tr>
+                                <td>46</td>
+                                <td>600584.SH</td>
+                                <td>长电科技</td>
+                                <td>智能穿戴</td>
+                            </tr>
+                            <tr>
+                                <td>47</td>
+                                <td>300703.SZ</td>
+                                <td>创源文化</td>
+                                <td>文化传媒</td>
+                            </tr>
+                            <tr>
+                                <td>48</td>
+                                <td>000725.SZ</td>
+                                <td>京东方A</td>
+                                <td>OLED</td>
+                            </tr>
+                            <tr>
+                                <td>49</td>
+                                <td>300527.SZ</td>
+                                <td>华舟应急</td>
+                                <td>国资改；军工</td>
+                            </tr>
+                            <tr>
+                                <td>50</td>
+                                <td>600887.SH</td>
+                                <td>伊利股份</td>
+                                <td>乳液</td>
+                            </tr>
+                            <tr>
+                                <td>51</td>
+                                <td>600859.SH</td>
+                                <td>王府井</td>
+                                <td>百货零售</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <img src="images/poster_wujie.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <script>
+    var swiper = new Swiper('.swiper-container', {
+        effect: 'coverflow',
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        onTouchEnd: function(s) {
+        }
+    });
+    var startScroll, touchStart, touchCurrent;
+    swiper.slides.on('touchstart', function(e) {
+        startScroll = this.scrollTop;
+        touchStart = e.targetTouches[0].pageY;
+    }, true);
+    swiper.slides.on('touchmove', function(e) {
+        touchCurrent = e.targetTouches[0].pageY;
+        var touchesDiff = touchCurrent - touchStart;
+        var slide = this;
+        var onlyScrolling =
+            (slide.scrollHeight > slide.offsetHeight) && //allow only when slide is scrollable
+            (
+                (touchesDiff < 0 && startScroll === 0) || //start from top edge to scroll bottom
+                (touchesDiff > 0 && startScroll === (slide.scrollHeight - slide.offsetHeight)) || //start from bottom edge to scroll top
+                (startScroll > 0 && startScroll < (slide.scrollHeight - slide.offsetHeight)) //start from the middle
+            );
+        if (onlyScrolling) {
+            e.stopPropagation();
+        }
+    }, true);
+    </script>
+</body>
+
+</html>
