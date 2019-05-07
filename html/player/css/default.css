@@ -225,8 +225,8 @@ html {
 
 @font-face {
     font-family: icomoon;
-    src: url(http://live.gu0018.com/font/icomoon.eot?ju1j05);
-    src: url(http://live.gu0018.com/font/icomoon.eot?ju1j05#iefix) format('embedded-opentype'), url(http://live.gu0018.com/font/icomoon.ttf?ju1j05) format('truetype'), url(http://live.gu0018.com/font/icomoon.woff?ju1j05) format('woff'), url(http://live.gu0018.com/font/icomoon.svg?ju1j05#icomoon) format('svg');
+    src: url(../font/icomoon.eot?ju1j05);
+    src: url(../font/icomoon.eot?ju1j05#iefix) format('embedded-opentype'), url(../font/icomoon.ttf?ju1j05) format('truetype'), url(../font/icomoon.woff?ju1j05) format('woff'), url(../font/icomoon.svg?ju1j05#icomoon) format('svg');
     font-weight: 400;
     font-style: normal
 }
@@ -281,7 +281,7 @@ body {
 .header .logo {
     display: block;
     position: absolute;
-    background-image: url(http://live.gu0018.com/images/logo.png);
+    background-image: url(../images/logo.png);
     width: 35px;
     height: 35px;
     background-size: 100% 100%
@@ -395,7 +395,7 @@ body {
     height: 2.5rem;
     background-color: #333;
     border-radius: 50%;
-    background-image: url(http://live.gu0018.com/images/teachers.jpg);
+    background-image: url(../images/teachers.jpg);
     background-size: 27.5rem auto;
     position: relative;
 }
@@ -495,7 +495,7 @@ body {
     height: 6.8rem;
     border-radius: 50%;
     background-color: #eee;
-    background-image: url(http://live.gu0018.com/images/teachers.jpg);
+    background-image: url(../images/teachers.jpg);
     background-size: 27.5rem auto;
     background-position: 0 -2.5rem;
 }
@@ -566,7 +566,7 @@ body {
     background-color: #a72919;
     margin-top: .5rem;
     height: 8rem;
-    background-image: url(http://live.gu0018.com/images/teachers_bg.jpg);
+    background-image: url(../images/teachers_bg.jpg);
     background-position: center;
     min-width: 980px;
     width: 100%;

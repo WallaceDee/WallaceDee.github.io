@@ -385,7 +385,7 @@ $(function() {
     //*****page-course*****//
     $(document).on("pageInit", "#page-course", function(e, pageId, $page) {
         $.ajax({
-            url: "/mobile/activity/course/js/CourseList.json",
+            url: "../HD/course/js/CourseList.json",
             dataType: "json",
             success: function(data) {
                 var temp_basic_list = data.basic;
@@ -393,10 +393,10 @@ $(function() {
                 var temp_senior_list = data.senior;
                 var senior_list_html = new String();
                 for (var i = 0; i < temp_basic_list.length; i++) {
-                    basic_list_html += '<li><a href="activity/course/' + temp_basic_list[i].path + '/index.html"><img src="activity/course/' + temp_basic_list[i].path + '/cover.jpg" alt="' + temp_basic_list[i].name + '"></a></li>'
+                    basic_list_html += '<li><a href="../HD/course/' + temp_basic_list[i].path + '/index.html"><img src="../HD/course/' + temp_basic_list[i].path + '/cover.jpg" alt="' + temp_basic_list[i].name + '"></a></li>'
                 }
                 for (var i = 0; i < temp_senior_list.length; i++) {
-                    senior_list_html += '<li><a href="activity/course/' + temp_senior_list[i].path + '/index.html"><img src="activity/course/' + temp_senior_list[i].path + '/cover.jpg" alt="' + temp_senior_list[i].name + '"></a></li>'
+                    senior_list_html += '<li><a href="../HD/course/' + temp_senior_list[i].path + '/index.html"><img src="../HD/course/' + temp_senior_list[i].path + '/cover.jpg" alt="' + temp_senior_list[i].name + '"></a></li>'
                 }
                 $("#page-course #tab1 ul").html(basic_list_html);
                 $("#page-course #tab2 ul").html(senior_list_html);
