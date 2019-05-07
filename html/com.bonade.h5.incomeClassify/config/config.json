@@ -1,0 +1,13 @@
+{
+  "dependencies": [],
+  "hidden": false,
+  "autoDownload": true,
+  "releaseNote": "demo",
+  "build": 2018414091808,
+  "name": "收支分类统计图",
+  "identifier": "com.bonade.h5.incomeClassify",
+  "index": "index.html",
+  "isDebug": 1,
+  "version": "1.0.1.1",
+  "testVersion": "1.0.0"
+}

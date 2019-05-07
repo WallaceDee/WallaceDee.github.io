@@ -1,0 +1,13 @@
+{
+  "dependencies": [],
+  "hidden": false,
+  "autoDownload": true,
+  "releaseNote": "demo",
+  "build": 2018414091808,
+  "name": "工作汇报",
+  "identifier": "com.bonade.h5.report",
+  "index": "index.html",
+  "isDebug": 1,
+  "version": "2.0.7.8",
+  "testVersion": "1.0.0"
+}

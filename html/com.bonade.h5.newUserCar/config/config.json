@@ -1,0 +1,13 @@
+{
+  "dependencies": [],
+  "hidden": false,
+  "autoDownload": true,
+  "releaseNote": "demo",
+  "build": 2018414091808,
+  "name": "日日薪",
+  "identifier": "com.bonade.h5.dailySalary",
+  "index": "index.html",
+  "isDebug": 1,
+  "version": "2.2.1.7",
+  "testVersion": "1.0.0"
+}

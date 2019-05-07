@@ -1,0 +1,13 @@
+{
+  "dependencies": [],
+  "hidden": false,
+  "autoDownload": true,
+  "releaseNote": "demo",
+  "build": 2018414091808,
+  "name": "我的福利",
+  "identifier": "com.bonade.h5.lifeWelfare",
+  "index": "index.html",
+  "isDebug": 1,
+  "version": "1.0.3.3",
+  "testVersion": "1.0.0"
+}

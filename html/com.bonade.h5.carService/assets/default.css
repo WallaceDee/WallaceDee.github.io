@@ -1,0 +1,62 @@
+.mint-msgbox-wrapper .mint-msgbox {
+  width: 90%;
+  border-radius: 4px;
+}
+.mint-msgbox-wrapper .mint-msgbox .mint-msgbox-header {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #fff;
+}
+.mint-msgbox-wrapper .mint-msgbox .mint-msgbox-header .mint-msgbox-title {
+  color: #1D1D2A;
+  font-size: 16px;
+  font-weight: bold;
+}
+.mint-msgbox-wrapper .mint-msgbox-message {
+  color: #1D1D2A;
+  font-size: 14px;
+  line-height: inherit;
+  text-align: left;
+}
+.mint-msgbox-wrapper .mint-msgbox-content {
+  border-bottom: 1px solid transparent;
+}
+.mint-msgbox-wrapper .mint-msgbox-btns {
+  margin: 0 20px 20px 20px;
+}
+.mint-msgbox-wrapper .mint-msgbox-confirm,
+.mint-msgbox-wrapper .mint-datetime-action,
+.mint-msgbox-wrapper .mint-msgbox-confirm:active {
+  color: #fff;
+  background-color: #D6A666;
+}
+.mint-msgbox-wrapper .mint-msgbox-cancel,
+.mint-msgbox-wrapper .mint-datetime-action,
+.mint-msgbox-wrapper .mint-msgbox-cancel:active {
+  border: 1px solid #d6a666;
+  color: #D6A666;
+}
+.mint-msgbox-wrapper .mint-msgbox .mint-msgbox-btns > button:first-child {
+  border-bottom-left-radius: 0;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+.mint-msgbox-wrapper .mint-msgbox .mint-msgbox-btns > button:last-child {
+  border-bottom-right-radius: 0;
+  border-radius: 3px;
+}
+#app .mint-header {
+  color: #fff;
+}
+.dateTime .mint-msgbox-cancel,
+.dateTime .mint-datetime-action,
+.dateTime .mint-msgbox-cancel:active {
+  border: 0;
+  color: #fff;
+}
+.mint-popup .bar-nav.bar .button {
+  color: #fff;
+}
+.mint-popup .bar-nav.bar .title {
+  color: #fff;
+}

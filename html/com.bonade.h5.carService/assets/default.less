@@ -1,0 +1,61 @@
+.mint-msgbox-wrapper{
+    .mint-msgbox{
+        width: 90%;
+        border-radius: 4px; 
+    }
+    .mint-msgbox .mint-msgbox-header{
+        padding-top: 12px; 
+        padding-bottom: 12px; 
+        background-color: #fff; 
+        
+        .mint-msgbox-title{
+            color: #1D1D2A;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    }
+    .mint-msgbox-message{
+        color: #1D1D2A;
+        font-size: 14px;
+        line-height: inherit;
+        text-align: left;
+    }
+    .mint-msgbox-content{
+        border-bottom:1px solid transparent;
+    }
+    .mint-msgbox-btns{
+        margin: 0 20px 20px 20px;
+    }
+    .mint-msgbox-confirm, .mint-datetime-action, .mint-msgbox-confirm:active{
+        color: #fff;
+        background-color: #D6A666;
+    }
+    .mint-msgbox-cancel, .mint-datetime-action, .mint-msgbox-cancel:active{
+        border:1px solid rgba(214,166,102,1);
+        color: #D6A666;
+    }
+    .mint-msgbox .mint-msgbox-btns > button:first-child{
+        border-bottom-left-radius:0;
+        margin-right: 10px;
+        border-radius:3px;
+    }
+    .mint-msgbox .mint-msgbox-btns > button:last-child{
+        border-bottom-right-radius:0;
+        border-radius:3px;
+    }
+}
+#app .mint-header{
+    color: #fff;
+}
+.dateTime .mint-msgbox-cancel, .dateTime .mint-datetime-action, .dateTime .mint-msgbox-cancel:active{
+    border: 0;
+    color: #fff;
+}
+.mint-popup .bar-nav.bar{
+    .button{
+        color: #fff;
+    }
+    .title{
+        color: #fff;
+    }
+}
