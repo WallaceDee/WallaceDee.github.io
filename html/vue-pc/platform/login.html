@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>薪起程管理系统</title>
+    <link rel="shortcut icon" href="../static/images/logo.png" />
+    <script type="text/javascript">
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].indexOf('PLATFORM_ACCESS_TOKEN') !== -1) {
+            window.location.href = 'index.html';
+            break;
+        }
+    }
+    </script>
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="../static/css/ie9.css"><![endif]-->
+</head>
+
+<body>
+    <div id="login" class="layout" v-cloak>
+        <layout>
+            <header class="login-header">
+                <div class="logo-wrapper">
+                    <img src="../static/images/logo.png" />
+                    <div>
+                        <h2>薪起程<span>管理系统</span></h2>
+                        <p>xinqichengguanlixitong</p>
+                    </div>
+                </div>
+            </header>
+            <content class="login-content">
+                <carousel v-model="swiperIndex" loop height="100%" arrow="never">
+                    <carousel-item v-for="index in 3">
+                        <span :style="{backgroundImage:'url(../static/images/0'+index+'.jpg)'}"></span>
+                    </carousel-item>
+                </carousel>
+                <div class="login-module">
+                    <div class="login-iframe platform">
+                        <div class="login-border">
+                            <tabs value="loginNormal" @on-click="switchTab">
+                                <tab-pane label="帐号登录" name="loginNormal">
+                                    <div class="acount-login">
+                                        <i-form ref="formNormal" :model="formNormal" :rules="ruleInline" inline>
+                                            <form-item prop="username">
+                                                <i-input type="text" prefix="ios-contact-outline" v-model="formNormal.username" clearable="true" placeholder="请输入帐号"></i-input>
+                                            </form-item>
+                                            <form-item prop="password">
+                                                <i-input type="password" prefix="ios-lock-outline" v-model="formNormal.password" clearable="true" placeholder="请输入登录密码"></i-input>
+                                            </form-item>
+                                            <form-item>
+                                                <i-button type="primary" :loading="loginBtnloading" @click="handleSubmit('formNormal')" long>
+                                                    <span v-if="!loginBtnloading">登录</span>
+                                                    <span v-else>登录中</span>
+                                                </i-button>
+                                            </form-item>
+                                        </i-form>
+                                    </div>
+                                </tab-pane>
+                                <tab-pane label="管理员登录" name="loginAdmin">
+                                    <div class="acount-login">
+                                        <i-form ref="formAdmin" :model="formAdmin" :rules="ruleAdmin" inline>
+                                            <form-item prop="username">
+                                                <i-input type="text" prefix="ios-contact-outline" v-model="formAdmin.username" clearable="true" placeholder="请输入管理员帐号"></i-input>
+                                            </form-item>
+                                            <form-item prop="password">
+                                                <i-input type="password" prefix="ios-lock-outline" v-model="formAdmin.password" clearable="true" placeholder="请输入密码"></i-input>
+                                            </form-item>
+                                            <form-item>
+                                                <i-button type="primary" :loading="loginBtnloading" @click="handleSubmit('formAdmin')" long>
+                                                    <span v-if="!loginBtnloading">登录</span>
+                                                    <span v-else>登录中</span>
+                                                </i-button>
+                                            </form-item>
+                                        </i-form>
+                                    </div>
+                                </tab-pane>
+                            </tabs>
+                        </div>
+                    </div>
+                </div>
+            </content>
+            <footer class="login-footer">
+                <p>版权所有 © 2010－2017 博纳德投资管理集团有限公司 皖B2-20170029-1</p>
+                <p>地址：广东佛山顺德区大良街道德胜东路3号西安交通大学研究院综合楼7楼 电话：0757-22912849</p>
+            </footer>
+        </layout>
+    </div>
+</body>
+<!-- 平台 -->
+<script type="text/javascript" src="./static/js/config.js"></script>
+<!-- 平台 -->
+<script type="text/javascript" src="../static/js/browser-polyfill.min.js"></script>
+<script type="text/javascript" src="../static/js/vue.min.js"></script>
+<script type="text/javascript" src="../static/js/iview.min.js"></script>
+<script type="text/javascript" src="../static/js/underscore-min.js"></script>
+<script type="text/javascript" src="../static/js/js.cookie.min.js"></script>
+<script type="text/javascript" src="../static/js/axios.min.js"></script>
+<script type="text/javascript" src="../static/js/utils.js"></script>
+<script type="text/javascript" src="../static/js/jsencrypt.js"></script>
+<script type="text/javascript" src="../static/js/md5.js"></script>
+<script>
+'use strict';
+new Vue({
+    el: '#login',
+    data: function () {
+        return {
+            pk: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDFbuyHjN4+18OjRSyzOUli1Ic0tD/ZkfoDeHHTD3S6v/sVnfczpafqz7fNXUFCyO7mJlM58IAHoHGvrjhCXs5E29ySI62Qk5tC9g1ofrDcp9DLS3HsBZVfwqVlgtTPV64IUSMckP9ZPradAoyUY5oGXJhkHP+MAEaHaIYaSlgmiQIDAQAB',
+            visible: false,
+            swiperIndex: 0,
+            qrCodeStr: '',
+            loading: true,
+            refresh: false,
+            CookieSaveDay: 1,
+            work: -1,
+            loginBtnloading: false,
+            isPlatform: true,
+            isAdmin: false,
+            formNormal: {},
+            formAdmin: {},
+            ruleInline: {
+                username: [
+                    { required: true, message: '账户不能为空', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ]
+            },
+            ruleAdmin: {
+                username: [
+                    { required: true, message: '管理员帐号不能为空', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '密码不能为空', trigger: 'blur' }
+                ]
+            }
+        }
+    },
+    mounted: function () {
+        document.title += this.isPlatform ? '--平台' : '--企业' + '登录';
+        console.log(this.isPlatform)
+    },
+    methods: {
+        login: function () {
+            this.loginBtnloading = true
+            var jse = new JSEncrypt();
+            jse.setPublicKey(this.pk);
+            var password = jse.encrypt(hex_md5(this.formNormal.password + 'xqc1254548787244') + ';;;qqq' + new Date().format('yyyy-MM-dd hh:mm:ss') + ';;;qqq' + this.formNormal.password);
+            var ajaxOption = {
+                url: '/usercenter/basic/v1/nologin/login',
+                token: false,
+                data: {
+                    loginType: 'password',
+                    loginName: this.formNormal.username,
+                    credentials: encodeURI(password).replace(/\+/g, '%2B'),
+                    useScena: window.USE_SCENA
+                },
+                success: function (res) {
+                    if (res.statusCode == '200') {
+                        Cookies.set('PLATFORM_ACCESS_TOKEN', res.data.access_token, { expires: this.COOKIE_SAVE_DAY });
+                        if (this.isAdmin) {
+                            Cookies.set('isPlatformAdmin', '1', { expires: this.COOKIE_SAVE_DAY });
+                        } else {
+                            Cookies.remove('isPlatformAdmin');
+                        }
+                        this.loginBtnloading = false
+                        location.href = './index.html'
+                    } else {
+                        this.loginBtnloading = false
+                        this.warning(res.msg);
+                    }
+                }.bind(this),
+                error: function (err) {
+                    this.loginBtnloading = false
+                    this.error(err.msg);
+                }.bind(this)
+            }
+            //平台
+            if (this.isPlatform && !this.isAdmin) {
+                ajaxOption.headers = {
+                    'Content-Type': 'application/json'
+                }
+                ajaxOption.url = '/platformcenter/user/v1/nologin/login';
+                ajaxOption.data = {
+                    loginType: 'password',
+                    loginName: this.formNormal.username,
+                    credentials: password,
+                    useScena: window.USE_SCENA
+                }
+            } else if (this.isAdmin) { //超级管理员
+                ajaxOption.url = '/usercenter/platformAdmin/v1/nologin/adminLogin';
+                password = jse.encrypt(hex_md5(this.formAdmin.password + 'xqc1254548787244') + ';;;qqq' + new Date().format('yyyy-MM-dd hh:mm:ss') + ';;;qqq' + this.formAdmin.password);
+                ajaxOption.data = {
+                    account: this.formAdmin.username,
+                    password: encodeURI(password).replace(/\+/g, '%2B')
+                }
+            }
+            this.$utils.ajax(ajaxOption);
+        },
+        warning: function (nodesc) {
+            this.$Notice.warning({
+                title: '登录提示',
+                desc: nodesc ? nodesc : '请输入你的账户和密码'
+            });
+        },
+        error: function (nodesc) {
+            this.$Notice.error({
+                title: '错误提示',
+                desc: nodesc ? nodesc : ''
+            });
+        },
+        handleSubmit: function (name) {
+            this.isAdmin = name === 'formAdmin' ? true : false;
+            this.$refs[name].validate(function (valid) {
+                if (valid) {
+                    this.login();
+                } else {
+                    this.warning();
+                }
+            }.bind(this))
+        },
+        getCodeimg: function () {
+            this.refresh = false
+            this.loading = true
+            this.$utils.ajax({
+                url: '/usercenter/basic/v1/nologin/getQRLoginCodeStr',
+                token: false,
+                data: {
+                    useScena: window.USE_SCENA
+                },
+                success: function (res) {
+                    console.log(res)
+                    if (res.statusCode == '200') {
+                        this.loading = false
+                        this.qrCodeStr = res.data.qrCodeStr
+                        var uuid = res.data.uuid
+                        var i = 0
+                        this.work = setInterval(function () {
+                            if (i > 5) {
+                                clearInterval(this.work)
+                                this.refresh = true
+                                this.warning('二维码失效，请重新刷新')
+                            }
+                            this.$utils.ajax({
+                                    url: '/usercenter/basic/v1/nologin/scanQrState',
+                                    data: {
+                                        useScena: window.USE_SCENA,
+                                        qrRandom: uuid
+                                    },
+                                    success: function (res) {
+                                        if (res.data.message == 'success') {
+                                            Cookies.set('access', JSON.stringify(res.data), { expires: this.COOKIE_SAVE_DAY });
+                                            Cookies.set('PLATFORM_ACCESS_TOKEN', res.data.PLATFORM_ACCESS_TOKEN, { expires: this.COOKIE_SAVE_DAY });
+                                            clearInterval(this.work)
+                                        }
+                                    }.bind(this),
+                                    error: function (err) {
+                                        this.refresh = true
+                                        clearInterval(this.work)
+                                        this.warning(res.msg)
+                                    }.bind(this)
+                                })
+                                ++i
+                        }.bind(this), 3000)
+                    } else {
+                        this.refresh = true
+                        this.warning(res.msg)
+                    }
+                }.bind(this),
+                error: function (err) {
+                    this.error(err.msg)
+                }.bind(this)
+            })
+        },
+        switchTab: function (name) {
+            clearInterval(this.work);
+            if (name === 'scancode') {
+                this.getCodeimg()
+            }
+        }
+    }
+})
+</script>
+
+</html>

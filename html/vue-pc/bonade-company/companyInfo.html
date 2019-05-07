@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+	<link class="skin" rel="stylesheet" type="text/css" href="../static/css/theme/default/default.css">
+</head>
+
+<body onload="utils.onload()">
+    <div id="app" v-cloak>
+		<i-form :model="formItem" :label-width="120">
+	        <form-item label="企业LOGO">
+<!-- 				<upload
+					ref="upload"
+					:show-upload-list="false"
+					:default-file-list="defaultList"
+					:on-success="handleSuccess"
+					:format="['jpg','jpeg','png']"
+					:max-size="2048"
+					:on-format-error="handleFormatError"
+					:on-exceeded-size="handleMaxSize"
+					:before-upload="handleBeforeUpload"
+					multiple
+					type="drag"
+					action="uploadAction"
+					style="display: inline-block;width:58px;">
+					<div style="width: 58px;height:58px;line-height: 58px;">
+						<icon type="ios-camera" size="20"></icon>
+					</div>
+				</upload> -->
+	        </form-item>
+	        <form-item label="企业名称">
+	            <i-select v-model="formItem.select">
+	                <i-option value="beijing">New York</i-option>
+	                <i-option value="shanghai">London</i-option>
+	                <i-option value="shenzhen">Sydney</i-option>
+	            </i-select>
+	        </form-item>
+	        <form-item label="DatePicker">
+	            <i-row>
+	                <i-col span="11">
+	                    <date-picker type="date" placeholder="Select date" v-model="formItem.date"></date-picker>
+	                </i-col>
+	                <i-col span="2" style="text-align: center">-</i-col>
+	                <i-col span="11">
+	                    <time-picker type="time" placeholder="Select time" v-model="formItem.time"></time-picker>
+	                </i-col>
+	            </i-row>
+	        </form-item>
+	        <form-item label="Radio">
+	            <radio-group v-model="formItem.radio">
+	                <radio label="male">Male</radio>
+	                <radio label="female">Female</radio>
+	            </radio-group>
+	        </form-item>
+	        <form-item label="checkbox">
+	            <checkbox-group v-model="formItem.checkbox">
+	                <checkbox label="Eat"></checkbox>
+	                <checkbox label="Sleep"></checkbox>
+	                <checkbox label="Run"></checkbox>
+	                <checkbox label="Movie"></checkbox>
+	            </checkbox-group>
+	        </form-item>
+	        <form-item label="Switch">
+	            <i-switch v-model="formItem.switch" size="large">
+	                <span slot="open">On</span>
+	                <span slot="close">Off</span>
+	            </i-switch>
+	        </form-item>
+	        <form-item label="Slider">
+	            <slider v-model="formItem.slider" range></slider>
+	        </form-item>
+	        <form-item label="Text">
+	            <i-input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></i-input>
+	        </form-item>
+	        <form-item>
+	            <i-button type="primary">Submit</i-button>
+	            <i-button style="margin-left: 8px">Cancel</i-button>
+	        </form-item>
+	    </i-form>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+'use strict';
+require(['test'], function(test) {
+    console.log(test);
+});
+// 为给定 ID 的 user 创建请求
+// axios.get('/user?ID=12345');
+new Vue({
+    el: '#app',
+    data: {
+		    formItem: {
+	            input: '',
+	            select: '',
+	            radio: 'male',
+	            checkbox: [],
+	            switch: true,
+	            date: '',
+	            time: '',
+	            slider: [20, 50],
+				textarea: '',
+		   },
+		   defaultList:[],
+		   uploadAction:''
+    },
+    methods: {
+		handleSuccess(res){
+			console.log(res,'上传成功')
+		},
+		handleFormatError(res){
+			console.log(res,'上传文件格式错误')
+		},
+		handleMaxSize(res){
+			console.log(res,'超出文件大小限制')
+		},
+		handleBeforeUpload(res){
+			console.log(res,'上传的文件')
+		}
+    }
+});
+</script>
+<style lang="less" scoped>
+	#app{
+		padding-top: 40px;
+	}
+</style>
+</html>

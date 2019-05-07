@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link class="skin" rel="stylesheet" type="text/css" href="../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+</head>
+
+<body onload="utils.onload()">
+    <div id="app" v-cloak>
+        <row class="auto-height">
+            <i-col :xs="11" :sm="8" :md="6" :lg="5" style="height: 100%;padding: 5px;">
+                <bnd-department-picker ref="departmentPicke" @on-change="onSelectChange" :auto-focus="false"></bnd-department-picker>
+            </i-col>
+            <i-col :xs="13" :sm="16" :md="18" :lg="19" style="height: 100%; padding: 5px;">
+                <card class="auto-height">
+                    <tabs value="name1" class="auto-height">
+                        <tab-pane label="标签一" name="name1">
+                            <div class="toolbar">
+                                <div class="button-wrapper">
+                                    <i-button type="default">取消、关闭、default</i-button>
+                                    <i-button type="primary">确认、提交、submit </i-button>
+                                    <i-button type="info">查看、搜索、info</i-button>
+                                    <i-button type="success">增加、success</i-button>
+                                    <i-button type="warning">编辑、Warning</i-button>
+                                </div>
+                                <i-form ref="formInline" :model="formInline" inline>
+                                    <form-item prop="user">
+                                        <i-input type="text" v-model="formInline.user" placeholder="搜索" clearable prefix="md-search">
+                                        </i-input>
+                                    </form-item>
+                                    <form-item>
+                                        <i-button type="primary" @click="handleSubmit">Signin</i-button>
+                                    </form-item>
+                                </i-form>
+                            </div>
+                            <i-table border :columns="columns" :data="tableData" :height="table.height" ref="table" :loading="tableLoading"></i-table>
+                            <bnd-page :total="total" :current.sync="page" :page-size="pageSize" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></bnd-page>
+                        </tab-pane>
+                        <tab-pane label="标签二" name="name2">
+                            <bnd-picker></bnd-picker>
+                        </tab-pane>
+                        <tab-pane label="标签三" name="name3">标签三的内容</tab-pane>
+                    </tabs>
+                </card>
+            </i-col>
+        </row>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+'use strict';
+new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            data: [
+
+            ],
+            formInline: {},
+            tableLoading: false,
+            treeLoading: false,
+            tableData: [],
+            columns: [{
+                    title: '姓名',
+                    key: 'userName',
+                    width: 100
+                },
+                {
+                    title: '手机号码',
+                    key: 'mobileNumber',
+                    width: 100
+                },
+                {
+                    title: '角色',
+                    key: 'address',
+                    width: 100
+                },
+                {
+                    title: '职位',
+                    key: 'jobName',
+                    width: 100
+                },
+                {
+                    title: '修改时间',
+                    key: 'address',
+                    width: 100
+                }
+            ],
+            table: {
+                height: 300
+            },
+            total: 0,
+            pageSize: 10,
+            page: 1
+        }
+    },
+    mounted: function () {
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.table.$el,
+            table: this.table
+        });
+    },
+    methods: {
+        handleSubmit: function () {
+            this.$bndPicker({
+                type: 'employee',
+                title: '选择岗位',
+                multiple: false,
+                callback: function (result) {
+                    console.log(result);
+                }
+            });
+        },
+        onPageChange: function (page) {
+            if (this.$refs.departmentPicke.getSelectedNodes().length) {
+                var currentDepartment = this.$refs.departmentPicke.getSelectedNodes()[0];
+                this.getEmployees(currentDepartment.id, page, this.pageSize);
+            }
+        },
+        onPageSizeChange: function (size) {
+            this.pageSize = size;
+        },
+        onSelectChange: function (data) {
+            console.log(data)
+            if(data){
+            this.getEmployees(data.id, this.page, this.pageSize);
+        }else{
+            this.tableData=[];
+            this.total= 0;
+            this.pageSize=10;
+            this.page=1;
+        }
+        },
+        getEmployees: function (departmentId, pageNum, pageSize) {
+            this.tableLoading = true;
+            this.$utils.ajax({
+                url: '/companycenter/comEmployee/pc/v1/queryComEmployeePage',
+                data: {
+                    companyId: window.userInfo.companyId,
+                    deptId: departmentId,
+                    page: pageNum,
+                    rows: pageSize
+                },
+                success: function (res) {
+                    this.tableData = res.data.list;
+                    this.tableLoading = false;
+                    this.total = res.data.total*1;
+                }.bind(this),
+                error: function (err) {
+                    this.tableLoading = false;
+                }.bind(this)
+            });
+        }
+    }
+});
+</script>
+
+</html>

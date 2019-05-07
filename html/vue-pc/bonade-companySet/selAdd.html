@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+       <link class="skin" rel="stylesheet" type="text/css" href="../static/css/theme/default/default.css">
+       <link rel="stylesheet" type="text/css" href="../static/css/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app" class="pd15" v-cloak>
+    <div>
+            <Cascader :data="adddata" trigger="hover" v-model="seladdr" @on-change="handleChange"></Cascader>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+'use strict';
+new Vue({
+    el: '#app',
+    data: {
+        adddata:[],
+        seladdr:["12","1201","120102"],
+    },
+    methods: {
+            handleChange (value, selectedData) {
+                console.log(value)
+                console.log(selectedData)
+            },
+            getAddr:function(code){
+                this.$utils.ajax({
+                    url: 'http://192.168.0.251:82/api/companycenter/external/pc/v1/queryAreaList',
+                    data: {
+                        'code':code
+                    },
+                    success: (res) => {
+                        if (res.statusCode == 200) {
+                            console.log(res.data)
+                            this.adddata = res.data
+                        } else {
+                            
+                        }
+                    },
+                    error: () => {
+
+                    }
+                })
+            }
+        },
+        mounted () {
+            this.getAddr()
+        }
+});
+</script>
+
+</html>

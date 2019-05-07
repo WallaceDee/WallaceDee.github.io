@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link class="skin" rel="stylesheet" type="text/css" href="../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+</head>
+
+<body onload="utils.onload()">
+    <div id="app" v-cloak>
+        <carousel v-model="index" loop>
+            <carousel-item>
+                <img src="../static/images/01.jpg">
+            </carousel-item>
+            <carousel-item>
+                <img src="../static/images/02.jpg">
+            </carousel-item>
+            <carousel-item>
+                <img src="../static/images/03.jpg">
+            </carousel-item>
+        </carousel>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<style type="text/css">
+.ivu-carousel {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ivu-carousel-item {
+    border-radius: 10px;
+}
+
+img {
+    width: 100%;
+    border-radius: 10px;
+}
+</style>
+<script type="text/javascript">
+'use strict';
+new Vue({
+    el: '#app',
+    data: function() {
+        return {
+            index: 0
+        }
+    },
+    methods: {}
+});
+</script>
+
+</html>

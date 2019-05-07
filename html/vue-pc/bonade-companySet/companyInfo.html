@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+       <link class="skin" rel="stylesheet" type="text/css" href="../static/css/theme/default/default.css">
+       <link rel="stylesheet" type="text/css" href="../static/css/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+    <style>
+    .title-line{
+        font-size: 17px;
+        color: #666;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #dedede;
+        margin-bottom: 20px;
+        }
+        .pd15{
+        padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="pd15" v-cloak>
+        
+            <tabs>
+                <tab-pane label="基本信息">
+                    <!-- <div class="title-line">基本信息</div> -->
+                    <i-Form :model="companyform" :label-width="130" :rules="infoVle" ref="infoVle">
+                        <form-item label="企业LOGO">
+                            <upload-img  ref="uploadImg" :defaultimg="imgArr" :max="1" @on-change="getImg"></upload-img>
+                            【认证企业专享】建议上传图片尺寸为640*640，大小不超过3M
+                        </form-item>
+                        <form-item label="企业名称" :required="true">
+                            <i-Input v-model="companyform.companyName" disabled placeholder="请输入企业名称..." style="max-width:450px"></i-Input>
+                        </form-item>
+                        <form-item label="企业简称">
+                            <i-Input  v-model="companyform.companyShortName" :maxlength="30" placeholder="请输入企业简称..." style="max-width:450px"></i-Input>
+                        </form-item>
+                        <form-item label="联系人">
+                            <i-Input v-model="companyform.contactPerson" :maxlength="10" placeholder="请输入联系人..." style="max-width:450px"></i-Input>
+                        </form-item>
+                        <form-item label="联系电话" prop="contactPersonMobile">
+                            <i-Input v-model="companyform.contactPersonMobile" :maxlength="18" placeholder="请输入联系电话..." style="max-width:450px"></i-Input>
+                        </form-item>
+                        <form-item label="企业地址" >
+                            <addr-picker :defaultaddr="defaultArr" :disabled="false" @on-change="getaddr"></addr-picker>
+                            <!-- <Cascader :data="adddata" trigger="hover" v-model="seladdr" @on-change="handleChange"></Cascader> -->
+                        </form-item>
+                        <form-item label="详细地址">
+                            <i-Input v-model="companyform.companyAddress" :maxlength="100" style="max-width:450px" type="textarea" :autosize="{minRows: 3,maxRows: 5}" placeholder="请输入详细地址..."></i-Input>
+                        </form-item>
+                        <form-item prop="companyShortName">
+                            <i-Button type="primary" v-if="buttons.hasPermission('company.baseinfo.save')" :loading="loading1" @click="saveData">
+                                <span v-if="!loading1">保存</span>
+                                <span v-else>请求中...</span>
+                            </i-Button>
+                        </form-item>
+                    </i-Form>
+                </tab-pane>
+                <tab-pane label="完善认证">
+                    <div style="margin-top:50px;padding-bottom: 10px;">
+                            <row type="flex" justify="center" class="code-row-bg">
+                                    <i-col span="18">
+                                        <card>
+                                            <row type="flex" justify="center" align="middle">
+                                                <i-col span="4">
+                                                    <div style="text-align: center;">
+                                                            <img src="img/group24@2x.png" width="68px" alt="">
+                                                    </div>
+                                                </i-col>
+                                                <i-col span="14" >
+                                                    <div >
+                                                        <card :bordered="false" dis-hover>
+                                                            <p slot="title">资质认证</p>
+                                                            <p>企业和法人相关信息内容。 </p>
+                                                        </card>
+                                                    </div>
+                                                </i-col>
+                                                <i-col span="6" >
+                                                    <div v-if="companyform.verifyStatus == 0" style="text-align: right;padding-right: 10px">
+                                                            <icon type="ios-alert-outline" size="35" color="#f90" > </icon>
+                                                            <span style="font-size: 14px;vertical-align: middle;"> 未认证 </span>
+                                                            <span style="font-size: 14px;font-weight: bold"> | </span>
+                                                            <span style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openzizhiM(false)">去认证</span>
+                                                    </div>
+                                                    <div v-if="companyform.verifyStatus == 1" style="text-align: right;padding-right: 10px">
+                                                            <icon type="ios-loading" size="35" color="#4c76a2" ></icon>
+                                                            <span style="font-size: 14px;vertical-align: middle;"> 认证中 </span>
+                                                            <span v-if="buttons.hasPermission('company.qualification.save')" style="font-size: 14px;font-weight: bold"> | </span>
+                                                            <span v-if="buttons.hasPermission('company.qualification.save')" style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openzizhiM(false)">修改</span>
+                                                    </div>
+                                                    <div v-if="companyform.verifyStatus == 2" style="text-align: right;padding-right: 10px">
+                                                            <icon type="ios-checkmark-circle-outline" size="35" color="#19be6b" ></icon>
+                                                            <span style="font-size: 14px;vertical-align: middle;"> 已认证 </span>
+                                                            <span style="font-size: 14px;font-weight: bold"> | </span>
+                                                            <span style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openzizhiM(true)">查看</span>
+                                                    </div>
+                                                    <div v-if="companyform.verifyStatus == 3" style="text-align: right;padding-right: 10px">
+                                                            <icon type="ios-alert-outline" size="35" color="#f90" > </icon>
+                                                            <span style="font-size: 14px;vertical-align: middle;"> 认证失败 </span>
+                                                            <span v-if="buttons.hasPermission('company.qualification.save')" style="font-size: 14px;font-weight: bold"> | </span>
+                                                            <span v-if="buttons.hasPermission('company.qualification.save')" style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openzizhiM(false)">去认证</span>
+                                                    </div>
+                                                </i-col>
+                                            </row>
+                                        </card>
+                                    </i-col>
+                            </row>
+                            <br><br><br><br>
+                            <row type="flex" justify="center" class="code-row-bg">
+                                    <i-col span="18">
+                                        <card>
+                                            <row type="flex" justify="center" align="middle">
+                                                <i-col span="4">
+                                                    <div style="text-align: center;">
+                                                            <img src="img/group25@2x.png" width="68px" alt="">
+                                                    </div>
+                                                </i-col>
+                                                <i-col span="14" >
+                                                    <div >
+                                                        <card :bordered="false" dis-hover>
+                                                            <p slot="title">票据主体认证</p>
+                                                            <p>企业票据信息和开户信息内容。 </p>
+                                                        </card>
+                                                    </div>
+                                                </i-col>
+                                                <i-col span="6" >
+                                                	 <!--v-if="companyform.billStatus == 0"--> 
+                                                        <div v-if="companyform.billStatus == 0" style="text-align: right;padding-right: 10px">
+                                                                <icon type="ios-alert-outline" size="35" color="#f90" > </icon>
+                                                                <span style="font-size: 14px;vertical-align: middle;"> 未认证 </span>
+                                                                <span style="font-size: 14px;font-weight: bold"> | </span>
+                                                                <span style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openpiaojuM(false)">去认证</span>
+                                                        </div>
+                                                        <div v-if="companyform.billStatus == 1" style="text-align: right;padding-right: 10px">
+                                                                <icon type="ios-loading" size="35" color="#4c76a2" ></icon>
+                                                                <span style="font-size: 14px;vertical-align: middle;"> 认证中 </span>
+                                                                <span v-if="buttons.hasPermission('company.bill.save')" style="font-size: 14px;font-weight: bold"> | </span>
+                                                                <span v-if="buttons.hasPermission('company.bill.save')" style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openpiaojuM(false)">修改</span>
+                                                        </div>
+                                                        <div v-if="companyform.billStatus == 2" style="text-align: right;padding-right: 10px">
+                                                                <icon type="ios-checkmark-circle-outline" size="35" color="#19be6b" ></icon>
+                                                                <span style="font-size: 14px;vertical-align: middle;"> 已认证 </span>
+                                                                <span style="font-size: 14px;font-weight: bold"> | </span>
+                                                                <span style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openpiaojuM(true)">查看</span>
+                                                        </div>
+                                                        <div v-if="companyform.billStatus == 3" style="text-align: right;padding-right: 10px">
+                                                                <icon type="ios-alert-outline" size="35" color="#f90" > </icon>
+                                                                <span style="font-size: 14px;vertical-align: middle;"> 认证失败 </span>
+                                                                <span v-if="buttons.hasPermission('company.bill.save')" style="font-size: 14px;font-weight: bold"> | </span>
+                                                                <span v-if="buttons.hasPermission('company.bill.save')" style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openpiaojuM(false)">去认证</span>
+                                                        </div>
+                                                </i-col>
+                                            </row>
+                                        </card>
+                                    </i-col>
+                            </row>
+                            <br><br><br><br>
+                            <row v-if="companyform.transferStatus == 1" type="flex" justify="center" class="code-row-bg">
+                                    <i-col span="18">
+                                        <card>
+                                            <row type="flex" justify="center" align="middle">
+                                                <i-col span="4">
+                                                    <div style="text-align: center;">
+                                                            <img src="img/group26@2x.png" width="68px" alt="">
+                                                    </div>
+                                                </i-col>
+                                                <i-col span="14" >
+                                                    <div >
+                                                        <card :bordered="false" dis-hover>
+                                                            <p slot="title">打款状态</p>
+                                                            <p>企业汇款验证信息确认。</p>
+                                                        </card>
+                                                    </div>
+                                                </i-col>
+                                                <i-col span="6" >
+                                                    <div style="text-align: right;padding-right: 10px">
+                                                            <icon type="ios-checkmark-circle-outline" size="35" color="#19be6b" ></icon>
+                                                            <span style="font-size: 14px;vertical-align: middle;"> 已认证 </span>
+                                                            <!-- <span style="font-size: 14px;font-weight: bold"> | </span>
+                                                            <span style="font-size: 14px;color:#368df9;vertical-align: middle;cursor:pointer;" v-on:click="openpiaojuM(true)">查看</span> -->
+                                                    </div>
+                                                </i-col>
+                                            </row>
+                                        </card>
+                                    </i-col>
+                            </row>
+                    </div>
+
+                </tab-pane>
+            </tabs>
+            
+            <drawer title="资质认证" v-model="zizhiM" width="80%">
+                <div class="drawer-footer" v-if="!isDisabled">
+                    <i-button @click="closezizhiM">取消</i-button>
+                    <i-button type="primary" :loading="loading1" @click="saveZizhiData('save')">
+                            <span v-if="!loading1">保存</span>
+                            <span v-else>请求中...</span>
+                    </i-button>
+                    <i-button type="primary" :loading="loading1" @click="saveZizhiData('submit')">
+                            <span v-if="!loading1">提交</span>
+                            <span v-else>请求中...</span>
+                    </i-button>
+                </div>
+                <div class="drawer-box" >
+                    <i-Form :model="zizhiForm" :label-width="130" :rules="zizhiVle" ref="zizhiVle">
+                            <form-item label="企业营业执照" :required="true">
+                                <upload-img  ref="uploadImg" :disabled="isDisabled" :defaultimg="defaultZZ1" :max="1" @on-change="getzizhiImg1"></upload-img>    
+                                <span v-show="!isDisabled">建议上传图清晰/可认/无高光，大小不超过2M</span>
+                            </form-item>
+                            <form-item label="授权委托书">
+                                <upload-img  ref="uploadImg" :disabled="isDisabled" :defaultimg="defaultZZ2" :max="1" @on-change="getzizhiImg2"></upload-img>    
+                                <!-- <bnd-uploadimg  ref="uploadImg" :defaultimg="imgArr" :max="2" @on-change="getImg"></bnd-uploadimg> -->
+                                <span v-show="!isDisabled">建议上传图清晰/可认/无高光，大小不超过2M</span>
+                            </form-item>
+                            <form-item label="统一社会信用代码" prop="creditCode">
+                                <i-Input v-show="!isDisabled" v-model="zizhiForm.creditCode" :maxlength="30" placeholder="请输入统一社会信用代码..." style="max-width:450px"></i-Input>
+                            	<span v-show="isDisabled">{{zizhiForm.creditCode}}</span>
+                            </form-item>
+                            <form-item label="法人代表" prop="legalRepresentative">
+                                <i-Input v-show="!isDisabled" v-model="zizhiForm.legalRepresentative" placeholder="请输入法人代表..." style="max-width:450px"></i-Input>
+                                <span v-show="isDisabled">{{zizhiForm.legalRepresentative}}</span>
+                            </form-item>
+                            <form-item label="法人身份证号" prop="legalRepresentativeIdCard">
+                                <i-Input v-show="!isDisabled" v-model="zizhiForm.legalRepresentativeIdCard" :maxlength="30" placeholder="请输入法人身份证号..." style="max-width:450px"></i-Input>
+                            	<span v-show="isDisabled">{{zizhiForm.legalRepresentativeIdCard}}</span>
+                            </form-item>
+                            <form-item label="注册资本" prop="registeredCapital">
+                                <i-Input v-show="!isDisabled" v-model="zizhiForm.registeredCapital" :maxlength="30" placeholder="请输入注册资本..." style="max-width:450px"></i-Input>(单位：元)
+                            	<span v-show="isDisabled">{{zizhiForm.registeredCapital}}</span>
+                            </form-item>
+                            <form-item label="法人身份证正面" :required="true">
+                                <upload-img :disabled="isDisabled" ref="uploadImg" :defaultimg="defaultZZ3" :max="1" @on-change="getzizhiImg3"></upload-img>    
+                                <span v-show="!isDisabled">建议上传图清晰/可认/无高光，大小不超过2M</span>
+                            </form-item>
+                            <form-item label="法人身份证反面" :required="true">
+                                <upload-img :disabled="isDisabled" ref="uploadImg" :defaultimg="defaultZZ4" :max="1" @on-change="getzizhiImg4"></upload-img>    
+                                <span v-show="!isDisabled">建议上传图清晰/可认/无高光，大小不超过2M</span>
+                            </form-item>
+                            <form-item label="手持法人身份证照片">
+                                <upload-img :disabled="isDisabled" ref="uploadImg" :defaultimg="defaultZZ5" :max="1" @on-change="getzizhiImg5"></upload-img>    
+                                <span v-show="!isDisabled">建议上传图清晰/可认/无高光，大小不超过2M</span>		
+                            </form-item>
+                            <form-item label="经营范围">
+                                <i-Input v-show="!isDisabled" v-model="zizhiForm.businessScope" :maxlength="500" style="max-width:450px" type="textarea" :autosize="{minRows: 3,maxRows: 5}" placeholder="请输入经营范围..."></i-Input>
+                            	<span v-show="isDisabled">{{zizhiForm.businessScope}}</span>
+                            </form-item>
+
+                        </i-Form>
+                </div>
+
+            </drawer>
+
+            <drawer title="票据主体认证" v-model="piaojuM" width="80%">
+                    <div class="drawer-box" >
+                        <i-Form :model="piaojuForm" :label-width="130" :rules="piaojuVle" ref="piaojuVle">
+                                <form-item label="是否一般纳税人" :required="true" prop="taxPayer">
+                                    <radio-group v-model="piaojuForm.taxPayer" :disabled="isDisabled">
+                                        <radio label="1" :disabled="isDisabled">是</radio>
+                                        <radio label="2" :disabled="isDisabled">否</radio>
+                                    </radio-group>
+                                </form-item>
+                                <form-item label="企业名称" :required="true"> 
+                                        <i-Input v-model="piaojuForm.companyName" disabled placeholder="请输入企业名称..." style="max-width:450px"></i-Input>
+                                    </form-item>
+                                <form-item label="税号" :required="true" prop="taxPayerId">
+                                    <i-Input v-show="!isDisabled" v-model="piaojuForm.taxPayerId" :maxlength="30" placeholder="请输入税号..." style="max-width:450px"></i-Input>
+                                    <span v-show="isDisabled">{{piaojuForm.taxPayerId}}</span>
+                                </form-item>
+                                <form-item label="企业地址">
+                                    <addr-picker :defaultaddr="defaultArr" :disabled="isDisabled" @on-change="getaddr"></addr-picker>
+                                    
+                                </form-item>
+                                <form-item label="详细地址">
+                                    <i-Input v-show="!isDisabled" v-model="piaojuForm.companyAddress" :maxlength="100" style="max-width:450px" type="textarea" :autosize="{minRows: 3,maxRows: 5}" placeholder="请输入详细地址..."></i-Input>
+                                	<span v-show="isDisabled">{{piaojuForm.companyAddress}}</span>
+                                </form-item>
+                                <form-item label="联系电话" prop="contactPersonMobile">
+                                    <i-Input v-show="!isDisabled" v-model="piaojuForm.contactPersonMobile" :maxlength="18" placeholder="请输入联系电话..." style="max-width:450px"></i-Input>
+                                	<span v-show="isDisabled">{{piaojuForm.contactPersonMobile}}</span>
+                                </form-item>
+                                <form-item label="银行开户行" :required="true" prop="bankAccount">
+                                    <i-Input v-show="!isDisabled" v-model="piaojuForm.bankAccount" :maxlength="30" placeholder="请输入银行开户行..." style="max-width:450px"></i-Input>
+                                	<span v-show="isDisabled">{{piaojuForm.bankAccount}}</span>
+                                </form-item>
+                                <form-item label="银行开户账号" :required="true" prop="bankAccountPublic">
+                                    <i-Input v-show="!isDisabled" v-model="piaojuForm.bankAccountPublic" :maxlength="30" placeholder="请输入银行开户账号..." style="max-width:450px"></i-Input>
+                                	<span v-show="isDisabled">{{piaojuForm.bankAccountPublic}}</span>
+                                </form-item>
+                                <form-item label="银行开户名" >
+                                    <i-Input v-show="!isDisabled" v-model="piaojuForm.bankAccountName" :maxlength="30" placeholder="请输入银行开户名..." style="max-width:450px"></i-Input>
+                                	<span v-show="isDisabled">{{piaojuForm.bankAccountName}}</span>
+                                </form-item>
+                            </i-Form>
+                    </div>
+                    <div class="drawer-footer" v-if="!isDisabled">
+                            <i-button @click="closepiaojuM">取消</i-button>
+                            <i-button type="primary" :loading="loading1" @click="savePiaojuData('save')">
+                                    <span v-if="!loading1">保存</span>
+                                    <span v-else>请求中...</span>
+                            </i-button>
+                            <i-button type="primary" :loading="loading1" @click="savePiaojuData('submit')">
+                                    <span v-if="!loading1">提交</span>
+                                    <span v-else>请求中...</span>
+                            </i-button>
+                        </div>
+                </drawer>
+        
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+'use strict';
+new Vue({
+    el: '#app',
+    components: {
+    },
+    data:function() {
+        return {
+            buttons:[],
+            //企业信息 --start
+            imgArr:[],
+            companyform: {},
+            zizhiForm:{},
+            piaojuForm:{},
+            isDisabled:false,
+            //资质认证的五张图片
+            defaultZZ1:[],
+            defaultZZ2:[],
+            defaultZZ3:[],
+            defaultZZ4:[],
+            defaultZZ5:[],
+            addr: [],
+            defaultArr:[],
+            imgName: '',
+            visible: false,
+            loading1:false,
+            zizhiM: false,
+            piaojuM:false,
+            infoVle:{
+                contactPersonMobile:{message: '请输入正确的号码', trigger: 'change',transform(value){
+                    var myreg = /[\u4e00-\u9fa5]+/;
+                    if(myreg.test(value)){
+                        return false;
+                    }else{
+                        return value
+                    }
+                    
+                }}
+            },
+            zizhiVle:{
+                creditCode:{required: true, message: '请输入统一社会信用代码', trigger: 'change'},
+                legalRepresentative:{required: true, message: '请输入法人代表', trigger: 'change'},
+                legalRepresentativeIdCard:{required: true, message: '法人身份证号', trigger: 'change'},
+                registeredCapital:{required: true,message: '请输入注册资本', trigger: 'change'}
+            },
+            piaojuVle:{
+                taxPayer:{required: true, message: '请选择一般纳税人', trigger: 'change'},
+                taxPayerId:{required: true, message: '请输入税号', trigger: 'change'},
+                bankAccount:{required: true, message: '请输入银行开户行', trigger: 'change'},
+                bankAccountPublic:{required: true,message: '请输入银行开户账号', trigger: 'change'},
+                contactPersonMobile:{ message: '请输入正确的号码', trigger: 'change',transform(value){
+                    var myreg = /[\u4e00-\u9fa5]+/;
+                    if(myreg.test(value)){
+                        return false;
+                    }else{
+                        return value
+                    }
+                    
+                }}
+            }
+        }
+    },
+    methods: {
+        toLoading () {
+            this.loading1 = true;
+        },
+        //获取企业信息的上传图片
+        getImg:function(value){
+            if(value.length>0){
+                this.companyform.companyLogo = value[0].url;
+            }else{
+                this.companyform.companyLogo = ''
+            }
+
+        },
+        //获取资质认证的上传图片
+        getzizhiImg1:function(value){
+            if(value.length>0){
+                this.zizhiForm.businessLicenseUrl = value[0].url;
+            }else{
+                this.zizhiForm.businessLicenseUrl = ''
+            }
+
+        },
+        getzizhiImg2:function(value){
+            if(value.length>0){
+                this.zizhiForm.companyEntrustUrl = value[0].url;
+            }else{
+                this.zizhiForm.companyEntrustUrl = ''
+            }
+        },
+        getzizhiImg3:function(value){
+            if(value.length>0){
+                this.zizhiForm.legalPersonPicurl = value[0].url;
+            }else{
+                this.zizhiForm.legalPersonPicurl = ''
+            }
+        },
+        getzizhiImg4:function(value){
+            if(value.length>0){
+                this.zizhiForm.legalPersonOppositePicurl = value[0].url;
+            }else{
+                this.zizhiForm.legalPersonOppositePicurl = ''
+            }
+            
+        },
+        getzizhiImg5:function(value){
+            if(value.length>0){
+                this.zizhiForm.legalPersonHoldPicurl = value[0].url;
+            }else{
+                this.zizhiForm.legalPersonHoldPicurl = ''
+            }
+            
+        },
+        //请求企业信息
+        getData:function(){
+            
+            this.$utils.ajax({
+                url: '/companycenter/comCompany/pc/v1/queryCompanyDetail',
+                data: {
+                    'companyId':window.userInfo.companyId
+                },
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res)
+                        this.companyform = res.data
+                        this.zizhiForm = res.data
+                        this.piaojuForm = res.data
+                        if(res.data.logoUrl) this.imgArr=[{url:res.data.logoUrl}]
+
+                        this.defaultArr = [res.data.companyProvince,res.data.companyCity,res.data.companyArea]
+                        // console.log(this.imgArr)
+                        
+                        //资质
+                        if(res.data.businessLicenseUrl) this.defaultZZ1=[{url:res.data.businessLicenseUrl}]
+                        if(res.data.companyEntrustUrl) this.defaultZZ2=[{url:res.data.companyEntrustUrl}]
+                        if(res.data.legalPersonPicurl) this.defaultZZ3=[{url:res.data.legalPersonPicurl}]
+                        if(res.data.legalPersonOppositePicurl) this.defaultZZ4=[{url:res.data.legalPersonOppositePicurl}]
+                        if(res.data.legalPersonHoldPicurl) this.defaultZZ5=[{url:res.data.legalPersonHoldPicurl}]
+                        
+                    } else {
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.msg
+                        });
+                    }
+                }.bind(this),
+                error: function(res) {
+                    this.$Notice.info({
+                            title: '提示',
+                            desc: res.msg
+                        });
+                }.bind(this)
+            })
+        },
+        //获取选择地址
+        getaddr:function(data){
+            this.defaultArr = data.value
+            this.companyform.companyProvince = data.value[0]
+            this.companyform.companyCity = data.value[1]
+            this.companyform.companyArea = data.value[2]
+        },
+        //保存企业信息
+        saveData:function(){
+
+            this.$refs['infoVle'].validate(function(valid) {
+                if (valid) {
+
+                this.loading1 = true;
+                // console.log(this.companyform)
+                // return
+                this.$utils.ajax({
+                    url: '/companycenter/comCompany/pc/v1/updateCompanyInfo',
+                    data: {
+                        'companyId':'2',
+                        'logoUrl':this.companyform.companyLogo,
+                        'companyName':this.companyform.companyName,
+                        'companyShortName':this.companyform.companyShortName,
+                        'contactPerson':this.companyform.contactPerson,
+                        'contactPersonMobile':this.companyform.contactPersonMobile,
+                        'companyProvince':this.companyform.companyProvince,
+                        'companyCity':this.companyform.companyCity,
+                        'companyArea':this.companyform.companyArea,
+                        'companyAddress':this.companyform.companyAddress
+                    },
+                    success: function(res) {
+                        if (res.statusCode == 200) {
+                            // console.log(res)
+                            this.getData();
+                            this.$Notice.success({
+                                title: '提示',
+                                desc: '保存成功'
+                            });
+                        } else {
+                            this.$Notice.info({
+                                title: '提示',
+                                desc: res.msg
+                            });
+                        }
+                        this.loading1 = false;
+                    }.bind(this),
+                    error: function(res) {
+                        this.loading1 = false;
+                        this.$Notice.info({
+                                title: '提示',
+                                desc: res.msg
+                        });
+                    }.bind(this)
+                })
+
+
+                }
+            }.bind(this))
+
+
+        },
+        //保存资质认证
+        saveZizhiData:function(type){
+            this.$refs['zizhiVle'].validate(function(valid) {
+                if (valid) {
+                    if(!this.zizhiForm.businessLicenseUrl || !this.zizhiForm.legalPersonPicurl || !this.zizhiForm.legalPersonOppositePicurl){
+                        this.$Notice.error({title: '提示', desc: "请上传必传图片"})
+                        return
+                    }
+
+                    this.loading1 = true;
+                    this.$utils.ajax({
+                        url: '/companycenter/comCompany/pc/v1/updateQualificationInfo',
+                        data: {
+                            'companyId':'2',
+                            'businessLicenseUrl':this.zizhiForm.businessLicenseUrl,
+                            'companyEntrustUrl':this.zizhiForm.companyEntrustUrl,
+                            'creditCode':this.zizhiForm.creditCode,
+                            'legalRepresentative':this.zizhiForm.legalRepresentative,
+                            'legalRepresentativeIdCard':this.zizhiForm.legalRepresentativeIdCard,
+                            'legalPersonPicurl':this.zizhiForm.legalPersonPicurl,
+                            'legalPersonOppositePicurl':this.zizhiForm.legalPersonOppositePicurl,
+                            'legalPersonHoldPicurl':this.zizhiForm.legalPersonHoldPicurl,
+                            'businessScope':this.zizhiForm.businessScope,
+                            'registeredCapital':this.zizhiForm.registeredCapital,
+                            'method':type
+                        },
+                        success:function (res) {
+                            if (res.statusCode == 200) {
+                                // console.log(res)
+                                this.getData();
+                                this.$Notice.success({
+                                    title: '提示',
+                                    desc: type=='submit' ?'提交成功':'保存成功'
+                                });
+                                this.closezizhiM();
+                            } else {
+                                this.$Notice.error({
+                                    title: '提示',
+                                    desc: res.msg
+                                });
+                            }
+                            this.loading1 = false;
+                        }.bind(this),
+                        error: function(res){
+                            this.loading1 = false;
+                            this.$Notice.error({
+                                    title: '提示',
+                                    desc: res.msg
+                            });
+                        }.bind(this)
+                    })
+                }
+            }.bind(this))
+        },
+        //保存票据主体认证
+        savePiaojuData:function(type){
+            this.$refs['piaojuVle'].validate(function(valid) {
+                if (valid) {
+            
+                    this.loading1 = true;
+                    this.$utils.ajax({
+                        url: '/companycenter/comCompany/pc/v1/updateBillInfo',
+                        data: {
+                            'companyId':'2',
+                            'taxPayer':this.piaojuForm.taxPayer,
+                            'taxPayerId':this.piaojuForm.taxPayerId,
+                            'companyProvince':this.companyform.companyProvince,
+                            'companyCity':this.companyform.companyCity,
+                            'companyArea':this.companyform.companyArea,
+                            'companyAddress':this.piaojuForm.companyAddress,
+                            'contactPersonMobile':this.piaojuForm.contactPersonMobile,
+                            'bankAccount':this.piaojuForm.bankAccount,
+                            'bankAccountPublic':this.piaojuForm.bankAccountPublic,
+                            'bankAccountName':this.piaojuForm.bankAccountName,
+                            'method':type
+                        },
+                        success: function(res) {
+                            if (res.statusCode == 200) {
+                                // console.log(res)
+                                this.getData();
+                                this.$Notice.success({
+                                    title: '提示',
+                                    desc: type=='submit' ?'提交成功':'保存成功'
+                                });
+                                this.closepiaojuM()
+                            } else {
+                                this.$Notice.info({
+                                    title: '提示',
+                                    desc: res.msg
+                                });
+                            }
+                            this.loading1 = false;
+                        }.bind(this),
+                        error: function(res) {
+                            this.loading1 = false;
+                            this.$Notice.info({
+                                    title: '提示',
+                                    desc: res.msg
+                            });
+                        }.bind(this)
+                    })
+
+                }
+            }.bind(this))
+
+            },
+        //打开关闭资质认证框
+        closezizhiM: function() {
+            this.zizhiM = false;
+            
+        },
+        openzizhiM: function(type) {
+            this.zizhiM = true;
+            this.isDisabled = type
+        },
+
+        //打开关闭票据认证框
+        closepiaojuM: function() {
+		    this.piaojuM = false;
+        },
+        openpiaojuM: function(type) {
+            this.piaojuM = true;
+            this.isDisabled = type
+        }
+    },
+    mounted () {
+        this.buttons = this.$utils.getButtons();
+        this.getData()
+    }
+});
+</script>
+
+</html>

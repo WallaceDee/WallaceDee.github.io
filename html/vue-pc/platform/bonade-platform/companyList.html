@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link class="skin" rel="stylesheet" type="text/css" href="../../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="app" class="pd15" v-cloak>
+        <tabs class="auto-height">
+            <tab-pane label="全部">
+                <div class="toolbar">
+                    <div class="button-wrapper">
+                        <i-button type="info" v-if="buttons.hasPermission('platform.company.create')" size="small" icon="md-add" v-on:click="openNewtab('添加企业','./bonade-platform/createCompany.html')"> 添加企业</i-button>
+                        <!-- <i-button type="info" size="small" icon="md-repeat" to="./bonade-platform/giveServe.html">授权服务</i-button> -->
+                        <!-- <i-button type="info" size="small" icon="ios-contacts" to="accountManage.html">账户管理</i-button> -->
+                        <!-- <i-button type="info" size="small" icon="md-contacts">管理员配置</i-button> -->
+                    </div>
+                    <i-form ref="formInline" :model="formInline" inline>
+                        <form-item label="注册时间:" :label-width="66" prop="user">
+                            <date-picker type="daterange" placement="bottom-end" format="yyyy-MM-dd" v-model="entryDate" placeholder="选择开始和结束时间"></date-picker>
+                        </form-item>
+                        <form-item label="资质认证:" :label-width="66" prop="verifyStatus">
+                            <i-select v-model="formInline.verifyStatus">
+                                <i-option value="0">未认证</i-option>
+                                <i-option value="1">认证中</i-option>
+                                <i-option value="2">已认证</i-option>
+                                <i-option value="3">认证失败</i-option>
+                            </i-select>
+                        </form-item>
+                        <form-item label="票据主体认证:" :label-width="120" prop="billStatus">
+                            <i-select v-model="formInline.billStatus">
+                                <i-option value="0">未认证</i-option>
+                                <i-option value="1">认证中</i-option>
+                                <i-option value="2">已认证</i-option>
+                                <i-option value="3">认证失败</i-option>
+                            </i-select>
+                        </form-item>
+                        <form-item label="打款确认:" :label-width="66" prop="transferStatus">
+                            <i-select v-model="formInline.transferStatus">
+                                <i-option value="1">是</i-option>
+                                <i-option value="0">否</i-option>
+                            </i-select>
+                        </form-item>
+                        <form-item label="企业名称:" :label-width="66" prop="companyNameLK">
+                            <i-Input v-model="formInline.companyNameLK" placeholder="请输入企业名称..." style="max-width:250px"></i-Input>
+                        </form-item>
+                        <form-item>
+                            <i-button type="primary" :loading="loading" @click="search()">
+                                <span v-if="!loading">筛选</span>
+                                <span v-else>请求中...</span>
+                            </i-button>
+                            <i-button @click="reset()">重置</i-button>
+                        </form-item>
+                    </i-form>
+                </div>
+                <i-table border :loading="loading" :columns="columns" :height="table.height" :data="data" ref="table"></i-table>
+                <!-- <i-table border :loading="staffListLoading" ref="table" :columns="columns" :data="data" @on-selection-change="changeItem" :height="table.height"></i-table> -->
+                <bnd-page :total="total" :current="formInline.page" @on-change="onPageChange" @on-page-size-change="onPageSizeChange" />
+                </bnd-page>
+            </tab-pane>
+            <tab-pane :label="label1">
+                <div class="toolbar">
+                    <div class="button-wrapper"></div>
+                    <i-form ref="zizhiFormInline" :model="zizhiFormInline" inline>
+                        <form-item label="注册时间:" :label-width="70" prop="user">
+                            <date-picker type="daterange" placement="bottom-end" format="yyyy-MM-dd" v-model="zizhiEntryDate" placeholder="选择开始和结束时间"></date-picker>
+                        </form-item>
+                        <form-item label="企业名称:" :label-width="66" prop="companyNameLK">
+                            <i-Input v-model="zizhiFormInline.companyNameLK" placeholder="请输入企业名称..." style="max-width:250px"></i-Input>
+                        </form-item>
+                        <form-item>
+                            <i-button type="primary" :loading="zizhiLoading" @click="zizhiSearch()">
+                                <span v-if="!zizhiLoading">筛选</span>
+                                <span v-else>请求中...</span>
+                            </i-button>
+                            <i-button @click="zizhiReset()">重置</i-button>
+                        </form-item>
+                    </i-form>
+                </div>
+                <i-table border :loading="zizhiLoading" :columns="zizhiColumns" :height="zizhiTable.height" :data="zizhiData" ref="zizhiTable"></i-table>
+                <bnd-page :total="zizhiTotal" :current="zizhiFormInline.page" @on-change="zizhiOnPageChange" @on-page-size-change="zizhiOnPageSizeChange" />
+                </bnd-page>
+            </tab-pane>
+            <tab-pane :label="label2">
+                <div class="toolbar">
+                    <div class="button-wrapper"></div>
+                    <i-form ref="piaojuFormInline" :model="piaojuFormInline" inline>
+                        <form-item label="注册时间:" :label-width="70" prop="user">
+                            <date-picker type="daterange" placement="bottom-end" format="yyyy-MM-dd" v-model="piaojuEntryDate" placeholder="选择开始和结束时间"></date-picker>
+                        </form-item>
+                        <form-item label="企业名称:" :label-width="66" prop="companyNameLK">
+                            <i-Input v-model="piaojuFormInline.companyNameLK" placeholder="请输入企业名称..." style="max-width:250px"></i-Input>
+                        </form-item>
+                        <form-item>
+                            <i-button type="primary" :loading="piaojuLoading" @click="piaojuSearch()">
+                                <span v-if="!piaojuLoading">筛选</span>
+                                <span v-else>请求中...</span>
+                            </i-button>
+                            <i-button @click="piaojuReset()">重置</i-button>
+                        </form-item>
+                    </i-form>
+                </div>
+                <i-table border :loading="piaojuLoading" :columns="piaojuColumns" :height="piaojuTable.height" :data="piaojuData" ref="piaojuTable"></i-table>
+                <bnd-page :total="piaojuTotal" :current="piaojuFormInline.page" @on-change="piaojuOnPageChange" @on-page-size-change="piaojuOnPageSizeChange" />
+                </bnd-page>
+            </tab-pane>
+            <tab-pane :label="label3">
+                <div class="toolbar">
+                    <div class="button-wrapper"></div>
+                    <i-form ref="dakuanFormInline" :model="dakuanFormInline" inline>
+                        <form-item label="注册时间:" :label-width="70" prop="user">
+                            <date-picker type="daterange" placement="bottom-end" format="yyyy-MM-dd" v-model="dakuanEntryDate" placeholder="选择开始和结束时间"></date-picker>
+                        </form-item>
+                        <form-item label="企业名称:" :label-width="66" prop="companyNameLK">
+                            <i-Input v-model="dakuanFormInline.companyNameLK" placeholder="请输入企业名称..." style="max-width:250px"></i-Input>
+                        </form-item>
+                        <form-item>
+                            <i-button type="primary" :loading="dakuanLoading" @click="dakuanSearch()">
+                                <span v-if="!dakuanLoading">筛选</span>
+                                <span v-else>请求中...</span>
+                            </i-button>
+                            <i-button @click="dakuanReset()">重置</i-button>
+                        </form-item>
+                    </i-form>
+                </div>
+                <i-table border :loading="dakuanLoading" :columns="dakuanColumns" :height="dakuanTable.height" :data="dakuanData" ref="dakuanTable"></i-table>
+                <bnd-page :total="dakuanTotal" :current="dakuanFormInline.page" @on-change="dakuanOnPageChange" @on-page-size-change="piaojuOnPageSizeChange" />
+                </bnd-page>
+            </tab-pane>
+        </tabs>
+        <!-- 查看企业信息 -->
+        <drawer title="企业信息" v-model="companyInfoM" width="60%">
+            <div class="drawer-footer">
+                <i-button @click="companyInfoM = false">关闭</i-button>
+                <!-- <i-button type="primary" @click="closecompanyInfoM">提交</i-button> -->
+            </div>
+            <div class="drawer-box">
+                <!-- <div class="title-line">基本信息</div> -->
+                <i-Form :model="companyInfo" :label-width="130">
+                    <form-item label="企业LOGO">
+                        <upload-img ref="uploadImg" :disabled="true" :defaultimg="companyLogo" :max="1"></upload-img>
+                    </form-item>
+                    <form-item label="企业名称">
+                        <!-- {{companyInfo.companyName}} -->
+                        <i-Input v-model="companyInfo.companyName" disabled placeholder="请输入企业名称..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="企业简称">
+                        <!-- {{companyInfo.companyShortName}} -->
+                        <i-Input v-model="companyInfo.companyShortName" placeholder="请输入企业简称..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="联系人">
+                        <!-- {{companyInfo.contactPerson}} -->
+                        <i-Input v-model="companyInfo.contactPerson" placeholder="请输入联系人..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="联系电话">
+                        <!-- {{companyInfo.contactPersonMobile}} -->
+                        <i-Input v-model="companyInfo.contactPersonMobile" placeholder="请输入联系电话..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="企业地址">
+                        <addr-picker :defaultaddr="defaultArr" :disabled="true"></addr-picker>
+                    </form-item>
+                    <form-item label="详细地址">
+                        <!-- {{companyInfo.companyAddress}} -->
+                        <i-Input v-model="companyInfo.companyAddress" style="max-width:450px" type="textarea" :autosize="{minRows: 3,maxRows: 5}" placeholder="请输入详细地址..."></i-Input>
+                    </form-item>
+                </i-Form>
+            </div>
+        </drawer>
+        <!-- 查看资质认证 -->
+        <drawer title="资质认证" v-model="zizhiM" width="60%">
+            <div class="drawer-footer">
+                <i-button @click="closezizhiM">关闭</i-button>
+                <i-button v-show="companyInfo.verifyStatus == 1" type="error" :loading="saveloading" @click="zihziSave('0')">
+                    <span v-if="!saveloading">拒绝</span>
+                    <span v-else>请求中...</span>
+                </i-button>
+                <i-button v-show="companyInfo.verifyStatus == 1" type="success" :loading="saveloading" @click="zihziSave('1')">
+                    <span v-if="!saveloading">同意</span>
+                    <span v-else>请求中...</span>
+                </i-button>
+            </div>
+            <div class="drawer-box">
+                <i-Form :model="companyInfo" :label-width="130">
+                    <form-item label="企业营业执照">
+                        <upload-img ref="uploadImg" :disabled="true" :defaultimg="defaultZZ1" :max="1"></upload-img>
+                    </form-item>
+                    <form-item label="授权委托书">
+                        <upload-img ref="uploadImg" :disabled="true" :defaultimg="defaultZZ2" :max="1"></upload-img>
+                    </form-item>
+                    <form-item label="统一社会信用代码">
+                        <i-Input v-model="companyInfo.creditCode" placeholder="请输入统一社会信用代码..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="法人代表">
+                        <i-Input v-model="companyInfo.legalRepresentative" placeholder="请输入法人代表..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="法人身份证号">
+                        <i-Input v-model="companyInfo.legalRepresentativeIdCard" placeholder="请输入法人身份证号..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="注册资本">
+                        <i-Input v-model="companyInfo.registeredCapital" placeholder="请输入注册资本..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="法人身份证正面">
+                        <upload-img ref="uploadImg" :disabled="true" :defaultimg="defaultZZ3" :max="1"></upload-img>
+                    </form-item>
+                    <form-item label="法人身份证反面">
+                        <upload-img ref="uploadImg" :disabled="true" :defaultimg="defaultZZ4" :max="1"></upload-img>
+                    </form-item>
+                    <form-item label="手持法人身份证照片">
+                        <upload-img ref="uploadImg" :disabled="true" :defaultimg="defaultZZ5" :max="1"></upload-img>
+                    </form-item>
+                    <form-item label="经营范围">
+                        <i-Input v-model="companyInfo.businessScope" style="max-width:450px" type="textarea" :autosize="{minRows: 3,maxRows: 5}" placeholder="请输入经营范围..."></i-Input>
+                    </form-item>
+                </i-Form>
+            </div>
+        </drawer>
+        <!-- 查看票据认证 -->
+        <drawer title="票据认证" v-model="piaojuM" width="60%">
+            <div class="drawer-footer">
+                <i-button @click="closepiaojuM">关闭</i-button>
+                <i-button v-show="companyInfo.billStatus == 1" type="error" :loading="saveloading" @click="piaojuSave('0')">
+                    <span v-if="!saveloading">拒绝</span>
+                    <span v-else>请求中...</span>
+                </i-button>
+                <i-button v-show="companyInfo.billStatus == 1" type="success" :loading="saveloading" @click="piaojuSave('1')">
+                    <span v-if="!saveloading">同意</span>
+                    <span v-else>请求中...</span>
+                </i-button>
+            </div>
+            <div class="drawer-box">
+                <i-Form :model="companyInfo" :label-width="130">
+                    <form-item label="是否一般纳税人">
+                        <radio-group v-model="companyInfo.taxPayer">
+                            <radio label="1">是</radio>
+                            <radio label="2">否</radio>
+                        </radio-group>
+                    </form-item>
+                    <form-item label="企业名称">
+                        <i-Input v-model="companyInfo.companyName" disabled placeholder="请输入企业名称..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="税号">
+                        <i-Input v-model="companyInfo.taxPayerId" placeholder="请输入税号..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="企业地址">
+                        <addr-picker :defaultaddr="defaultArr" :disabled="false"></addr-picker>
+                    </form-item>
+                    <form-item label="详细地址">
+                        <i-Input v-model="companyInfo.companyAddress" style="max-width:450px" type="textarea" :autosize="{minRows: 3,maxRows: 5}" placeholder="请输入详细地址..."></i-Input>
+                    </form-item>
+                    <form-item label="联系电话">
+                        <i-Input v-model="companyInfo.contactPersonMobile" placeholder="请输入联系电话..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="银行开户行">
+                        <i-Input v-model="companyInfo.bankAccount" placeholder="请输入银行开户行..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="银行开户账号">
+                        <i-Input v-model="companyInfo.bankAccountPublic" placeholder="请输入银行开户账号..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="银行开户名">
+                        <i-Input v-model="companyInfo.bankAccountName" placeholder="请输入银行开户名..." style="max-width:450px"></i-Input>
+                    </form-item>
+                </i-Form>
+            </div>
+        </drawer>
+        <!-- 打款确认 -->
+        <drawer title="打款确认" v-model="dakuanM" width="60%">
+            <div class="drawer-footer">
+                <i-button @click="closedakuanM">关闭</i-button>
+                <!-- <i-button type="error" :loading="saveloading" @click="dakuanSave('save')">
+                                <span v-if="!saveloading">拒绝</span>
+                                <span v-else>请求中...</span>
+                        </i-button> -->
+                <i-button type="success" :loading="saveloading" @click="dakuanSave()">
+                    <span v-if="!saveloading">确认</span>
+                    <span v-else>请求中...</span>
+                </i-button>
+            </div>
+            <div class="drawer-box">
+                <i-Form :model="companyInfo" :label-width="130" :rules="dakuanVle" ref="dakuanVle">
+                    <form-item label="打款凭证" :required="true">
+                        <upload-img ref="uploadImg" :defaultimg="defaultdakuan" @on-change="getTransferPicurl" :max="1"></upload-img>
+                        线下收集凭证，客服进行上传，客户企业打款上传的凭证
+                    </form-item>
+                    <form-item label="打款时间" :required="true" prop="transferTime">
+                        <date-picker type="date" placeholder="选择打款时间" v-model="companyInfo.transferTime"></date-picker>
+                        <!-- <i-Input v-model="dakuanForm.transferTime" placeholder="请输入打款时间..." style="max-width:450px"></i-Input> -->
+                    </form-item>
+                    <form-item label="打款银行" :required="true" prop="transferBank">
+                        <i-Input v-model="companyInfo.transferBank" placeholder="请输入打款银行..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="备注">
+                        <i-Input v-model="companyInfo.transferDesc" style="max-width:450px" type="textarea" :autosize="{minRows: 3,maxRows: 5}" placeholder="请输入备注信息..."></i-Input>
+                    </form-item>
+                </i-Form>
+            </div>
+        </drawer>
+        <!-- 管理员配置 -->
+        <drawer title="管理员配置" v-model="adminM" width="80%">
+            <div class="drawer-box">
+                <div class="toolbar">
+                    <div class="button-wrapper">
+                        <i-button type="info" icon="md-add" v-on:click="openCreateAdminM">创建新管理员</i-button>
+                        <i-button type="info" icon="md-checkmark" v-on:click="openBeforeAdminM">选择已有管理员</i-button>
+                    </div>
+                </div>
+                <i-table border :loading="loading" :columns="adminColumns" :data="adminList" ref="table2"></i-table>
+            </div>
+        </drawer>
+        <!-- 创建新管理员 -->
+        <drawer title="创建新管理员" v-model="CreateAdminM" width="70%">
+            <div class="drawer-box">
+                <i-Form :model="createAdminForm" :label-width="130" :rules="createAdminVle" ref="createAdminVle">
+                    <!-- <form-item label="管理员昵称：">
+                            <i-Input v-model="companyInfo.transferBank" placeholder="管理员昵称..." style="max-width:450px"></i-Input>
+                        </form-item> -->
+                    <form-item label="管理员账号：" prop="account">
+                        <i-Input v-model="createAdminForm.account" :maxlength="20" placeholder="输入管理员账号..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item label="密码：" prop="adminPassword">
+                        <i-Input v-model="createAdminForm.adminPassword" :maxlength="20" placeholder="输入密码..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item>
+                        <i-Button :loading="saveloading" @click="closeCreateAdminM">
+                            <span>关闭</span>
+                        </i-Button>
+                        <i-Button type="primary" :loading="saveloading" @click="saveCreateAdmin">
+                            <span v-if="!saveloading">创建</span>
+                            <span v-else>请求中...</span>
+                        </i-Button>
+                    </form-item>
+                </i-Form>
+            </div>
+        </drawer>
+        <!-- 修改管理员密码 -->
+        <drawer title="修改管理员" v-model="editAdminFormVisible" width="70%">
+            <div class="drawer-box">
+                <i-form :model="editAdminForm" :label-width="130" :rules="editAdminFormRules" ref="editAdminForm">
+                    <form-item label="管理员账号：" prop="account">
+                        <i-Input v-model="editAdminForm.account" :maxlength="20" placeholder="输入管理员账号..." style="max-width:450px" disabled></i-Input>
+                    </form-item>
+                    <form-item label="密码：" prop="adminPassword">
+                        <i-Input v-model="editAdminForm.adminPassword" :maxlength="20" placeholder="输入密码..." style="max-width:450px"></i-Input>
+                    </form-item>
+                    <form-item>
+                        <i-Button :loading="saveloading" @click="closeEditDrawer">
+                            <span>关闭</span>
+                        </i-Button>
+                        <i-Button type="primary" :loading="saveloading" @click="editAdmin">
+                            <span v-if="!saveloading">修改</span>
+                            <span v-else>请求中...</span>
+                        </i-Button>
+                    </form-item>
+                </i-form>
+            </div>
+        </drawer>
+        <!-- 选择已有管理员 -->
+        <drawer title="选择已有管理员" v-model="BeforeAdminM" width="70%">
+            <div class="drawer-box">
+                <i-table border :loading="loading" :columns="beforeAdminColumns" :data="beforeAdminList" ref="table3"></i-table>
+                <bnd-page :total="total2" :current="formInline2.page" @on-change="onPageChange2" @on-page-size-change="onPageSizeChange2" />
+                </bnd-page>
+            </div>
+        </drawer>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+'use strict';
+new Vue({
+    el: '#app',
+    components: {},
+    data: function () {
+        return {
+            editAdminFormVisible: false,
+            editAdminForm: {},
+            editAdminFormRules: {
+                account: { required: true, message: '请填写账号', trigger: 'change' },
+                adminPassword: { required: true, message: '请填写密码', trigger: 'change' }
+            },
+            label1: (h) => {
+                return h('div', [
+                    h('span', '资质认证'),
+                    h('Badge', {
+                        props: {
+                            count: this.zizhiTotal
+                        }
+                    })
+                ])
+            },
+            label2: (h) => {
+                return h('div', [
+                    h('span', '票据主体认证'),
+                    h('Badge', {
+                        props: {
+                            count: this.piaojuTotal
+                        }
+                    })
+                ])
+            },
+            label3: (h) => {
+                return h('div', [
+                    h('span', '打款确认'),
+                    h('Badge', {
+                        props: {
+                            count: this.dakuanTotal
+                        }
+                    })
+                ])
+            },
+            buttons: [],
+            pk: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDFbuyHjN4+18OjRSyzOUli1Ic0tD/ZkfoDeHHTD3S6v/sVnfczpafqz7fNXUFCyO7mJlM58IAHoHGvrjhCXs5E29ySI62Qk5tC9g1ofrDcp9DLS3HsBZVfwqVlgtTPV64IUSMckP9ZPradAoyUY5oGXJhkHP+MAEaHaIYaSlgmiQIDAQAB',
+            currentItem: '',
+            saveloading: false,
+            companyInfoM: false,
+            zizhiM: false,
+            piaojuM: false,
+            dakuanM: false,
+            CreateAdminM: false,
+            BeforeAdminM: false,
+            dakuanForm: {},
+            createAdminForm: {},
+            beforeAdminList: [],
+            currentRow: '',
+            adminPassword: '',
+            dakuanVle: {
+                transferTime: { required: true, type: 'date', message: '请选择打款时间', trigger: 'change' },
+                transferBank: { required: true, message: '请输入打款银行', trigger: 'change' }
+            },
+            createAdminVle: {
+                account: { required: true, message: '请填写账号', trigger: 'change' },
+                adminPassword: { required: true, message: '请填写密码', trigger: 'change' }
+            },
+            table: {
+                height: 300, //初始化高度
+                // otherHeight: 65,//多余高度，等价于 css calc( 100% - 65px);
+                //minHeight:0
+            },
+            table2: {
+                height: 300, //初始化高度
+                // otherHeight: 65,//多余高度，等价于 css calc( 100% - 65px);
+                //minHeight:0
+            },
+            table3: {
+                height: 300, //初始化高度
+                // otherHeight: 65,//多余高度，等价于 css calc( 100% - 65px);
+                //minHeight:0
+            },
+            loading: false,
+            total: 0,
+            total2: 0,
+            entryDate: '',
+            columns: [ //企业管理表头object数据
+                // {
+                //     type: 'selection',
+                //     width: 50,
+                //     align: 'center'
+                // },
+                { type: 'index', title: '序号', minWidth: 60, align: 'center' },
+                { title: '企业名称', minWidth: 200, align: 'center', key: 'companyName' },
+                { title: '企业简称', minWidth: 200, align: 'center', key: 'companyShortName' },
+                { title: '注册时间', minWidth: 150, align: 'center', key: 'createTime' },
+                { title: '平台来源', minWidth: 100, align: 'center', key: 'registerSource' },
+                { title: '资质认证', key: 'verifyStatus', align: 'center', minWidth: 100 },
+                { title: '票据主体认证', minWidth: 150, align: 'center', key: 'billStatus' },
+                { title: '打款确认', minWidth: 100, align: 'center', key: 'transferStatus' },
+                { title: '更新时间', minWidth: 150, align: 'center', key: 'updateTime' },
+                {
+                    title: '操作',
+                    key: 'action',
+                    fixed: 'right',
+                    minWidth: 240,
+                    render: function (h, params) {
+                        // console.log(params)
+                        var buttons = [];
+                        var BUTTON_LIST = { //表格操作栏内的所有按钮列表，以键值定义对象，方便后面判断，用code做key，按钮做value
+                            "platform.company.info": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '1');
+                                    }.bind(this)
+                                }
+                            }, '企业信息'),
+                            "platform.company.aptitude": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '2');
+                                    }.bind(this)
+                                }
+                            }, '资质认证'),
+                            "platform.company.bill": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '3');
+                                    }.bind(this)
+                                }
+                            }, '票据主体认证'),
+                            "platform.company.remit": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '4');
+                                    }.bind(this)
+                                }
+                            }, '打款确认'),
+                            "platform.company.authorize": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        window.parent.$tabs.openTab({
+                                            label: '授权服务',
+                                            path: "./bonade-platform/giveServe.html?companyId=" + params.row.companyId
+                                        })
+                                    }.bind(this)
+                                }
+                            }, '授权服务'),
+                            "platform.company.setting": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.openAdminM(params);
+                                    }.bind(this)
+                                }
+                            }, '管理员配置'),
+                            "platform.company.edit": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        window.parent.$tabs.openTab({
+                                            label: '编辑企业信息',
+                                            path: "./bonade-platform/createCompany.html?companyId=" + params.row.companyId
+                                        })
+                                    }.bind(this)
+                                }
+                            }, '编辑')
+
+                        }
+
+                        for (var button in BUTTON_LIST) {
+                            if (this.buttons.hasPermission(button)) { buttons.push(BUTTON_LIST[button]) }
+                        }
+
+
+                        return h('div', buttons);
+
+
+                    }.bind(this)
+                }
+            ],
+            adminColumns: [
+                { type: 'index', title: '序号', minWidth: 60, align: 'center' },
+                { title: '姓名', minWidth: 200, align: 'center', key: 'account' },
+                { title: 'ID', minWidth: 200, align: 'center', key: 'id' },
+                {
+                    title: '操作',
+                    key: 'action',
+                    // fixed:'right',
+                    minWidth: 290,
+                    align: 'center',
+                    render: function (h, params) {
+                        // console.log(params)
+                        return h('div', [
+                            h('a', {
+                                style: {
+                                    marginRight: '10px'
+                                },
+                                on: {
+                                    click: function () {
+                                        this.openEditDrawer(params.row)
+                                    }.bind(this)
+                                }
+                            }, '修改密码'),
+                            h('span', {
+                                props: {
+                                    // type: 'primary',
+                                    // size: 'small'
+                                },
+                                style: {
+                                    cursor: "pointer",
+                                    color: "#ed4014"
+                                },
+                                on: {
+                                    click: function () {
+                                        // this.getCompanyInfo(params,'2');
+                                        this.delAdmin(params.row)
+                                    }.bind(this)
+                                }
+                            }, '移除该管理员')
+                        ]);
+                    }.bind(this)
+                }
+            ],
+            beforeAdminColumns: [
+                { type: 'index', title: '序号', minWidth: 60, align: 'center' },
+                { title: '姓名', minWidth: 150, align: 'center', key: 'account' },
+                { title: '所属公司', minWidth: 150, align: 'center', key: 'desc' },
+                {
+                    title: '操作',
+                    key: 'action',
+                    // fixed:'right',
+                    minWidth: 100,
+                    align: 'center',
+                    render: function (h, params) {
+                        // console.log(params)
+                        return h('div', [
+                            h('span', {
+                                props: {
+                                    // type: 'primary',
+                                    // size: 'small'
+                                },
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#2d8cf0"
+                                },
+                                on: {
+                                    click: function () {
+                                        // this.getCompanyInfo(params,'2');
+                                        this.selAdmin(params.row)
+                                    }.bind(this)
+                                }
+                            }, '选择该管理员')
+                        ]);
+                    }.bind(this)
+                }
+            ],
+            adminList: [],
+            data: [],
+            companyInfo: {},
+            companyLogo: [],
+            defaultZZ1: [],
+            defaultZZ2: [],
+            defaultZZ3: [],
+            defaultZZ4: [],
+            defaultZZ5: [],
+            defaultArr: [],
+            defaultdakuan: [],
+            formInline: {
+                page: 1,
+                rows: '10',
+                companyNameLK: ''
+            },
+            formInline2: {
+                page: 1,
+                rows: '10'
+            },
+            //资质列表-----star
+            zizhiFormInline: {
+                page: 1,
+                rows: '10',
+                verifyStatus: 1,
+                companyNameLK: '',
+            },
+            zizhiData: [],
+            zizhiTotal: 0,
+            zizhiEntryDate: '',
+            zizhiColumns: [
+                { type: 'index', title: '序号', minWidth: 60, align: 'center' },
+                { title: '企业名称', minWidth: 200, align: 'center', key: 'companyName' },
+                { title: '企业简称', minWidth: 200, align: 'center', key: 'companyShortName' },
+                { title: '注册时间', minWidth: 150, align: 'center', key: 'createTime' },
+                { title: '平台来源', minWidth: 100, align: 'center', key: 'registerSource' },
+                { title: '资质认证', key: 'verifyStatus', align: 'center', minWidth: 100 },
+                { title: '票据主体认证', minWidth: 150, align: 'center', key: 'billStatus' },
+                { title: '打款确认', minWidth: 100, align: 'center', key: 'transferStatus' },
+                { title: '更新时间', minWidth: 150, align: 'center', key: 'updateTime' },
+                {
+                    title: '操作',
+                    key: 'action',
+                    fixed: 'right',
+                    minWidth: 240,
+                    render: function (h, params) {
+                        // console.log(params)
+                        var buttons = [];
+                        var BUTTON_LIST = { //表格操作栏内的所有按钮列表，以键值定义对象，方便后面判断，用code做key，按钮做value
+                            "platform.company.info": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '1');
+                                    }.bind(this)
+                                }
+                            }, '企业信息'),
+                            "platform.company.aptitude": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '2');
+                                    }.bind(this)
+                                }
+                            }, '审核')
+
+
+                        }
+
+                        for (var button in BUTTON_LIST) {
+                            if (this.buttons.hasPermission(button)) { buttons.push(BUTTON_LIST[button]) }
+                        }
+
+
+                        return h('div', buttons);
+
+
+                    }.bind(this)
+                }
+            ],
+            zizhiTable: { height: 300 },
+            zizhiLoading: false,
+            //资质列表----end
+
+            //票据列表-----star
+            piaojuFormInline: {
+                page: 1,
+                rows: '10',
+                billStatus: 1,
+                companyNameLK: '',
+            },
+            piaojuData: [],
+            piaojuTotal: 0,
+            piaojuEntryDate: '',
+            piaojuColumns: [
+                { type: 'index', title: '序号', minWidth: 60, align: 'center' },
+                { title: '企业名称', minWidth: 200, align: 'center', key: 'companyName' },
+                { title: '企业简称', minWidth: 200, align: 'center', key: 'companyShortName' },
+                { title: '注册时间', minWidth: 150, align: 'center', key: 'createTime' },
+                { title: '平台来源', minWidth: 100, align: 'center', key: 'registerSource' },
+                { title: '资质认证', key: 'verifyStatus', align: 'center', minWidth: 100 },
+                { title: '票据主体认证', minWidth: 150, align: 'center', key: 'billStatus' },
+                { title: '打款确认', minWidth: 100, align: 'center', key: 'transferStatus' },
+                { title: '更新时间', minWidth: 150, align: 'center', key: 'updateTime' },
+                {
+                    title: '操作',
+                    key: 'action',
+                    fixed: 'right',
+                    minWidth: 240,
+                    render: function (h, params) {
+                        // console.log(params)
+                        var buttons = [];
+                        var BUTTON_LIST = { //表格操作栏内的所有按钮列表，以键值定义对象，方便后面判断，用code做key，按钮做value
+                            "platform.company.info": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '1');
+                                    }.bind(this)
+                                }
+                            }, '企业信息'),
+                            "platform.company.aptitude": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '3');
+                                    }.bind(this)
+                                }
+                            }, '审核')
+
+
+                        }
+
+                        for (var button in BUTTON_LIST) {
+                            if (this.buttons.hasPermission(button)) { buttons.push(BUTTON_LIST[button]) }
+                        }
+
+
+                        return h('div', buttons);
+
+
+                    }.bind(this)
+                }
+            ],
+            piaojuTable: { height: 300 },
+            piaojuLoading: false,
+            //票据列表----end
+
+            //打款列表-----star
+            dakuanFormInline: {
+                page: 1,
+                rows: '10',
+                transferStatus: 0,
+                companyNameLK: '',
+            },
+            dakuanData: [],
+            dakuanTotal: 0,
+            dakuanEntryDate: '',
+            dakuanColumns: [
+                { type: 'index', title: '序号', minWidth: 60, align: 'center' },
+                { title: '企业名称', minWidth: 200, align: 'center', key: 'companyName' },
+                { title: '企业简称', minWidth: 200, align: 'center', key: 'companyShortName' },
+                { title: '注册时间', minWidth: 150, align: 'center', key: 'createTime' },
+                { title: '平台来源', minWidth: 100, align: 'center', key: 'registerSource' },
+                { title: '资质认证', key: 'verifyStatus', align: 'center', minWidth: 100 },
+                { title: '票据主体认证', minWidth: 150, align: 'center', key: 'billStatus' },
+                { title: '打款确认', minWidth: 100, align: 'center', key: 'transferStatus' },
+                { title: '更新时间', minWidth: 150, align: 'center', key: 'updateTime' },
+                {
+                    title: '操作',
+                    key: 'action',
+                    fixed: 'right',
+                    minWidth: 240,
+                    render: function (h, params) {
+                        // console.log(params)
+                        var buttons = [];
+                        var BUTTON_LIST = { //表格操作栏内的所有按钮列表，以键值定义对象，方便后面判断，用code做key，按钮做value
+                            "platform.company.info": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '1');
+                                    }.bind(this)
+                                }
+                            }, '企业信息'),
+                            "platform.company.aptitude": h('div', {
+                                props: {},
+                                style: {
+                                    marginRight: '10px',
+                                    cursor: "pointer",
+                                    color: "#338bf8",
+                                    display: "inline-block"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.getCompanyInfo(params, '4');
+                                    }.bind(this)
+                                }
+                            }, '审核')
+
+
+                        }
+
+                        for (var button in BUTTON_LIST) {
+                            if (this.buttons.hasPermission(button)) { buttons.push(BUTTON_LIST[button]) }
+                        }
+
+
+                        return h('div', buttons);
+
+
+                    }.bind(this)
+                }
+            ],
+            dakuanTable: { height: 300 },
+            dakuanLoading: false,
+            //打款列表----end
+            adminM: false
+        }
+    },
+    methods: {
+        closeEditDrawer: function () {
+            this.editAdminFormVisible = false;
+        },
+        openEditDrawer: function (data) {
+            // console.log(data)
+            this.editAdminForm = JSON.parse(JSON.stringify(data));
+            this.editAdminFormVisible = true;
+        },
+        editAdmin: function () {
+            this.$refs['editAdminForm'].validate(function (valid) {
+                if (valid) {
+                    require(['md5', 'jsencrypt'], function (md5, jsencrypt) {
+                        // console.log(md5)
+                        // console.log(jsencrypt)
+                        // 加密strar
+                        var jse = new jsencrypt.JSEncrypt();
+                        var formpassword = this.editAdminForm.adminPassword;
+                        jse.setPublicKey(this.pk);
+                        var password = md5.hex_md5(formpassword + 'xqc1254548787244');
+                        password = jse.encrypt(password);
+                        //加密end
+                        this.editAdminForm.pwd = password
+                        this.$utils.ajax({
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'post',
+                            url: '/platformcenter/admin/platform/pc/v1/'+this.editAdminForm.adminId,
+                            data: {
+                                account: this.editAdminForm.account,
+                                pwd: this.editAdminForm.pwd
+                            },
+                            success: function (res) {
+                                if (res.statusCode == 200) {
+                                    // console.log(res)
+                                    // this.adminList = res.data
+                                    this.getAdmin();
+                                    this.closeEditDrawer();
+                                    this.$Notice.success({ title: '提示', desc: '修改成功' });
+                                } else {
+                                    this.$Notice.info({ title: '提示', desc: res.msg });
+                                }
+                                this.saveloading = false
+                            }.bind(this),
+                            error: function (res) {
+                                this.saveloading = false
+                                this.$Notice.info({ title: '提示', desc: res.response.msg });
+                            }.bind(this)
+                        })
+                    }.bind(this));
+                }
+            }.bind(this))
+        },
+        //全部
+        getData: function () {
+            this.loading = true;
+            this.$utils.ajax({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'get',
+                url: '/platformcenter/company/pc/v1/page',
+                data: this.formInline,
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res)
+                        this.data = res.data.list
+                        this.total = res.data.total * 1
+                        _.map(this.data, function (result, index) {
+                            this.data[index].registerSource = this.data[index].registerSource == 1 ? '平台注册' : this.data[index].registerSource == 2 ? '运营注册' : this.data[index].registerSource == 3 ? '企业注册' : this.data[index].registerSource == 4 ? '业务导入' : ''
+                            this.data[index].transferStatus = this.data[index].transferStatus == 1 ? '是' : '否'
+                            this.data[index].verifyStatus = this.data[index].verifyStatus == 0 ? '未认证' : this.data[index].verifyStatus == 1 ? '认证中' : this.data[index].verifyStatus == 2 ? '已认证' : this.data[index].verifyStatus == 3 ? '认证失败' : ''
+                            this.data[index].billStatus = this.data[index].billStatus == 0 ? '未认证' : this.data[index].billStatus == 1 ? '认证中' : this.data[index].billStatus == 2 ? '已认证' : this.data[index].billStatus == 3 ? '认证失败' : ''
+
+                        }.bind(this))
+
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.loading = false;
+                }.bind(this),
+                error: function (res) {
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.msg
+                    });
+                    this.loading = false;
+                }.bind(this)
+            })
+        },
+        search: function () {
+            this.formInline.page = 1;
+            this.formInline.rows = 10;
+            if (this.entryDate[0] && this.entryDate[1]) {
+                this.formInline.createTimeStart = this.entryDate[0].getFullYear() + '-' + (this.entryDate[0].getMonth() + 1) + '-' + this.entryDate[0].getDate()
+                this.formInline.createTimeEnd = this.entryDate[1].getFullYear() + '-' + (this.entryDate[1].getMonth() + 1) + '-' + this.entryDate[1].getDate()
+            }
+            this.getData();
+        },
+        reset: function () {
+            this.formInline = {
+                page: 1,
+                rows: '10',
+                companyNameLK: '',
+            }
+            this.entryDate = ''
+            this.getData();
+        },
+        openNewtab: function (title, tabUrl) {
+            window.parent.$tabs.openTab({
+                label: title,
+                path: tabUrl
+            })
+        },
+        onPageChange: function (page) { //分页切换
+            this.formInline.page = page
+            this.getData()
+        },
+        onPageSizeChange: function (page) { //每页数显示多少条
+            this.formInline.rows = page
+            this.getData()
+        },
+        // 资质认证列表------start
+        getzizhiData: function () {
+            this.zizhiLoading = true;
+            this.$utils.ajax({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'get',
+                url: '/platformcenter/company/pc/v1/page',
+                data: this.zizhiFormInline,
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res)
+                        this.zizhiData = res.data.list
+                        this.zizhiTotal = res.data.total * 1
+                        _.map(this.zizhiData, function (result, index) {
+                            this.zizhiData[index].registerSource = this.zizhiData[index].registerSource == 1 ? '平台注册' : this.zizhiData[index].registerSource == 2 ? '运营注册' : this.zizhiData[index].registerSource == 3 ? '企业注册' : this.zizhiData[index].registerSource == 4 ? '业务导入' : ''
+                            this.zizhiData[index].transferStatus = this.zizhiData[index].transferStatus == 1 ? '是' : '否'
+                            this.zizhiData[index].verifyStatus = this.zizhiData[index].verifyStatus == 0 ? '未认证' : this.zizhiData[index].verifyStatus == 1 ? '认证中' : this.zizhiData[index].verifyStatus == 2 ? '已认证' : this.zizhiData[index].verifyStatus == 3 ? '认证失败' : ''
+                            this.zizhiData[index].billStatus = this.zizhiData[index].billStatus == 0 ? '未认证' : this.zizhiData[index].billStatus == 1 ? '认证中' : this.zizhiData[index].billStatus == 2 ? '已认证' : this.zizhiData[index].billStatus == 3 ? '认证失败' : ''
+
+                        }.bind(this))
+
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.zizhiLoading = false;
+                }.bind(this),
+                error: function (res) {
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.msg
+                    });
+                    this.zizhiLoading = false;
+                }.bind(this)
+            })
+        },
+        zizhiSearch: function () {
+            this.zizhiFormInline.page = 1;
+            this.zizhiFormInline.rows = 10;
+
+            if (this.zizhiEntryDate[0] && this.zizhiEntryDate[1]) {
+                this.zizhiFormInline.createTimeStart = this.zizhiEntryDate[0].getFullYear() + '-' + (this.zizhiEntryDate[0].getMonth() + 1) + '-' + this.zizhiEntryDate[0].getDate()
+                this.zizhiFormInline.createTimeEnd = this.zizhiEntryDate[1].getFullYear() + '-' + (this.zizhiEntryDate[1].getMonth() + 1) + '-' + this.zizhiEntryDate[1].getDate()
+            }
+            this.getzizhiData();
+        },
+        zizhiReset: function () {
+            this.zizhiFormInline = {
+                page: 1,
+                rows: '10',
+                verifyStatus: 1,
+                companyNameLK: '',
+            }
+            this.zizhiEntryDate = ''
+            this.getzizhiData();
+        },
+        zizhiOnPageChange: function (page) { //分页切换
+            this.zizhiFormInline.page = page
+            this.getzizhiData()
+        },
+        zizhiOnPageSizeChange: function (page) { //每页数显示多少条
+            this.zizhiFormInline.rows = page
+            this.getzizhiData()
+        },
+        // 资质认证列表------end
+        // 票据列表------start
+        getpiaojuData: function () {
+            this.piaojuLoading = true;
+            this.$utils.ajax({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'get',
+                url: '/platformcenter/company/pc/v1/page',
+                data: this.piaojuFormInline,
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res)
+                        this.piaojuData = res.data.list
+                        this.piaojuTotal = res.data.total * 1
+                        _.map(this.piaojuData, function (result, index) {
+                            this.piaojuData[index].registerSource = this.piaojuData[index].registerSource == 1 ? '平台注册' : this.piaojuData[index].registerSource == 2 ? '运营注册' : this.piaojuData[index].registerSource == 3 ? '企业注册' : this.piaojuData[index].registerSource == 4 ? '业务导入' : ''
+                            this.piaojuData[index].transferStatus = this.piaojuData[index].transferStatus == 1 ? '是' : '否'
+                            this.piaojuData[index].verifyStatus = this.piaojuData[index].verifyStatus == 0 ? '未认证' : this.piaojuData[index].verifyStatus == 1 ? '认证中' : this.piaojuData[index].verifyStatus == 2 ? '已认证' : this.piaojuData[index].verifyStatus == 3 ? '认证失败' : ''
+                            this.piaojuData[index].billStatus = this.piaojuData[index].billStatus == 0 ? '未认证' : this.piaojuData[index].billStatus == 1 ? '认证中' : this.piaojuData[index].billStatus == 2 ? '已认证' : this.piaojuData[index].billStatus == 3 ? '认证失败' : ''
+
+                        }.bind(this))
+
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.piaojuLoading = false;
+                }.bind(this),
+                error: function (res) {
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.msg
+                    });
+                    this.piaojuLoading = false;
+                }.bind(this)
+            })
+        },
+        piaojuSearch: function () {
+            this.piaojuFormInline.page = 1;
+            this.piaojuFormInline.rows = 10;
+
+            if (this.piaojuEntryDate[0] && this.piaojuEntryDate[1]) {
+                this.piaojuFormInline.createTimeStart = this.piaojuEntryDate[0].getFullYear() + '-' + (this.piaojuEntryDate[0].getMonth() + 1) + '-' + this.piaojuEntryDate[0].getDate()
+                this.piaojuFormInline.createTimeEnd = this.piaojuEntryDate[1].getFullYear() + '-' + (this.piaojuEntryDate[1].getMonth() + 1) + '-' + this.piaojuEntryDate[1].getDate()
+            }
+            this.getpiaojuData();
+        },
+        piaojuReset: function () {
+            this.piaojuFormInline = {
+                page: 1,
+                rows: '10',
+                billStatus: 1,
+                companyNameLK: '',
+            }
+            this.piaojuEntryDate = ''
+            this.getpiaojuData();
+        },
+        piaojuOnPageChange: function (page) { //分页切换
+            this.piaojuFormInline.page = page
+            this.getpiaojuData()
+        },
+        piaojuOnPageSizeChange: function (page) { //每页数显示多少条
+            this.piaojuFormInline.rows = page
+            this.getpiaojuData()
+        },
+        // 票据列表------end
+        // 打款列表------start
+        getdakuanData: function () {
+            this.dakuanLoading = true;
+            this.$utils.ajax({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'get',
+                url: '/platformcenter/company/pc/v1/page',
+                data: this.dakuanFormInline,
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res)
+                        this.dakuanData = res.data.list
+                        this.dakuanTotal = res.data.total * 1
+                        _.map(this.dakuanData, function (result, index) {
+                            this.dakuanData[index].registerSource = this.dakuanData[index].registerSource == 1 ? '平台注册' : this.dakuanData[index].registerSource == 2 ? '运营注册' : this.dakuanData[index].registerSource == 3 ? '企业注册' : this.dakuanData[index].registerSource == 4 ? '业务导入' : ''
+                            this.dakuanData[index].transferStatus = this.dakuanData[index].transferStatus == 1 ? '是' : '否'
+                            this.dakuanData[index].verifyStatus = this.dakuanData[index].verifyStatus == 0 ? '未认证' : this.dakuanData[index].verifyStatus == 1 ? '认证中' : this.dakuanData[index].verifyStatus == 2 ? '已认证' : this.dakuanData[index].verifyStatus == 3 ? '认证失败' : ''
+                            this.dakuanData[index].billStatus = this.dakuanData[index].billStatus == 0 ? '未认证' : this.dakuanData[index].billStatus == 1 ? '认证中' : this.dakuanData[index].billStatus == 2 ? '已认证' : this.dakuanData[index].billStatus == 3 ? '认证失败' : ''
+
+                        }.bind(this))
+
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.dakuanLoading = false;
+                }.bind(this),
+                error: function (res) {
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: res.msg
+                    });
+                    this.dakuanLoading = false;
+                }.bind(this)
+            })
+        },
+        dakuanSearch: function () {
+            this.dakuanFormInline.page = 1;
+            this.dakuanFormInline.rows = 10;
+
+            if (this.dakuanEntryDate[0] && this.dakuanEntryDate[1]) {
+                this.dakuanFormInline.createTimeStart = this.dakuanEntryDate[0].getFullYear() + '-' + (this.dakuanEntryDate[0].getMonth() + 1) + '-' + this.dakuanEntryDate[0].getDate()
+                this.dakuanFormInline.createTimeEnd = this.dakuanEntryDate[1].getFullYear() + '-' + (this.dakuanEntryDate[1].getMonth() + 1) + '-' + this.dakuanEntryDate[1].getDate()
+            }
+            this.getdakuanData();
+        },
+        dakuanReset: function () {
+            this.dakuanFormInline = {
+                page: 1,
+                rows: '10',
+                transferStatus: 0,
+                companyNameLK: '',
+            }
+            this.dakuanEntryDate = ''
+            this.getdakuanData();
+        },
+        dakuanOnPageChange: function (page) { //分页切换
+            this.dakuanFormInline.page = page
+            this.getdakuanData()
+        },
+        dakuanOnPageSizeChange: function (page) { //每页数显示多少条
+            this.dakuanFormInline.rows = page
+            this.getdakuanData()
+        },
+        // 打款列表------end
+        //企业信息框
+        closecompanyInfoM: function () {
+            this.companyInfoM = false;
+        },
+        opencompanyInfoM: function () {
+            this.companyInfoM = true;
+        },
+        //资质认证框
+        closezizhiM: function () {
+            this.zizhiM = false;
+        },
+        openzizhiM: function () {
+            this.zizhiM = true;
+        },
+        //资质认证同意拒绝
+        zihziSave: function (type) {
+            this.saveloading = true
+            // console.log(item)
+            this.$utils.ajax({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'post',
+                url: '/platformcenter/company/pc/v1/qualification',
+                data: {
+                    companyId: this.currentItem.row.companyId,
+                    verifyResult: type,
+                    refuseReason: ''
+                },
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        console.log(res)
+                        this.closezizhiM();
+                        this.getData();
+                        setTimeout(function () { this.getzizhiData() }.bind(this), 1000);
+                        this.$Notice.success({ title: '提示', desc: "操作成功" });
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.saveloading = false
+                }.bind(this),
+                error: function (res) {
+                    this.saveloading = false
+                    this.$Notice.info({ title: '提示', desc: res.msg });
+                }.bind(this)
+            })
+        },
+        //票据认证框piaojuM
+        closepiaojuM: function () {
+            this.piaojuM = false;
+        },
+        openpiaojuM: function () {
+            this.piaojuM = true;
+        },
+        //票据认证同意拒绝
+        piaojuSave: function (type) {
+            // console.log(item)
+            this.saveloading = true
+            this.$utils.ajax({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'post',
+                url: '/platformcenter/company/pc/v1/bill',
+                data: {
+                    companyId: this.currentItem.row.companyId,
+                    verifyResult: type,
+                    refuseReason: ''
+                },
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res)
+                        setTimeout(function () { this.getpiaojuData() }.bind(this), 1000);
+                        this.getData();
+                        this.$Notice.success({ title: '提示', desc: "操作成功" });
+                        this.closepiaojuM()
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.saveloading = false
+                }.bind(this),
+                error: function (res) {
+                    this.saveloading = false
+                    this.$Notice.info({ title: '提示', desc: res.msg });
+                }.bind(this)
+            })
+        },
+        //打款认证框piaojuM
+        closedakuanM: function () {
+            this.dakuanM = false;
+        },
+        opendakuanM: function () {
+            this.dakuanM = true;
+        },
+        getTransferPicurl: function (value) {
+            if (value.length > 0) {
+                this.dakuanForm.transferPicurl = value[0].url
+            } else {
+                this.dakuanForm.transferPicurl = ''
+            }
+        },
+        //打款确认
+        dakuanSave: function () {
+            this.$refs['dakuanVle'].validate(function (valid) {
+                if (valid) {
+                    // console.log(this.companyInfo.transferTime)
+                    if (!this.dakuanForm.transferPicurl) {
+                        this.$Notice.error({ title: '提示', desc: "请上传必传图片" })
+                        return
+                    }
+                    var dakuanTime = this.companyInfo.transferTime
+                    this.saveloading = true
+                    this.dakuanForm.companyId = this.currentItem.row.companyId;
+                    this.dakuanForm.transferTime = dakuanTime.getFullYear() + '-' + (dakuanTime.getMonth() + 1) + '-' + dakuanTime.getDate()
+                    this.dakuanForm.transferDesc = this.companyInfo.transferDesc
+                    this.dakuanForm.transferBank = this.companyInfo.transferBank
+                    // console.log(this.dakuanForm)
+                    this.$utils.ajax({
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'post',
+                        url: '/platformcenter/company/pc/v1/transfer',
+                        data: this.dakuanForm,
+                        success: function (res) {
+                            if (res.statusCode == 200) {
+                                // console.log(res)
+                                this.closedakuanM();
+                                setTimeout(function () { this.getdakuanData() }.bind(this), 1000);
+                                this.getData();
+                                this.$Notice.success({ title: '提示', desc: "操作成功" });
+
+                            } else {
+                                this.$Notice.info({ title: '提示', desc: res.msg });
+                            }
+                            this.saveloading = false
+                        }.bind(this),
+                        error: function (res) {
+                            this.saveloading = false
+                            this.$Notice.info({ title: '提示', desc: res.msg });
+                        }.bind(this)
+                    })
+                }
+            }.bind(this))
+        },
+        //获取企业信息
+        getCompanyInfo: function (item, type) {
+            console.log(item)
+            this.currentItem = item;
+            this.defaultZZ1 = [];
+            this.defaultZZ2 = [];
+            this.defaultZZ3 = [];
+            this.defaultZZ4 = [];
+            this.defaultZZ5 = [];
+            this.companyLogo = [];
+            this.defaultdakuan = [];
+            this.$utils.ajax({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'get',
+                url: '/platformcenter/company/pc/v1/' + item.row.companyId,
+                // data:{companyId:item.row.companyId},
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        console.log(res)
+                        this.companyInfo = res.data
+                        //企业logo 地址
+                        if (res.data.logoUrl) this.companyLogo = [{ url: res.data.logoUrl }]
+                        this.defaultArr = [res.data.companyProvince, res.data.companyCity, res.data.companyArea]
+                        //资质
+                        if (res.data.businessLicenseUrl) this.defaultZZ1 = [{ url: res.data.businessLicenseUrl }]
+                        if (res.data.companyEntrustUrl) this.defaultZZ2 = [{ url: res.data.companyEntrustUrl }]
+                        if (res.data.legalPersonPicurl) this.defaultZZ3 = [{ url: res.data.legalPersonPicurl }]
+                        if (res.data.legalPersonOppositePicurl) this.defaultZZ4 = [{ url: res.data.legalPersonOppositePicurl }]
+                        if (res.data.legalPersonHoldPicurl) this.defaultZZ5 = [{ url: res.data.legalPersonHoldPicurl }]
+                        //打款
+                        if (res.data.transferPicurl) this.defaultdakuan = [{ url: res.data.transferPicurl }]
+                        switch (type) {
+                            case '1':
+                                this.opencompanyInfoM()
+                                break;
+                            case '2':
+                                this.openzizhiM()
+                                break;
+                            case '3':
+                                this.openpiaojuM()
+                                break;
+                            case '4':
+                                this.opendakuanM()
+                                break;
+                            default:
+                                break;
+                        }
+
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+
+                }.bind(this),
+                error: function (res) {
+                    this.$Notice.info({ title: '提示', desc: res.msg });
+                }.bind(this)
+            })
+        },
+        //配置管理员
+        closeAdminM: function () {
+            this.zizhiM = false;
+        },
+        openAdminM: function (param) {
+            this.adminM = true;
+            this.currentRow = param.row;
+            this.getAdmin();
+            this.createAdminForm = {};
+            this.createAdminForm.adminRelationId = param.row.companyId;
+        },
+        //获取管理员列表
+        getAdmin: function () {
+            this.$utils.ajax({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'get',
+                url: '/platformcenter/admin/type/pc/v1/list',
+                data: {
+                    relationId: this.currentRow.companyId
+                },
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        console.log(res)
+                        this.adminList = res.data
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.saveloading = false
+                }.bind(this),
+                error: function (res) {
+                    this.saveloading = false
+                    this.$Notice.info({ title: '提示', desc: res.msg });
+                }.bind(this)
+            })
+        },
+        delAdmin: function (row) {
+            this.$utils.ajax({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'delete',
+                url: '/platformcenter/admin/type/pc/v1/' + row.id,
+                success: function (res) {
+                    if (res.statusCode == 200) {
+
+                        this.getAdmin();
+                        this.$Notice.success({ title: '提示', desc: res.msg });
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.saveloading = false
+                }.bind(this),
+                error: function (res) {
+                    this.saveloading = false
+                    this.$Notice.info({ title: '提示', desc: res.msg });
+                }.bind(this)
+            })
+        },
+        //新建管理员框
+        closeCreateAdminM: function () {
+            this.CreateAdminM = false;
+        },
+        openCreateAdminM: function () {
+            this.adminPassword = '';
+            this.createAdminForm.account = '';
+            this.CreateAdminM = true;
+        },
+        //创建管理员
+        saveCreateAdmin: function () {
+            this.$refs['createAdminVle'].validate(function (valid) {
+                if (valid) {
+                    require(['md5', 'jsencrypt'], function (md5, jsencrypt) {
+                        // console.log(md5)
+                        // console.log(jsencrypt)
+                        // 加密strar
+                        var jse = new jsencrypt.JSEncrypt();
+                        var formpassword = this.createAdminForm.adminPassword;
+                        jse.setPublicKey(this.pk);
+                        var password = md5.hex_md5(formpassword + 'xqc1254548787244');
+                        password = jse.encrypt(password);
+                        //加密end
+                        this.createAdminForm.pwd = password
+                        this.$utils.ajax({
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'post',
+                            url: '/platformcenter/admin/pc/v1',
+                            data: {
+                                account: this.createAdminForm.account,
+                                pwd: this.createAdminForm.pwd,
+                                adminRelationId: this.createAdminForm.adminRelationId
+                            },
+                            success: function (res) {
+                                if (res.statusCode == 200) {
+                                    // console.log(res)
+                                    // this.adminList = res.data
+                                    this.getAdmin();
+                                    this.closeCreateAdminM();
+                                    this.$Notice.success({ title: '提示', desc: '创建成功' });
+                                } else {
+                                    this.$Notice.info({ title: '提示', desc: res.msg });
+                                }
+                                this.saveloading = false
+                            }.bind(this),
+                            error: function (res) {
+                                this.saveloading = false
+                                this.$Notice.info({ title: '提示', desc: res.msg });
+                            }.bind(this)
+                        })
+
+                    }.bind(this));
+                }
+            }.bind(this))
+        },
+        //选择已有管理员框
+        closeBeforeAdminM: function () {
+            this.BeforeAdminM = false;
+        },
+        openBeforeAdminM: function () {
+
+            this.formInline2 = {
+                page: 1,
+                rows: '10',
+                relationId: this.currentRow.companyId,
+            }
+            this.BeforeAdminM = true;
+            this.getbeforeAdminList();
+        },
+        //获取已有管理员列表
+        getbeforeAdminList: function () {
+            console.log(this.formInline2)
+            this.$utils.ajax({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'get',
+                url: '/platformcenter/admin/pc/v1/page',
+                data: this.formInline2,
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        console.log(res)
+                        this.beforeAdminList = res.data.list
+                        this.total2 = res.data.total * 1
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.saveloading = false
+                }.bind(this),
+                error: function (res) {
+                    this.saveloading = false
+                    this.$Notice.info({ title: '提示', desc: res.msg });
+                }.bind(this)
+            })
+        },
+        onPageChange2: function (page) { //分页切换
+            this.formInline2.page = page
+            this.getbeforeAdminList()
+        },
+        onPageSizeChange2: function (page) { //每页数显示多少条
+            this.formInline2.rows = page
+            this.getbeforeAdminList()
+        },
+        //选择该管理员
+        selAdmin: function (row) {
+            this.$utils.ajax({
+                headers: { 'Content-Type': 'application/json' },
+                method: 'post',
+                url: '/platformcenter/admin/type/pc/v1',
+                data: {
+                    adminId: row.id,
+                    adminRelationId: this.currentRow.companyId
+                },
+                success: function (res) {
+                    if (res.statusCode == 200) {
+                        this.getAdmin();
+                        this.closeBeforeAdminM();
+                        this.$Notice.success({ title: '提示', desc: "操作成功" });
+                    } else {
+                        this.$Notice.info({ title: '提示', desc: res.msg });
+                    }
+                    this.saveloading = false
+                }.bind(this),
+                error: function (res) {
+                    this.saveloading = false
+                    this.$Notice.info({ title: '提示', desc: res.msg });
+                }.bind(this)
+            })
+        }
+    },
+    mounted: function () {
+
+        this.buttons = this.$utils.getButtons();
+        this.getData();
+
+        setTimeout(function () { this.getzizhiData() }.bind(this), 1000);
+        setTimeout(function () { this.getpiaojuData() }.bind(this), 2200);
+        setTimeout(function () { this.getdakuanData() }.bind(this), 3300);
+
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.table.$el,
+            table: this.table
+        });
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.table2.$el,
+            table: this.table2
+        });
+
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.table3.$el,
+            table: this.table3
+        });
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.zizhiTable.$el,
+            table: this.zizhiTable
+        });
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.piaojuTable.$el,
+            table: this.piaojuTable
+        });
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.dakuanTable.$el,
+            table: this.dakuanTable
+        });
+
+
+    }
+});
+</script>
+
+</html>

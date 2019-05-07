@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link class="skin" rel="stylesheet" type="text/css" href="../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <row class="auto-height">
+            <i-col :xs="11" :sm="8" :md="6" :lg="5" style="height: 100%;padding: 5px;">
+                <bnd-department-picker ref="mainleftdept" :params="fromdata" @on-change="onSelectDeptChange"></bnd-department-picker>
+            </i-col>
+            <i-col :xs="13" :sm="16" :md="18" :lg="19" style="height: 100%; padding: 5px;">
+                <card class="auto-height">
+                    <div class="toolbar" ref="toolbar">
+                        <div class="button-wrapper">
+                            <i-button type="success" @click="openAddStaffModal" icon="md-add" size="small" slot="extra"
+                                v-if="buttons.hasPermission('company.employee.create')">新增</i-button>
+                            <i-button type="primary" @click="openQuarters('dept')" size="small" slot="extra" v-if="buttons.hasPermission('company.department.adjust')">调整部门</i-button>
+                            <i-button type="primary" @click="openQuarters('job')" size="small" slot="extra" v-if="buttons.hasPermission('company.job.adjust')">调整岗位</i-button>
+                            <i-button type="primary" @click="roleAuthorization" size="small" slot="extra" v-if="buttons.hasPermission('company.role.authorization')">角色授权</i-button>
+                            <i-button type="primary" @click="batchLeave" size="small" slot="extra" v-if="buttons.hasPermission('company.employee.leave')">离职</i-button>
+                            <i-button type="error" @click="batchDelete" size="small" slot="extra" v-if="buttons.hasPermission('company.employee.batchdelete')">删除</i-button>
+                            <dropdown trigger="click" @on-click="changeMenu">
+                                <i-button type="primary" size="small" v-if="buttons.hasPermission('company.employee.import') || buttons.hasPermission('company.employee.export')">
+                                    更多
+                                    <icon type="ios-arrow-down"></icon>
+                                </i-button>
+                                <dropdown-menu slot="list">
+                                    <dropdown-item name="import" v-if="buttons.hasPermission('company.employee.import')">导入员工</dropdown-item>
+                                    <dropdown-item name="export" v-if="buttons.hasPermission('company.employee.export')">导出员工</dropdown-item>
+                                </dropdown-menu>
+                            </dropdown>
+                        </div>
+                        <i-form ref="formValidate" :model="searchFormItem" inline v-if="buttons.hasPermission('company.employee.query')" @submit.native.prevent>
+                            <form-item label="入职时间" :label-width="60">
+                                <date-picker type="daterange" placement="bottom-end" format="yyyy-MM-dd" transfer
+                                    v-model="entryDate" @on-change="valiDate" :editable="false" placeholder="选择开始和结束时间"></date-picker>
+                            </form-item>
+                            <form-item label="岗位" :label-width="36" prop="positionId">
+                                <i-select filterable v-model="searchFormItem.positionId" placeholder="请选择或者搜索岗位">
+                                    <i-option v-for="jobitem in joblist" :value="jobitem.value" :key="jobitem.value">{{jobitem.label}}</i-option>
+                                </i-select>
+                            </form-item>
+                            <form-item label="实名状态" :label-width="60" prop="identityStatus">
+                                <i-select v-model="searchFormItem.identityStatus">
+                                    <i-option value="0">未实名</i-option>
+                                    <i-option value="1">已实名</i-option>
+                                </i-select>
+                            </form-item>
+                            <form-item label="在职状态" :label-width="60" prop="jobStatus">
+                                <i-select v-model="searchFormItem.jobStatus">
+                                    <i-option value="0">离职</i-option>
+                                    <i-option value="1">在职</i-option>
+                                </i-select>
+                            </form-item>
+                            <form-item prop="vagueUserName">
+                                <i-input placeholder="请输入姓名" v-model="searchFormItem.vagueUserName" style="width: 100px" :maxlength="10"></i-input>
+                            </form-item>
+                            <form-item prop="mobile">
+                                <i-input placeholder="请输入手机号" v-model="searchFormItem.mobile" style="width: 150px" :maxlength="11"></i-input>
+                            </form-item>
+                            <form-item prop="idNo">
+                                <i-input placeholder="请输入身份证" v-model="searchFormItem.idNo" style="width: 200px"
+                                    :maxlength="18"></i-input>
+                            </form-item>
+                            <form-item>
+                                <i-button type="info" html-type="submit" @click="handleSubmit" :loading="searchLoading">
+                                    <span v-if="!searchLoading">查询</span>
+                                    <span v-else>查询中</span>
+                                </i-button>
+                            </form-item>
+                            <form-item>
+                                <i-button type="default" @click="handleReset">重置</i-button>
+                            </form-item>
+                        </i-form>
+                    </div>
+                    <i-table border :loading="staffListLoading" ref="table" :columns="columns" :data="data"
+                        @on-selection-change="changeItem" :height="table.height" highlight-row on-row-click="radiocheck"></i-table>
+                    <bnd-page :total="total" :current="searchFormItem.page" @on-change="onPageChange"
+                        @on-page-size-change="onPageSizeChange" />
+                    </bnd-page>
+                </card>
+            </i-col>
+        </row>
+        <!-- 编辑员工 -->
+        <drawer title="编辑员工" v-model="editstaffVisible" width="360" :mask-closable="false">
+            <div class="drawer-footer">
+                <i-button style="margin-right: 8px" type="primary" @click="editStaff">确定</i-button>
+                <i-button @click="editstaffVisible = false">取消</i-button>
+            </div>
+            <div class="drawer-box">
+                <i-form :model="staffinfo" :label-width="80">
+                    <form-item label="员工姓名" prop="userName">
+                        <i-input v-model="staffinfo.userName" disabled></i-input>
+                    </form-item>
+                    <form-item label="手机号" prop="mobileNumber">
+                        <i-input v-model="staffinfo.mobileNumber" disabled></i-input>
+                    </form-item>
+                    <form-item label="身份证号" prop="idNo">
+                        <i-input v-model="staffinfo.idNo" disabled></i-input>
+                    </form-item>
+                    <form-item label="部门" prop="userName">
+                        <i-input v-model="staffinfo.deptName" placeholder="请选择员工所属部门" readonly>
+                            <i-button slot="append" @click="chooseDept('edit')">请选择</i-button>
+                        </i-input>
+                    </form-item>
+                    <form-item label="入职时间" prop="entryDate">
+                        <date-picker type="date" placeholder="请选择入职时间" format="yyyy-MM-dd" v-model="staffinfo.entryDate"
+                            style="width: 100%" @on-change="editChangeEntryDate"></date-picker>
+                    </form-item>
+                    <form-item label="岗位" prop="positionName">
+                        <i-input v-model="staffinfo.positionName" placeholder="请选择员工岗位" readonly>
+                            <i-button slot="append" @click="chooseJob('edit')">请选择</i-button>
+                        </i-input>
+                    </form-item>
+                    <form-item label="在职状态" prop="jobStatus">
+                        <radio-group v-model="staffinfo.jobStatus">
+                            <radio label="0">离职</radio>
+                            <radio label="1">在职</radio>
+                        </radio-group>
+                    </form-item>
+                </i-form>
+            </div>
+            <spin size="large" fix v-if="addStaffShow"></spin>
+        </drawer>
+        <!-- 添加员工 -->
+        <drawer title="添加员工" v-model="addstaffVisibile" width="400" @submit.native.prevent :mask-closable="false">
+            <div class="drawer-footer">
+                <i-button style="margin-right: 8px" type="primary" ghost @click="addStaff('addStaffForm','goOn')">保存并继续添加</i-button>
+                <i-button type="primary" style="margin-right: 8px" @click="addStaff('addStaffForm')">保存</i-button>
+                <i-button @click="addstaffVisibile = false">取消</i-button>
+            </div>
+            <div class="drawer-box">
+                <i-form ref="addStaffForm" :model="addform" :rules="ruleaddform" :label-width="90">
+                    <form-item label="员工姓名" prop="userName">
+                        <i-input v-model="addform.userName" placeholder="请输入员工的真实姓名" :maxlength="10"></i-input>
+                    </form-item>
+                    <form-item label="手机号" prop="mobileNumber">
+                        <i-input v-model="addform.mobileNumber" placeholder="请输入手机号" :maxlength="11"></i-input>
+                    </form-item>
+                    <form-item label="身份证类型" prop="idCardType">
+                        <i-select v-model="addform.idCardType">
+                            <i-option value="01">身份证</i-option>
+                            <i-option value="02">港澳居民往来内地通行证</i-option>
+                            <i-option value="03">护照</i-option>
+                            <i-option value="04">台湾居民来往大陆通行证</i-option>
+                            <i-option value="05">驾驶证</i-option>
+                            <i-option value="06">军官证</i-option>
+                        </i-select>
+                    </form-item>
+                    <form-item label="身份证号" prop="idNo" v-if="addform.idCardType == '01'">
+                        <i-input v-model="addform.idNo" placeholder="请输入身份证号" :maxlength="18"></i-input>
+                    </form-item>
+                    <form-item label="港澳居民往来内地通行证" prop="HKaMidNo" v-if="addform.idCardType == '02'">
+                        <i-input v-model="addform.HKaMidNo" placeholder="请输入港澳居民往来内地通行证"></i-input>
+                    </form-item>
+                    <form-item label="护照" prop="ppidNo" v-if="addform.idCardType == '03'">
+                        <i-input v-model="addform.ppidNo" placeholder="请输入护照"></i-input>
+                    </form-item>
+                    <form-item label="台湾居民来往大陆通行证" prop="TWidNo" v-if="addform.idCardType == '04'">
+                        <i-input v-model="addform.TWidNo" placeholder="请输入台湾居民来往大陆通行证"></i-input>
+                    </form-item>
+                    <form-item label="驾驶证" prop="didNo" v-if="addform.idCardType == '05'">
+                        <i-input v-model="addform.didNo" placeholder="请输入驾驶证"></i-input>
+                    </form-item>
+                    <form-item label="军官证" prop="oidNo" v-if="addform.idCardType == '06'">
+                        <i-input v-model="addform.oidNo" placeholder="请输入军官证"></i-input>
+                    </form-item>
+                    <form-item label="部门" prop="deptName">
+                        <i-input v-model="addform.deptName" placeholder="请选择员工所属部门" readonly>
+                            <i-button slot="append" @click="chooseDept('add')">请选择</i-button>
+                        </i-input>
+                    </form-item>
+                    <form-item label="入职时间" prop="entryDate">
+                        <date-picker type="date" placeholder="请选择入职时间" v-model="addform.entryDate" style="width: 100%"></date-picker>
+                    </form-item>
+                    <form-item label="岗位" prop="positionName">
+                        <i-input v-model="addform.positionName" placeholder="请选择员工岗位" readonly>
+                            <i-button slot="append" @click="chooseJob('add')">请选择</i-button>
+                        </i-input>
+                    </form-item>
+                </i-form>
+            </div>
+            <spin size="large" fix v-if="addStaffShow"></spin>
+        </drawer>
+        <!-- 调整部门 -->
+        <drawer title="调整部门" width="901" v-model="adjustDeptVisibile" @on-close="clearAdjustObject">
+            <div class="drawer-footer">
+                <i-button type="primary" style="margin-right: 8px" @click="tinkerupSubmit('dept')">确定</i-button>
+                <i-button @click="adjustDeptVisibile = false">取消</i-button>
+            </div>
+            <div class="drawer-box">
+                <row style="height:100%;">
+                    <i-col span="13" style="height:100%;">
+                        <i-table border ref="ADTable" :columns="tdColumns" :data="tdData" @on-selection-change="changeAdjustDeptItem"
+                            :height="adjustDeptTable.height"></i-table>
+                    </i-col>
+                    <i-col span="1" style="height:100%;">
+                        <divider type="vertical" style="height:100%;display: block;margin: 0 auto" />
+                    </i-col>
+                    <i-col span="10" style="height:100%;">
+                        <bnd-department-picker ref="adjustDept" :auto-focus="false" @on-change="adChange"></bnd-department-picker>
+                    </i-col>
+                </row>
+            </div>
+            <spin size="large" fix v-if="addStaffShow"></spin>
+        </drawer>
+        <!-- 调整岗位 -->
+        <drawer title="调整岗位" width="901" v-model="adjustJobVisibile" @on-close="clearAdjustObject">
+            <div class="drawer-footer">
+                <i-button type="primary" style="margin-right: 8px" @click="tinkerupSubmit('job')">确定</i-button>
+                <i-button @click="adjustJobVisibile = false">取消</i-button>
+            </div>
+            <div class="drawer-box">
+                <row style="height:100%;">
+                    <i-col span="13" style="height:100%;">
+                        <i-table border ref="AJTable" :columns="tdColumns" :data="tdData" @on-selection-change="changeAdjustDeptItem"
+                            :height="adjustJobTable.height"></i-table>
+                    </i-col>
+                    <i-col span="1" style="height:100%;">
+                        <divider type="vertical" style="height:100%;display: block;margin: 0 auto" />
+                    </i-col>
+                    <i-col span="10" style="height:100%;">
+                        <bnd-picker ref="picker" type="job" @on-change="ajChange"></bnd-picker>
+                    </i-col>
+                </row>
+            </div>
+            <spin size="large" fix v-if="addStaffShow"></spin>
+        </drawer>
+        <!-- 角色授权 -->
+        <drawer title="角色授权" width="360" v-model="adjustRoleVisibile">
+            <div class="drawer-box">
+                <checkbox-group v-model="editroleIds" class="checkboxGroup">
+                    <checkbox :label="roleitem.id" v-for="(roleitem,index) in roledata" v-bind:key="index"><span>{{roleitem.roleName}}</span></checkbox>
+                </checkbox-group>
+            </div>
+            <div class="drawer-footer">
+                <i-button type="primary" style="margin-right: 8px" @click="adjustRoleSumbit">确定</i-button>
+                <i-button @click="adjustRoleVisibile = false">取消</i-button>
+            </div>
+            <spin size="large" fix v-if="addStaffShow"></spin>
+        </drawer>
+        <drawer title="导入员工" width="80%" v-model="importstaffVisible">
+            <div class="drawer-footer">
+                <i-button type="primary" style="margin-right: 8px" :loading="makesureloading" @click="makeSureImport"
+                    v-if="importCurrent == 1" :disabled="cancelbtnloading">
+                    <span v-if="!makesureloading">确定导入</span>
+                    <span v-else>导入中</span>
+                </i-button>
+                <i-button @click="cancelImport" :loading="cancelbtnloading" v-if="importCurrent == 1" :disabled="makesureloading">
+                    <span v-if="!cancelbtnloading">取消导入</span>
+                    <span v-else>取消中</span>
+                </i-button>
+                <i-button type="primary" style="margin-right: 8px" :loading="exportbtnloading" v-if="importCurrent == 2"
+                    @click="exportError">
+                    <span v-if="!exportbtnloading">导出错误信息</span>
+                    <span v-else>导出中</span>
+                </i-button>
+                <i-button @click="resetUpload" v-if="importCurrent == 2" :disabled="exportbtnloading">重新上传</i-button>
+                <i-button @click="importstaffVisible = false" v-if="importCurrent == 0">取消</i-button>
+            </div>
+            <div class="drawer-box" style="position:relative;">
+                <div class="importstep">
+                    <steps :current="importCurrent">
+                        <step :title="importGroup[0].title" content="下载模板/上传文件"></step>
+                        <step :title="importGroup[0].title" content="数据预览"></step>
+                        <step :title="importGroup[0].title" content="数据入库"></step>
+                    </steps>
+                </div>
+                <div class="import-step-one" v-if="importCurrent == 0">
+                    <div class="uploadexcel">
+                        <i-form :label-width="80">
+                            <form-item label="下载模版：">
+                                企业员工数据模板.xls <a href="../static/data/template.xls" download>下载</a>
+                            </form-item>
+                            <form-item label="上传表格：">
+                                <upload type="drag" ref="upload" :action="queryimporturl" :headers="uploadheaders"
+                                    :data="{'whether':false}" :format="format" :on-format-error="formatError"
+                                    :show-upload-list="false" :on-success="uploadSuccess" :on-error="uploadError"
+                                    :before-upload="handleBeforeUpload">
+                                    <div style="padding: 20px 0">
+                                        <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+                                        <p>将填写完成的“企业员工数据模板”</br>拖到此处,或“<a>点击上传</a>”</p>
+                                    </div>
+                                </upload>
+                                <div class="tips">仅支持.xls/.xlsx格式</div>
+                            </form-item>
+                        </i-form>
+                    </div>
+                    <div class="import-table">
+                        <p class="import-title">导入员工信息指引&nbsp;&nbsp;<span>(请按指引填写员工信息)</span></p>
+                        <ul class="import-content-list">
+                            <li>1. <span>红色</span>字段为必填项，黑色字段为选填项;</li>
+                            <li>2. 身份证根据居民身份证格式正确导入;</li>
+                            <li>3. 手机号根据正确的手机号码格式导入;</li>
+                            <li>4. 日期格式支持如：2019-1-1或2019/1/1;</li>
+                        </ul>
+                        <p class="template-example">模版示例：</p>
+                        <div class="example-img">
+                            <img src="../static/images/table-example.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="import-step-two" v-if="importCurrent == 1">
+                    <alert type="warning" show-icon>导入说明：本次导入共{{queryviewdatatotal}}条数据。</alert>
+                    <i-table border :loading="viewdataloading" ref="IS2Table" :columns="importStep2Columns" :data="importStep2Data"
+                        :height="importStep2Table.height"></i-table>
+                    <bnd-page :total="queryviewdatatotal" :current="queryviewdataparams.page" @on-change="onImport2PageChange"
+                        @on-page-size-change="onImport2PageSizeChange" />
+                    </bnd-page>
+                </div>
+                <div class="import-step-three" v-if="importCurrent == 2">
+                    <alert type="warning" show-icon>导入说明：本次导入共{{import3Num}}条数据，有{{import3FailNum}}条导入失败</alert>
+                    <i-table border :loading="errordataloading" ref="IS3Table" :columns="importStep3Columns" :data="importStep3Data"
+                        :height="importStep3Table.height"></i-table>
+                    <bnd-page :total="queryerrordatatotal" :current="queryerrordataparams.page" @on-change="onImport3PageChange"
+                        @on-page-size-change="onImport3PageSizeChange" />
+                    </bnd-page>
+                </div>
+                <div class="progress-mark" v-if="isAllImport"></div>
+                <div class="progress-module" v-if="isAllImport">
+                    <row type="flex" justify="center" align="middle" class="code-row-bg">
+                        <i-col :xs="16" :sm="16" :md="12" :lg="12">
+                            <div class="progress-border">
+                                <div class="progress-title">{{isloading ? '正在导入文件，请稍等…' : '正在上传文件，请稍等…'}}</div>
+                                <div class="progress-img">
+                                    <img src="../static/images/file.png">
+                                    <p class="file-name">{{filename}}</p>
+                                </div>
+                                <div class="progress-strip" v-if="isloading">
+                                    <i-progress :percent="importPercent" :status="importStatus" :stroke-width="15" />
+                                </div>
+                                <div class="upload-loading" v-if="!isloading">
+                                    <Spin>
+                                        <Icon type="ios-loading" size=24 class="demo-spin-icon-load"></Icon>
+                                    </Spin>
+                                </div>
+                            </div>
+                        </i-col>
+                    </row>
+                </div>
+            </div>
+        </drawer>
+        <spin size="large" fix v-if="spinShow"></spin>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+    'use strict';
+    var IMPORT_STATUS = [
+        {
+            name: '待效验',
+            value: '0'
+        },
+        {
+            name: '初步校验成功',
+            value: '1'
+        },
+        {
+            name: '用户校验成功',
+            value: '2'
+        },
+        {
+            name: '员工写入成功',
+            value: '3'
+        },
+        {
+            name: '校验失败',
+            value: '4'
+        },
+        {
+            name: '员工写入失败',
+            value: '5'
+        },
+    ]
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                buttons: [],//data先初始化按钮权限数组
+                companyId: window.userInfo.companyId,
+                queryimporturl: window.DOMAIN + '/companycenter/comEmployee/pc/v1/import/batchImportEmployeesBase64',//上传文件请求url
+                fromdata:{'ALL_CHILDNODE_PERSONAL_DEPT': 'ALL_CHILDNODE_PERSONAL_DEPT'},
+                spinShow: false,//全屏加载
+                addStaffShow: false,//添加员工loading
+                editstaffVisible: false,//编辑员工drawer开关
+                addstaffVisibile: false,//添加员工drawer开关
+                adjustJobVisibile: false,//调整岗位drawer开关
+                importstaffVisible: false,//导入员工drawer开关
+                adjustDeptVisibile: false,//调整部门drawer开关
+                adjustRoleVisibile: false,//角色授权drawer开关
+                staffListLoading: false,//列表加载开关
+                importCurrent: 0,//导入员工当前步骤
+                isloading: false,
+                isAllImport: false,
+                total: 0,
+                queryviewdatatotal: 0,
+                queryerrordatatotal: 0,
+                importStatus: 'active',
+                importPercent: 0,
+                importwaitmin: 0,
+                import3Num: 0,
+                import3FailNum: 0,
+                importTime: -1,
+                progresswork: -1,
+                quaryuploadwork: -1,
+                rows: 10,
+                filename: '',//文件名
+                recordId: '',//传表格id
+                exportbtnloading: false,//导入员工-第三步，导出错误信息按钮loading
+                cancelbtnloading: false,//导入员工-第二步，取消导入loading
+                viewdataloading: false,//导入员工-第二步，浏览数据
+                makesureloading: false,//导入员工-第二步，确认导入按钮
+                errordataloading: false,//导入员工-第三步，错误信息数据
+                importGroup: [{ 'title': '进行中' }, { 'title': '待进行' }, { 'title': '待进行' }],//导入员工步骤名title
+                queryviewdataparams: {
+                    companyId: window.userInfo.companyId,
+                    recordId: '',
+                    current: 1,
+                    size: '10',
+                },//导入员工-第二步，查询浏览数据
+                queryerrordataparams: {
+                    companyId: window.userInfo.companyId,
+                    recordId: '',
+                    current: 1,
+                    size: '10',
+                    status: '8'
+                },//导入员工-第二步，查询错误数据
+                uploadheaders: {
+                    ACCESS_TOKEN: Cookies('ACCESS_TOKEN'),
+                    'CHANNEL': 'BROWSER'
+                },//导入员工-第一步，设置请求头
+                format: ['xls', 'xlsx'],//导入员工-第一步，设置上传文件后缀
+                joblist: [],//岗位列表
+                entryDate: [],//查询日期（开始-结束）
+                tsdeptId: '',
+                addform: {
+                    companyId: window.userInfo.companyId,
+                    userName: '',
+                    mobileNumber: '',
+                    idCardType: '',
+                    idNo: '',
+                    deptName: '',
+                    entryDate: '',
+                    positionName: '',
+                    jobStatus: '1'
+                },//添加员工Object
+                searchLoading: false,//查询加载开关
+                roledata: [],
+                editroleIds: [],
+                staffinfo: {
+                    // :[]
+                },//查看或编辑员工Object
+                adjustObject: {
+                    empIds: [],
+                    companyId: window.userInfo.companyId
+                },
+                // adjustDeptData: [],
+                ruleaddform: {
+                    userName: [
+                        { required: true, message: '请输入员工真实姓名', trigger: 'blur' },
+                        { type: 'string', pattern: /^[\u4e00-\u9fa5]{2,4}$/, message: '真实姓名填写有误', trigger: 'blur' }
+                    ],
+                    mobileNumber: [
+                        { required: true, message: '请输入手机号码', trigger: 'blur' },
+                        { type: 'string', pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '手机号码填写有误', trigger: 'blur' }
+                    ],
+                    idCardType: [
+                        { required: true, message: '请选择身份证类型', trigger: 'change' }
+                    ],
+                    idNo: [
+                        { required: true, message: '请输入身份证号码', trigger: 'blur' },
+                        { type: 'string', pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '身份证号填写有误', trigger: 'blur' }
+                    ],
+                    HKaMidNo: [
+                        { required: true, message: '请输入港澳居民往来内地通行证', trigger: 'blur' },
+                        { type: 'string', pattern: /^([A-Z]\d{6,10}(\(\w{1}\))?)$/, message: '港澳居民往来内地通行证填写有误', trigger: 'blur' }
+                    ],
+                    ppidNo: [
+                        { required: true, message: '请输入护照', trigger: 'blur' },
+                        { type: 'string', pattern: /^([a-zA-z]|[0-9]){5,17}$/, message: '护照填写有误', trigger: 'blur' }
+                    ],
+                    TWdNo: [
+                        { required: true, message: '请输入台湾居民来往大陆通行证', trigger: 'blur' },
+                        { type: 'string', pattern: /^\d{8}|^[a-zA-Z0-9]{10}|^\d{18}$/, message: '台湾居民来往大陆通行证填写有误', trigger: 'blur' }
+                    ],
+                    didNo: [
+                        { required: true, message: '请输入驾驶证', trigger: 'blur' },
+                        { type: 'string', pattern: /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}(\d|x|X)$/, message: '驾驶证填写有误', trigger: 'blur' }
+                    ],
+                    oidNo: [
+                        { required: true, message: '请输入军官证', trigger: 'blur' },
+                        { type: 'string', pattern: /^[\u4E00-\u9FA5](字第)([0-9a-zA-Z]{4,8})(号?)$/, message: '军官证填写有误', trigger: 'blur' }
+                    ],
+                    deptName: [
+                        { required: true, message: '请选择你的部门' }
+                    ]
+                },//添加员工校验规则
+                searchFormItem: {
+                    companyId: window.userInfo.companyId,
+                    page: 1,
+                    rows: '10',
+                    positionId: '',
+                    identityStatus: '',
+                    jobStatus: '',
+                    vagueUserName: '',
+                    mobile: '',
+                    idNo: '',
+                    ALL_CHILDNODE_PERSONAL_DEPT:'ALL_CHILDNODE_PERSONAL_DEPT'
+                },//查询条件Object
+                split: '300px',
+                table: {
+                    height: 100//初始化高度
+                },//员工管理列表计算高度
+                adjustDeptTable: {
+                    height: 100//初始化高度
+                },//drawer调整部门计算高度
+                adjustJobTable: {
+                    height: 100//初始化高度
+                },//drawer调整岗位计算高度
+                importStep2Table: {
+                    height: 100//初始化高度
+                },//drawer调整岗位计算高度
+                importStep3Table: {
+                    height: 100//初始化高度
+                },//drawer调整岗位计算高度
+                columns: [ //员工管理表头object数据
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        title: '姓名',
+                        minWidth: 100,
+                        align: 'center',
+                        key: 'name'
+                    },
+                    {
+                        title: '手机号码',
+                        minWidth: 120,
+                        align: 'center',
+                        key: 'mobile'
+                    },
+                    {
+                        title: '身份证号',
+                        minWidth: 150,
+                        align: 'center',
+                        key: 'idNo'
+                    },
+                    {
+                        title: '入职日期',
+                        minWidth: 150,
+                        align: 'center',
+                        key: 'entryDate'
+                    },
+                    {
+                        title: '部门',
+                        key: 'deptName',
+                        minWidth: 100,
+                        align: 'center'
+                    },
+                    {
+                        title: '岗位',
+                        key: 'positionName',
+                        align: 'center',
+                        minWidth: 100
+                    },
+                    {
+                        title: '在职状态',
+                        minWidth: 100,
+                        align: 'center',
+                        key: 'jobStatus'
+                    },
+                    {
+                        title: '实名状态',
+                        minWidth: 100,
+                        align: 'center',
+                        key: 'identityStatus'
+                    },
+                    {
+                        title: '操作',
+                        key: 'action',
+                        minWidth: 160,
+                        fixed: 'right',
+                        render: function (h, params) {
+                            var buttons = [];
+                            var BUTTON_LIST = {//表格操作栏内的所有按钮列表，以键值定义对象，方便后面判断，用code做key，按钮做value
+                                'company.employee.edit': h('a', {
+                                    style: {
+                                        marginRight: '10px'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            this.editstaffVisible = true
+                                            this.getStaffDetail(params.row.id)
+                                        }.bind(this)
+                                    }
+                                }, '编辑'),
+                                'company.employee.viewauthorization': h('a', {
+                                    style: {
+                                        marginRight: '10px'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            this.$permissionTree({
+                                                empId: params.row.id,
+                                                isDisabled: true
+                                            })
+                                        }.bind(this)
+                                    }
+                                }, '查看权限'),
+                                'company.employee.delete': h('a', {
+                                    style: {
+                                        color: '#f16643'
+                                    },
+                                    on: {
+                                        click: function () {
+                                            var single = [params.row.id]
+                                            single = JSON.stringify(single)
+                                            // this.batchDeleteModal = true
+                                            this.delete(single)
+                                            // console.log(params)
+                                        }.bind(this)
+                                    }
+                                }, '删除')
+
+                            }
+                            for (var button in BUTTON_LIST) {
+                                if (this.buttons.hasPermission(button)) {
+                                    buttons.push(BUTTON_LIST[button])
+                                }
+                            }
+                            return h('div', buttons);
+                        }.bind(this)
+                    }
+                ],
+                data: [],//员工管理列表存放数据
+                tdColumns: [ //调整部门表头Object数据
+                    {
+                        title: '姓名',
+                        key: 'name',
+                        align: 'center'
+                    },
+                    {
+                        title: '部门',
+                        key: 'deptName',
+                        align: 'center',
+                        width: 100
+                    },
+                    {
+                        title: '岗位',
+                        key: 'positionName',
+                        align: 'center',
+                    },
+                    {
+                        title: '手机号码',
+                        key: 'mobile',
+                        align: 'center'
+                    }
+                ],
+                tdData: [],//调整部门列表存放数据
+                importStep2Columns: [
+                    {
+                        title: '姓名',
+                        key: 'name',
+                        minWidth: 100,
+                        align: 'center'
+                    },
+                    {
+                        title: '身份证号码',
+                        key: 'identityNo',
+                        minWidth: 150,
+                        align: 'center'
+                    },
+                    {
+                        title: '手机号码',
+                        key: 'mobile',
+                        width: 120,
+                        align: 'center'
+                    },
+                    {
+                        title: '入职日期',
+                        key: 'entryDate',
+                        minWidth: 150,
+                        align: 'center'
+                    },
+                    {
+                        title: '部门',
+                        key: 'deptName',
+                        minWidth: 100,
+                        align: 'center'
+                    },
+                    {
+                        title: '职位',
+                        key: 'jobName',
+                        minWidth: 100,
+                        align: 'center'
+                    }
+                ],
+                importStep2Data: [],
+                importStep3Columns: [
+                    {
+                        title: '姓名',
+                        key: 'name',
+                        minWidth: 100,
+                        align: 'center'
+                    },
+                    {
+                        title: '身份证号码',
+                        key: 'identityNo',
+                        minWidth: 150,
+                        align: 'center'
+                    },
+                    {
+                        title: '手机号码',
+                        key: 'mobile',
+                        minWidth: 120,
+                        align: 'center'
+                    },
+                    {
+                        title: '入职日期',
+                        key: 'entryDate',
+                        minWidth: 150,
+                        align: 'center'
+                    },
+                    {
+                        title: '部门',
+                        key: 'deptName',
+                        minWidth: 100,
+                        align: 'center'
+                    },
+                    {
+                        title: '职位',
+                        key: 'jobName',
+                        minWidth: 100,
+                        align: 'center'
+                    },
+                    {
+                        title: '校验状态',
+                        key: 'status',
+                        minWidth: 100,
+                        align: 'center'
+                    },
+                    {
+                        title: '失败原因',
+                        key: 'checkResult',
+                        minWidth: 200,
+                    }
+                ],
+                importStep3Data: [],
+                splitMode: 'horizontal',
+                slotLeft: 'left',
+                slotRight: 'right',
+                minHeight: '250px',
+                screenWidth: document.body.clientWidth
+            }
+        },
+        methods: {
+            warning: function (nodesc,duration,name) {
+                name = name || ''
+                this.$Notice.warning({
+                    title: '提示',
+                    duration:duration,
+                    name:name,
+                    desc: nodesc ? nodesc : ''
+                });
+            },
+            error: function (nodesc,duration) {
+                this.$Notice.error({
+                    title: '提示',
+                    duration:duration,
+                    desc: nodesc ? nodesc : ''
+                });
+            },
+            success: function (nodesc) {
+                this.$Notice.success({
+                    title: '提示',
+                    desc: nodesc ? nodesc : ''
+                });
+            },
+            onSelectDeptChange: function (data) {
+                if(data){
+                    this.tsdeptId = data.id
+                    this.searchFormItem.deptId = this.tsdeptId
+                }
+                this.refresh(false)
+            },
+            batchLeave: function () { //批量离职
+                this.$Notice.close('TIP_ONE')
+                if (this.tdData.length > 0) {
+                    this.$Modal.confirm({
+                        title: '提示',
+                        content: '<p>选中的员工是否离职？</p>',
+                        onOk: function () {
+                            this.spinShow = true
+                            var allLeave = []
+                            _.map(this.tdData, function (result) {
+                                allLeave.push(result.id)
+                            })
+                            allLeave = JSON.stringify(allLeave)
+                            this.$utils.ajax({
+                                url: '/companycenter/comEmployee/pc/v1/batchTurnover',
+                                data: {
+                                    companyId: this.companyId,
+                                    empIds: allLeave
+                                },
+                                success: function (res) {
+                                    if (res.httpCode == '200') {
+                                        if (res.data.respCode == 'SUCCESS') {
+                                            this.success('操作成功')
+                                            this.refresh(true)
+                                        } else {
+                                            this.warning(res.data.respMsg,0)
+                                        }
+                                    } else {
+                                        this.warning(res.msg,0)
+                                    }
+                                    this.spinShow = false
+                                }.bind(this), error: function (err) {
+                                    this.error(err.msg,0)
+                                    this.spinShow = false
+                                }.bind(this)
+                            })
+                        }.bind(this)
+                    });
+                } else {
+                    this.warning('至少选择一条员工信息',0,'TIP_ONE')
+                }
+            },
+            roleAuthorization: function () {
+                if (this.tdData.length < 1) {
+                    this.$Notice.close('TIP_ONE')
+                    this.warning('请选择一条员工信息',0,'TIP_ONE')
+                    return
+                }
+                if (this.tdData.length > 1) {
+                    this.$Notice.close('TIP_TWO')
+                    this.warning('最多只能选择一条员工信息',0,'TIP_TWO')
+                    return
+                }
+                if (this.tdData.length == 1) {
+                    var roleIds = []
+                    this.addStaffShow = true
+                    this.$utils.ajax({
+                        url: '/companycenter/comEmployee/pc/v1/queryEmployeeInfo',
+                        data: {
+                            companyId: this.companyId,
+                            id: this.tdData[0].id
+                        },
+                        success: function (res) {
+                            if (res.httpCode == '200') {
+                                if (res.data.roleIds.length > 0) {
+                                    _.map(res.data.roleIds, function (data) {
+                                        roleIds.push(data + '')
+                                    }.bind(this))
+                                }
+                                this.adjustRoleVisibile = true
+                                this.editroleIds = roleIds
+                            } else {
+                                this.warning(res.msg,0)
+                            }
+                            this.addStaffShow = false
+                        }.bind(this), error: function (err) {
+                            this.addStaffShow = false
+                            this.error(err.msg,0)
+                        }.bind(this)
+                    })
+                }
+            },
+            adjustRoleSumbit: function () {
+                this.addStaffShow = true
+                var roleIds = ''
+                if (this.editroleIds.length > 0) {
+                    roleIds = JSON.stringify(this.editroleIds)
+                }
+                this.$utils.ajax({
+                    url: '/companycenter/comEmployee//pc/v1/maintenanceOfEmpRole',
+                    data: {
+                        companyId: this.companyId,
+                        empId: this.tdData[0].id,
+                        roleIds: roleIds
+                    },
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            if (res.data.respCode == 'SUCCESS') {
+                                this.adjustRoleVisibile = false
+                                this.success('操作成功')
+                            } else {
+                                this.warning(res.data.respMsg,0)
+                            }
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.addStaffShow = false
+                    }.bind(this), error: function (err) {
+                        this.addStaffShow = false
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            },
+            batchDelete: function () { //批量删除
+                this.$Notice.close('TIP_ONE')
+                if (this.tdData.length > 0) {
+                    var allDelete = []
+                    _.map(this.tdData, function (result) {
+                        allDelete.push(result.id)
+                    })
+                    allDelete = JSON.stringify(allDelete)
+                    this.delete(allDelete)
+                } else {
+                    this.warning('至少选择一条员工信息',0,'TIP_ONE')
+                }
+            },
+            delete: function (empIds) { //删除方法
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>选中的员工是否删除？</p>',
+                    onOk: function () {
+                        this.spinShow = true
+                        this.$utils.ajax({
+                            url: '/companycenter/comEmployee/pc/v1/batchDeletionEmp',
+                            data: {
+                                companyId: this.companyId,
+                                empIds: empIds
+                            },
+                            success: function (res) {
+                                if (res.httpCode == '200') {
+                                    if (res.data.respCode == 'SUCCESS') {
+                                        this.success('删除成功')
+                                        this.refresh(true)
+                                    } else {
+                                        this.warning(res.data.respMsg,0)
+                                    }
+                                } else {
+                                    this.warning(res.msg,0)
+                                }
+                                this.spinShow = false
+                            }.bind(this), error: function (err) {
+                                this.spinShow = false
+                                this.error(err.msg,0)
+                            }.bind(this)
+                        })
+                    }.bind(this)
+                });
+
+            },
+            onPageChange: function (page) { //分页切换
+                this.searchFormItem.page = page
+                this.refresh(false)
+            },
+            onPageSizeChange: function (page) { //每页数显示多少条
+                this.rows = page
+                this.searchFormItem.rows = page
+                this.refresh(false)
+            },
+            changeItem: function (value) { //选择员工列表
+                this.tdData = []
+                this.tdData = this.tdData.concat(value)
+            },
+            radiocheck:function(value){
+                console.log(value)
+            },
+            changeAdjustDeptItem: function (data) { //选择调整部门数据
+                this.adjustDeptData = []
+                this.adjustDeptData = this.adjustDeptData.concat(data)
+            },
+            adChange: function (data) { //选择部门数据
+                console.log(data)
+                this.adjustObject.deptId = ''
+                if (data) {
+                    this.adjustObject.deptId = parseInt(data.id)
+                }
+            },
+            ajChange: function (data) {   //选择岗位数据
+                this.adjustObject.positionId = ''
+                if (data.length > 0) {
+                    this.adjustObject.positionId = parseInt(data[0].id)
+                }
+            },
+            clearAdjustObject: function () { //初始化调整部门/岗位数据
+                this.adjustObject = {
+                    empIds: [],
+                    companyId: window.userInfo.companyId
+                }
+                this.adjustDeptData = []
+            },
+            tinkerupSubmit: function (type) { //提交调整部门/岗位数据
+                if (type == 'dept') {
+                    if (!this.adjustObject.deptId) {
+                        this.$Notice.close('TIP_THREE')
+                        this.warning('请选择部门',0,'TIP_THREE')
+                        return
+                    }
+                } else {
+                    if (!this.adjustObject.positionId) {
+                        this.$Notice.close('TIP_FOUR')
+                        this.warning('请选择岗位',0,'TIP_FOUR')
+                        return
+                    }
+                }
+                this.addStaffShow = true
+                var empIds = []
+                _.map(this.tdData, function (result) {
+                    empIds.push(
+                        result.id
+                    )
+                }.bind(this))
+                this.adjustObject.empIds = JSON.stringify(empIds)
+                this.$utils.ajax({
+                    url: type == 'dept' ? '/companycenter/comEmployee/pc/v1/batchAdjustmentDept' : '/companycenter/comEmployee/pc/v1/batchAdjustmentPosition',
+                    data: this.adjustObject,
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            if (res.data.respCode == 'SUCCESS') {
+                                if (type == 'dept') {
+                                    this.$refs.adjustDept.getSelectedNodes()[0].selected = false
+                                    this.adjustDeptVisibile = false
+                                } else {
+                                    this.adjustJobVisibile = false
+                                }
+                                this.clearAdjustObject()
+                                this.refresh(true)
+                            } else {
+                                this.warning(res.data.respMsg,0)
+                            }
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.addStaffShow = false
+                    }.bind(this), error: function (err) {
+                        this.addStaffShow = false
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+
+            },
+            openQuarters: function (type) { //调整部门/岗位窗口
+                this.$Notice.close('TIP_ONE')
+                if (this.tdData.length > 0) {
+                    if (type == 'dept') {
+                        this.adjustDeptVisibile = true
+                        this.$utils.tableAutoHeight({
+                            tableElement: this.$refs.ADTable.$el,
+                            table: this.adjustDeptTable
+                        });
+                    } else {
+                        this.adjustJobVisibile = true
+                        this.$utils.tableAutoHeight({
+                            tableElement: this.$refs.AJTable.$el,
+                            table: this.adjustJobTable
+                        });
+                    }
+                } else {
+                    this.warning('至少选择一条员工信息',0,'TIP_ONE')
+                }
+            },
+            chooseDept: function (type) { //选择部门
+                this.$bndPicker({
+                    type: 'department',// job //员工选择还没有
+                    title: '选择部门',//标题
+                    multiple: false,//是否多选
+                    callback: function (result) {
+                        if (type == 'edit') {
+                            this.staffinfo.deptId = result[0].id
+                            this.$set(this.staffinfo, 'deptName', result[0].title)
+                        } else {
+                            this.addform.deptId = result[0].id
+                            this.$set(this.addform, 'deptName', result[0].title)
+                        }
+                    }.bind(this)
+                });
+            },
+            chooseJob: function (type) { //选择岗位
+                this.$bndPicker({
+                    type: 'job',// job //员工选择还没有
+                    title: '选择岗位',//标题
+                    multiple: false,//是否多选
+                    callback: function (result) {
+                        if (type == 'edit') {
+                            this.staffinfo.positionId = result[0].id
+                            this.$set(this.staffinfo, 'positionName', result[0].title)
+                        } else {
+                            this.addform.positionId = result[0].id
+                            this.$set(this.addform, 'positionName', result[0].title)
+                        }
+                    }.bind(this)
+                });
+            },
+            handleSubmit: function () { //查询确定按钮
+                this.$Notice.close('TIP_DATE')
+                if(this.searchFormItem.entryDateSTime){
+                    if(this.searchFormItem.entryDateSTime == this.searchFormItem.entryDateETime){
+                        this.warning('开始时间和结束时间不能设置同一天',0,'TIP_DATE')
+                        return;
+                    }
+                }
+                this.searchFormItem.page = 1
+                this.refresh(false)
+            },
+            valiDate:function(value){
+                console.log(value)
+                // var sTime = new Date(this.entryDate[0])
+                // var eTime = new Date(this.entryDate[1])
+                // if (this.entryDate[0]) {
+                    // this.searchFormItem.entryDateSTime = sTime.getFullYear() + '-' + ((sTime.getMonth() + 1) < 10 ? ('0' + (sTime.getMonth() + 1)) : (sTime.getMonth() + 1)) + '-' + (sTime.getDate() < 10 ? ('0' + sTime.getDate()) : sTime.getDate())
+                    // this.searchFormItem.entryDateETime = eTime.getFullYear() + '-' + ((eTime.getMonth() + 1) < 10 ? ('0' + (eTime.getMonth() + 1)) : (eTime.getMonth() + 1)) + '-' + (eTime.getDate() < 10 ? ('0' + eTime.getDate()) : eTime.getDate())
+                // }
+                // if(this.searchFormItem.entryDateSTime == this.searchFormItem.entryDateETime){
+                //     this.warning('开始时间和结束时间不能设置同一天',0)
+                // }
+                this.searchFormItem.entryDateSTime = value[0]
+                this.searchFormItem.entryDateETime = value[1]
+            },
+            handleReset: function () { //查询重置按钮
+                this.searchFormItem = {
+                    companyId: this.companyId,
+                    positionId: '',
+                    identityStatus: '',
+                    jobStatus: '',
+                    userNameLK: '',
+                    entryDateSTime:'',
+                    entryDateETime:'',
+                    mobile: '',
+                    idNo: '',
+                    deptId: this.tsdeptId,
+                    rows: this.rows,
+                    ALL_CHILDNODE_PERSONAL_DEPT:'ALL_CHILDNODE_PERSONAL_DEPT'
+                }
+                console.log(this.searchFormItem)
+                this.entryDate = []
+                // this.$refs.mainleftdept.getSelectedNodes()[0].selected = false
+                // this.$refs[name].resetFields()
+            },
+            getStaffList: function () { //请求员工列表
+                this.staffListLoading = true
+                this.searchLoading = true
+                this.$utils.ajax({
+                    url: '/companycenter/comEmployee/pc/v1/queryComEmployeePagePlaintext',
+                    data: this.searchFormItem,
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            _.map(res.data.list, function (result) {
+                                this.data.push({
+                                    id: result.id,
+                                    name: result.userName,
+                                    mobile: result.mobile,
+                                    idNo: result.idNo,
+                                    entryDate: result.entryDate ? result.entryDate.split(' ')[0] : '',
+                                    deptName: result.deptName,
+                                    positionName: result.positionName,
+                                    jobStatus: result.jobStatus == '0' ? '离职' : '在职',
+                                    identityStatus: result.identityStatus == '0' ? '未实名' : '已实名'
+                                })
+                            }.bind(this))
+                            this.total = parseInt(res.data.total)
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.staffListLoading = false
+                        this.searchLoading = false
+                    }.bind(this), error: function (err) {
+                        this.staffListLoading = false
+                        this.searchLoading = false
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            },
+            refresh: function (isuse) { //刷新员工列表
+                this.data = []
+                this.tdData = []
+                if (isuse) {
+                    this.$refs.mainleftdept.loadData()
+                }else{
+                    this.getStaffList()
+                }
+            },
+            getStaffDetail: function (id) {
+                this.addStaffShow = true
+                // var roleIds = []
+                this.$utils.ajax({
+                    url: '/companycenter/comEmployee/pc/v1/queryEmployeeInfo',
+                    data: {
+                        id: id
+                    },
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            this.staffinfo = {
+                                empId: parseInt(id),
+                                userName: res.data.userName,
+                                mobileNumber: res.data.mobileNumber,
+                                idNo: res.data.idNo,
+                                entryDate: res.data.entryDate,
+                                jobStatus: res.data.jobStatus,
+                                deptId: res.data.deptId,
+                                deptName: res.data.deptName,
+                                positionId: res.data.positionId,
+                                positionName: res.data.positionName
+                            }
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.addStaffShow = false
+                    }.bind(this), error: function (err) {
+                        this.addStaffShow = false
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            },
+            getJobList: function () {
+                this.$utils.ajax({
+                    url: '/companycenter/comPosition/pc/v1/queryComPositionList',
+                    data: {
+                        companyId: this.companyId
+                    },
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            _.map(res.data, function (result) {
+                                this.joblist.push({
+                                    value: result.id,
+                                    label: result.positionName
+                                })
+                            }.bind(this))
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                    }.bind(this), error: function (err) {
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            },
+            handleBeforeUpload: function (res) {
+                this.filename = res.name
+                this.isAllImport = true
+            },
+            formatError: function () {
+                this.warning('请上传.xls/.xlsx格式',0)
+            },
+            uploadError: function (err) {
+                console.log(err)
+            },
+            uploadSuccess: function (res) {
+                console.log(res)
+                if (res.httpCode == '200') {
+                    if (res.data.respCode == "SUCCESS") {
+                        this.recordId = res.data.respData.recordId
+                        this.quaryUploadProgress()
+                    } else {
+                        setTimeout(function () {
+                            this.isAllImport = false
+                        }.bind(this), 500)
+                        this.$refs.upload.clearFiles()
+                        this.warning(res.data.respMsg,0)
+                    }
+                } else {
+                    this.warning(res.msg,0)
+                }
+            },
+            quaryUploadProgress: function () {
+                clearInterval(this.quaryuploadwork)
+                this.$utils.ajax({
+                    url: '/companycenter/comImportRecord/pc/v1/queryComImportRecordList',
+                    data: {
+                        companyId: this.companyId,
+                        recordId: this.recordId
+                    },
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            if (res.data[0].importStatus == '1') {
+                                this.importCurrent = 1
+                                this.isloading = true
+                                this.isAllImport = false
+                                this.importGroup[0].title = '已完成'
+                                this.importGroup[1].title = '进行中'
+                                setTimeout(function () {
+                                    this.$utils.tableAutoHeight({
+                                        tableElement: this.$refs.IS2Table.$el,
+                                        table: this.importStep2Table
+                                    });
+                                }.bind(this), 100)
+                                this.import2Refresh()
+                                this.success('上传成功')
+                            } else {
+                                this.quaryuploadwork = setInterval(function () {
+                                    this.quaryUploadProgress()
+                                }.bind(this), 5000)
+                            }
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.cancelbtnloading = false
+                    }.bind(this), error: function (err) {
+                        this.error(err.msg,0)
+                        this.cancelbtnloading = false
+                    }.bind(this)
+                })
+            },
+            importBeforeList: function () {
+                this.viewdataloading = true
+                this.queryviewdataparams.recordId = this.recordId
+                this.$utils.ajax({
+                    url: '/companycenter/comImportRecordDetail/pc/v1/queryImportRecordDetailPage',
+                    data: this.queryviewdataparams,
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            this.importStep2Data = res.data.list
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.queryviewdatatotal = parseInt(res.data.total)
+                        this.viewdataloading = false
+                    }.bind(this), error: function (err) {
+                        this.viewdataloading = false
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            },
+            onImport2PageChange: function (page) {
+                this.queryviewdataparams.current = page
+                this.import2Refresh()
+            },
+            onImport2PageSizeChange: function (page) {
+                this.queryviewdataparams.size = page
+            },
+            import2Refresh: function () {
+                this.importStep2Data = []
+                this.importBeforeList()
+            },
+            cancelImport: function () {
+                this.cancelbtnloading = true
+                this.$utils.ajax({
+                    url: '/companycenter/comEmployee/pc/v1/import/continueImporting',
+                    data: {
+                        companyId: this.companyId,
+                        whether: false,
+                        recordId: this.recordId
+                    },
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            this.importCurrent = 0
+                            this.isloading = false
+                            this.importGroup[0].title = '进行中'
+                            this.importGroup[1].title = '待进行'
+                            this.success('取消导入成功')
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.cancelbtnloading = false
+                    }.bind(this), error: function (err) {
+                        this.error(err.msg,0)
+                        this.cancelbtnloading = false
+                    }.bind(this)
+                })
+            },
+            makeSureImport: function () {
+                if (this.recordId) {
+                    this.makesureloading = true
+                    this.$utils.ajax({
+                        url: '/companycenter/comEmployee/pc/v1/import/continueImporting',
+                        data: {
+                            companyId: this.companyId,
+                            whether: true,
+                            recordId: this.recordId
+                        },
+                        success: function (res) {
+                            if (res.httpCode == 200) {
+                                if (res.data.respCode == 'SUCCESS') {
+                                    this.isAllImport = true
+                                    this.importPercent = 0
+                                    this.importStatus = 'active'
+                                    this.searchImportProgress()
+                                } else {
+                                    this.makesureloading = false
+                                    this.warning(res.data.respMsg,0)
+                                }
+                            } else {
+                                this.makesureloading = false
+                                this.warning(res.msg,0)
+                            }
+                        }.bind(this), error: function (err) {
+                            this.makesureloading = false
+                            this.error(err.msg,0)
+                        }.bind(this)
+                    })
+                } else {
+                    this.warning('请上传文件再进行导入员工信息',0)
+                }
+            },
+            resetUpload: function () {
+                this.importPercent = 0
+                this.importCurrent = 0
+                this.importStatus = 'active'
+                this.isloading = false
+                this.importStep3Data = []
+                this.importStep2Data = []
+                this.importGroup = [{ 'title': '进行中' }, { 'title': '待进行' }, { 'title': '待进行' }]
+            },
+            searchImportProgress: function () {
+                clearInterval(this.progresswork)
+                clearInterval(this.importTime)
+                this.$utils.ajax({
+                    url: '/companycenter/comImportRecord/pc/v1/queryComImportRecordList',
+                    data: {
+                        companyId: this.companyId,
+                        recordId: this.recordId
+                    },
+                    success: function (res) {
+                        if (res.httpCode == 200) {
+                            this.import3FailNum = parseInt(res.data[0].failureNumber)
+                            this.import3Num = parseInt(res.data[0].num)
+                            if (this.importPercent >= 100) {
+                                this.progressFinish()
+                            } else {
+                                this.importTime = setInterval(function () {
+                                    if (this.importwaitmin < 900) {
+                                        this.searchImportProgress()
+                                    } else {
+                                        clearInterval(this.importTime)
+                                    }
+                                    this.importwaitmin = (this.importPercent + 10) * 1
+                                }.bind(this), 10000)
+                            }
+                            var currentImportNum = parseInt(res.data[0].successfulNumber) + this.import3FailNum
+                            var totleNum = ((currentImportNum / this.import3Num) * 100).toFixed(2)
+                            if (this.import3Num > 1 && this.import3Num < 100) {
+                                this.progresswork = setInterval(function () {
+                                    if (this.importPercent > totleNum) {
+                                        clearInterval(this.progresswork)
+                                    }
+                                    if(this.importPercent >= 100){
+                                        this.progressFinish()
+                                    }
+                                    this.importPercent = (this.importPercent + 1).toFixed(2) * 1
+                                }.bind(this), 100)
+                            } else if (this.import3Num > 100 && this.import3Num < 1000) {
+                                this.progresswork = setInterval(function () {
+                                    if (this.importPercent > totleNum) {
+                                        clearInterval(this.progresswork)
+                                    }
+                                    if(this.importPercent >= 100){
+                                        this.progressFinish()
+                                    }
+                                    this.importPercent = (this.importPercent + 0.6).toFixed(2) * 1
+                                }.bind(this), 100)
+                            } else {
+                                this.progresswork = setInterval(function () {
+                                    if (this.importPercent > totleNum) {
+                                        clearInterval(this.progresswork)
+                                    }
+                                    if(this.importPercent >= 100){
+                                        this.progressFinish()
+                                    }
+                                    this.importPercent = (this.importPercent + 0.1).toFixed(2) * 1
+                                }.bind(this), 100)
+                            }
+                        } else {
+                            clearInterval(this.progresswork)
+                            clearInterval(this.importTime)
+                            this.importStatus = 'wrong'
+                            _.delay(function () {
+                                this.makesureloading = false
+                                this.importPercent = 0
+                                this.isAllImport = false
+                            }.bind(this), 1000);
+                            this.warning(res.msg,0)
+                        }
+                    }.bind(this), error: function (err) {
+                        clearInterval(this.importTime)
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            },
+            progressFinish:function(){
+                clearInterval(this.progresswork)
+                clearInterval(this.importTime)
+                this.importPercent = 100
+                this.importStatus = 'success'
+                _.delay(function () {
+                    this.isAllImport = false
+                    this.importCurrent = 2
+                    this.importGroup[1].title = '已完成'
+                    this.importGroup[2].title = '进行中'
+                    setTimeout(function () {
+                        this.$utils.tableAutoHeight({
+                            tableElement: this.$refs.IS3Table.$el,
+                            table: this.importStep3Table
+                        });
+                    }.bind(this), 100)
+                    this.isAllImport = false
+                    this.makesureloading = false
+                    this.importAfterList()
+                }.bind(this), 1000);
+            },
+            importAfterList: function () {
+                this.errordataloading = true
+                this.queryerrordataparams.recordId = this.recordId
+                this.$utils.ajax({
+                    url: '/companycenter/comImportRecordDetail/pc/v1/queryImportRecordDetailPage',
+                    data: this.queryerrordataparams,
+                    success: function (res) {
+                        if (res.httpCode == 200) {
+                            _.map(res.data.list, function (result) {
+                                this.importStep3Data.push({
+                                    name: result.name,
+                                    identityNo: result.identityNo,
+                                    mobile: result.mobile,
+                                    entryDate: result.entryDate,
+                                    deptName: result.deptName,
+                                    jobName: result.jobName,
+                                    status: IMPORT_STATUS.getName(result.status),
+                                    checkResult: result.checkResult
+                                })
+                            }.bind(this))
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.queryerrordatatotal = parseInt(res.data.total)
+                        this.errordataloading = false
+                    }.bind(this), error: function (err) {
+                        this.errordataloading = false
+                        this.error(err.msg,0)
+                    }
+                })
+            },
+            refreshImportData: function () {
+                this.importNum()
+            },
+            onImport3PageChange: function (page) {
+                this.queryerrordataparams.current = page
+                this.import3Refresh()
+            },
+            onImport3PageSizeChange: function (page) {
+                this.queryerrordataparams.size = page
+            },
+            import3Refresh: function () {
+                this.importStep3Data = []
+                this.importAfterList()
+            },
+            exportError: function () {
+                this.exportbtnloading = true
+                var date = new Date()
+                var time = date.getFullYear() + ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
+                this.$utils.ajax({
+                    url: '/companycenter/comImportRecordDetail/pc/v1/export',
+                    data: {
+                        companyId: this.companyId,
+                        recordId: this.recordId,
+                        fileName: 'errormsg' + time,
+                        version: '2003'
+                    },
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            var download = document.createElement('a')
+                            download.setAttribute('href', res.url)
+                            download.setAttribute('download', 'errormsg' + time)
+                            download.click()
+                            this.success('导出成功')
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.exportbtnloading = false
+                    }.bind(this), error: function (err) {
+                        this.error(err.msg,0)
+                        this.exportbtnloading = false
+                    }.bind(this)
+                })
+            },
+            changeMenu: function (name) {
+                if (name == 'export') {
+                    var date = new Date()
+                    var time = date.getFullYear() + ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
+                    this.$utils.ajax({
+                        url: '/companycenter/comEmployee/pc/v1/export',
+                        data: {
+                            companyId: this.companyId,
+                            fileName: 'staffManage' + time,
+                            version: '2003',
+                            positionId:this.searchFormItem.positionId || '',
+                            entryDateSTime:this.searchFormItem.entryDateSTime || '',
+                            entryDateETime:this.searchFormItem.entryDateETime || '',
+                            identityStatus:this.searchFormItem.identityStatus || '',
+                            jobStatus:this.searchFormItem.jobStatus || '',
+                            vagueUserName:this.searchFormItem.vagueUserName || '',
+                            mobile:this.searchFormItem.mobile || '',
+                            idNo:this.searchFormItem.idNo || '',
+                            deptId:this.tsdeptId
+                        },
+                        success: function (res) {
+                            if (res.httpCode == '200') {
+                                // window.location.href = res.url
+                                var download = document.createElement('a')
+                                download.setAttribute('href', res.url)
+                                download.setAttribute('download', 'staffManage' + time)
+                                download.click()
+                                this.success('导出成功')
+                            } else {
+                                this.warning(res.msg,0)
+                            }
+                        }.bind(this), error: function (err) {
+                            this.error(err.msg,0)
+                        }.bind(this)
+                    })
+                } else {
+                    this.importstaffVisible = true
+                }
+            },
+            openAddStaffModal: function () {
+                this.addstaffVisibile = true
+            },
+            addStaff: function (name, type) {
+                type = type || ''
+                this.$refs[name].validate(function(valid) {
+                    if (valid) {
+                        this.addStaffShow = true
+                        switch (this.addform.idCardType) {
+                            case '02':
+                                this.addform.idNo = this.addform.HKaMidNo
+                                delete this.addform.HKaMidNo
+                                break;
+                            case '03':
+                                this.addform.idNo = this.addform.ppidNo
+                                delete this.addform.ppidNo
+                                break;
+                            case '04':
+                                this.addform.idNo = this.addform.TWdNo
+                                delete this.addform.TWdNo
+                                break;
+                            case '05':
+                                this.addform.idNo = this.addform.didNo
+                                delete this.addform.didNo
+                                break;
+                            case '06':
+                                this.addform.idNo = this.addform.oidNo
+                                delete this.addform.oidNo
+                                break;
+                        }
+                        var entryDate = ''
+                        if (this.addform.entryDate) {
+                            var time = new Date(this.addform.entryDate)
+                            entryDate = time.getFullYear() + '-' + ((time.getMonth() + 1) < 10 ? ('0' + (time.getMonth() + 1)) : (time.getMonth() + 1)) + '-' + (time.getDate() < 10 ? ('0' + time.getDate()) : time.getDate())
+                        }
+                        this.$utils.ajax({
+                            url: '/companycenter/comEmployee/pc/v1/saveComEmployee',
+                            data: {
+                                companyId: this.companyId,
+                                userName: this.addform.userName || '',
+                                mobileNumber: this.addform.mobileNumber || '',
+                                idCardType: this.addform.idCardType || '',
+                                idNo: this.addform.idNo || '',
+                                deptId: this.addform.deptId || '',
+                                entryDate: entryDate || '',
+                                positionId: this.addform.positionId || '',
+                                jobStatus: this.addform.jobStatus || ''
+                            },
+                            success: function (res) {
+                                if (res.httpCode == '200') {
+                                    if (res.data.respCode == 'SUCCESS') {
+                                        if (type != "goOn") {
+                                            this.addstaffVisibile = false
+                                            this.refresh(true)
+                                            this.success('添加成功')
+                                        } else {
+                                            this.success('添加成功')
+                                            this.addform.deptId = ""
+                                            this.addform.positionId = ""
+                                            this.$refs[name].resetFields();
+                                        }
+                                    } else {
+                                        this.warning(res.data.respMsg,0)
+                                    }
+                                } else {
+                                    this.warning(res.msg,0)
+                                }
+                                this.addStaffShow = false
+                            }.bind(this), error: function (err) {
+                                this.addStaffShow = false
+                                this.error(err.msg,0)
+                            }.bind(this)
+                        })
+                    }
+                }.bind(this))
+            },
+            editChangeEntryDate:function(date){
+                this.staffinfo.entryDate = date
+            },
+            editStaff: function () {
+                this.addStaffShow = true
+                this.$utils.ajax({
+                    url: '/companycenter/comEmployee/pc/v1/updateEmployee',
+                    data: {
+                        companyId: this.companyId,
+                        empId: this.staffinfo.empId,
+                        deptId: this.staffinfo.deptId,
+                        jobStatus: this.staffinfo.jobStatus,
+                        positionId: this.staffinfo.positionId || '',
+                        entryDate: this.staffinfo.entryDate || ''
+                    },
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            if (res.data.respCode == 'SUCCESS') {
+                                this.editstaffVisible = false
+                                this.refresh(true)
+                                this.success('修改成功')
+                            } else {
+                                this.warning(res.data.respMsg,0)
+                            }
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                        this.addStaffShow = false
+                    }.bind(this), error: function (err) {
+                        this.addStaffShow = false
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            },
+            getRoleData: function () {
+                this.$utils.ajax({
+                    method: 'get',
+                    url: '/companycenter/role/pc/v1/list?companyId=' + this.companyId,
+                    success: function (res) {
+                        if (res.httpCode == '200') {
+                            this.roledata = res.data
+                        } else {
+                            this.warning(res.msg,0)
+                        }
+                    }.bind(this), error: function (err) {
+                        this.error(err.msg,0)
+                    }.bind(this)
+                })
+            }
+        },
+        mounted: function () {
+            this.buttons = this.$utils.getButtons();//页面加载完后获取按钮权限列表
+            this.$utils.tableAutoHeight({
+                tableElement: this.$refs.table.$el,
+                table: this.table
+            })
+            if(this.buttons.hasPermission('company.employee.query')){
+                this.getJobList()
+            }
+            if(this.buttons.hasPermission('company.role.authorization')){
+                this.getRoleData()
+            }
+        }
+    });
+</script>
+<style>
+    .toolbar .ivu-form-item {
+        margin-bottom: 10px;
+    }
+
+    .demo-drawer-footer {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-top: 1px solid #e8e8e8;
+        padding: 10px 16px;
+        text-align: right;
+        background: #fff;
+    }
+
+    .importstep {
+        width: 750px;
+        margin: 40px auto 60px;
+    }
+
+    .uploadexcel {
+        width: 600px;
+        margin: 40px auto 0;
+    }
+
+    .tips {
+        text-align: center;
+        color: #949494;
+    }
+
+    .import-step-two,
+    .import-step-three {
+        /* height: calc(100% - 146px); */
+        position: absolute;
+        top: 144px;
+        bottom: 0;
+        left: 15px;
+        right: 15px;
+    }
+
+    .import-step-one {
+        height: calc(100% - 146px);
+        overflow-y: scroll
+    }
+
+    .import-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .import-title span {
+        color: #C7C7C7;
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+    .import-content-list {
+        background-color: #FFF9EE;
+        padding: 12px;
+    }
+
+    .import-content-list li {
+        list-style-type: none;
+        font-size: 14px;
+        color: #303030;
+    }
+
+    .import-content-list li span {
+        color: #ed4014;
+    }
+
+    .template-example {
+        width: 90px;
+        height: 30px;
+        background-color: #338BF8;
+        line-height: 30px;
+        color: #fff;
+        padding-left: 10px;
+        border-radius: 2px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .example-img img {
+        border-right: 1px solid #e6eaee;
+        border-left: 1px solid #e6eaee;
+    }
+
+    .progress-mark {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(55, 55, 55, .6);
+        height: 100%;
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .progress-border {
+        height: 264px;
+        background-color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+    }
+
+    .progress-module {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001;
+    }
+
+    .progress-title {
+        height: 58px;
+        font-size: 18px;
+        border-bottom: 1px solid #f3f3f3;
+        line-height: 57px;
+    }
+
+    .progress-img {
+        margin-top: 40px;
+        text-align: center;
+    }
+
+    .file-name {
+        font-size: 14px;
+        color: #C7C7C7;
+        margin-top: 16px;
+    }
+
+    .code-row-bg {
+        height: 100%;
+    }
+
+    .progress-border .progress-strip {
+        padding: 0 24px;
+    }
+
+    .progress-text {
+        margin-top: 30px;
+    }
+
+    .ivu-progress {
+        margin: 15px 0;
+    }
+
+    .checkboxGroup .ivu-checkbox-group-item {
+        margin: 10px;
+    }
+
+    .ivu-progress .ivu-progress-text {
+        width: 46px;
+    }
+
+    .upload-loading {
+        margin-top: 20px;
+    }
+
+    .demo-spin-icon-load {
+        animation: ani-demo-spin 1s linear infinite;
+    }
+
+    @keyframes ani-demo-spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+</html>

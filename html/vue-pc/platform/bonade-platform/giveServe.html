@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+       <link class="skin" rel="stylesheet" type="text/css" href="../../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+    <style>
+
+    </style>
+</head>
+
+<body onload="utils.onload()">
+    <div id="app" class="pd15" v-cloak>
+        <spin fix v-if="isLoading"></spin>
+        <row>
+            <i-col span="24" getters="32" style="padding: 5px;">
+                <i-button type="success" icon="md-add" @click="addServe">开通服务</i-button>
+            </i-col>
+        </row>
+        <row class="auto-height">
+            <i-col span="24" style="height: 100%; padding: 5px;">
+                <card class="auto-height">
+                    <div class="toolbar">
+                        <!-- <i-form ref="formInline" :model="formInline" inline>
+                            <form-item prop="user">
+                                <i-input type="text" v-model="formInline.user" placeholder="搜索" clearable prefix="md-search">
+                                </i-input>
+                            </form-item>
+                            <form-item>
+                                <i-button type="primary">Signin</i-button>
+                            </form-item>
+                        </i-form> -->
+                    </div>
+                    <i-table border :columns="columns" :data="tableData" :height="table.height" ref="table" :loading="tableLoading"></i-table>
+                    <bnd-page :total="total" :current.sync="page" :page-size="pageSize" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></bnd-page>
+                </card>
+            </i-col>
+        </row>
+        <drawer title="编辑" v-model="editModel" width="40%">
+            <div class="drawer-box" >
+                <i-form :model="editForm" ref="editForm" :rules="ruleEdit">
+                        <form-item label="业务模块" label-position="top" :label-width="100">
+                            <i-input v-model="editForm.appName" readonly> </i-input>
+                        </form-item>
+                        <form-item label="服务项目" label-position="top" :label-width="100">
+                            <i-input v-model="editForm.serviceName" readonly/>
+                        </form-item>
+                        <form-item label="对应业务企业" label-position="top" :label-width="100">
+                            <i-input v-model="editForm.operatingCompanyName" readonly/>
+                        </form-item>
+                        <form-item label="业务合同编号" label-position="top" :label-width="100">
+                            <i-input v-model="editForm.contractCode" readonly/>  
+                        </form-item>
+                        <form-item label="合同有效期" label-position="top" :label-width="100">
+                            <row>
+                                <i-col span="11">
+                                    <form-item prop="contractStartDate">
+                                        <date-picker type="date" placeholder="开始时间" v-model="editForm.contractStartDate"></date-picker>
+                                    </form-item>
+                                </i-col>
+                                <i-col span="2" style="text-align: center">-</i-col>
+                                <i-col span="11">
+                                    <form-item prop="contractEndDate">
+                                        <date-picker type="date" placeholder="结束时间" v-model="editForm.contractEndDate"></date-picker>
+                                    </form-item>
+                                </i-col>
+                            </row>
+                        </form-item>
+                </i-form>
+            </div>
+            <div class="drawer-footer">
+                <i-button style="margin-right: 8px" @click="editReset('editForm')">重置</i-button>
+                <i-button type="primary" :loading="editLoading">
+                    <span v-if="!editLoading"  @click="editInfo('editForm')">保存</span>
+                    <span v-else>Loading...</span>
+                </i-button>
+            </div>
+        </drawer>
+        <drawer title="开通服务" v-model="addModel" width="60%">
+            <div class="drawer-box" >
+                <i-form :model="addForm" ref="addForm" :rules="ruleAdd">
+                    <form-item label="业务模块" label-position="top" prop="appId" :label-width="100">
+                        <i-select v-model="addForm.appId" filterable @on-change="businessChange" >
+                            <i-option v-for="(item,index) in businessList" :value="item.id" :key="index">{{item.name}}</i-option>
+                        </i-select>
+                    </form-item>
+                    <form-item label="服务项目" label-position="top" prop="serviceId" :label-width="100">
+                        <i-select v-model="addForm.serviceId" filterable @on-change="serveChange" >
+                            <i-option v-for="(item,index) in serveList" :value="item.id" :key="index">{{item.name}}</i-option>
+                        </i-select>
+                    </form-item>
+                    <form-item label="业务合同编号" label-position="top" prop="contractCode" :label-width="100">
+                        <i-input v-model="addForm.contractCode"/>
+                    </form-item>
+                    <form-item label="合同有效期" label-position="top" :label-width="100">
+                        <row>
+                            <i-col :xs="11" :sm="11" :md="8" :lg="5">
+                                <form-item prop="contractStartDate">
+                                    <date-picker type="date" placeholder="开始时间" v-model="addForm.contractStartDate"></date-picker>
+                                </form-item>
+                            </i-col>
+                            <i-col span="2" style="text-align: center">-</i-col>
+                            <i-col :xs="11" :sm="11" :md="8" :lg="5">
+                                <form-item prop="contractEndDate">
+                                    <date-picker type="date" placeholder="结束时间" v-model="addForm.contractEndDate"></date-picker>
+                                </form-item>
+                            </i-col>
+                        </row>
+                    </form-item>
+                </i-form>
+                <card>
+                    <p slot="title">运营企业</p>
+                    <strong slot="extra" style="color: #17233d;">运营项目</strong>
+                    <radio-group v-model="companyValue">
+                        <row :gutter="16" v-for="(item,index) in companyData" :key="index">
+                            <i-col :xs="16" :sm="14" :md="12" :lg="12">
+                                <radio :label="item.id">
+                                    <span>{{item.companyName}}</span>
+                                </radio>
+                            </i-col>
+                            <i-col :xs="8" :sm="10" :md="12" :lg="12">
+                                <span>{{item.companyServiceArea}}</span>
+                            </i-col>
+                            <divider dashed />
+                        </row>
+                    </radio-group>
+                </card>
+            </div>   
+            <div class="drawer-footer">
+                <i-button style="margin-right: 8px" @click="addServeReset('addForm')">重置</i-button>
+                <i-button type="primary" :loading="addLoading">
+                    <span v-if="!addLoading"  @click="addServeExamine('addForm')">保存</span>
+                    <span v-else>Loading...</span>
+                </i-button>
+            </div>
+        </drawer>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+'use strict';
+new Vue({
+    el: '#app',
+    components: {
+    },
+    data: function(){
+        return {
+            buttons:[],
+            formInline: {},
+            tableLoading: false,
+            isLoading:false,
+            tableData: [],
+            columns: [{
+                    title: '业务模块',
+                    key: 'appName',
+                    minWidth: 100
+                },
+                {
+                    title: '服务项目',
+                    key: 'serviceName',
+                    minWidth: 100
+                },
+                {
+                    title: '对应业务企业',
+                    key: 'operatingCompanyName',
+                    minWidth: 220
+                },
+                {
+                    title: '业务合同编号',
+                    key: 'contractCode',
+                    minWidth: 120
+                },
+                {
+                    title: '合同有限期',
+                    key: 'contractDate',
+                    minWidth: 200
+                },
+                {
+                    title: '状态',
+                    key: 'enable',
+                    minWidth: 100
+                },
+                {
+                    title: '操作',
+                    key: 'action',
+                    fixed:'right',
+                    minWidth: 200,
+                    render: function (h, params) {
+                        // console.log(params,'参数')
+                        var buttons = [];
+                        var BUTTON_LIST = [h('a', {
+                                style: { marginRight: '5px',cursor:"pointer",color:"#338bf8" },
+                                on: { click: function () { this.openEditModel(params) }.bind(this) }
+                            }, '编辑'), h('a', {
+                                style: { marginRight: '5px',cursor:"pointer",color:"#338bf8"  },
+                                on: { click: function () { this.isOpenServe(params, '1') }.bind(this) }
+                            }, '开通'),
+                            h('a', {
+                                style: { marginRight: '5px',cursor:"pointer",color:"#338bf8" },
+                                on: { click: function () { this.isOpenServe(params,'0') }.bind(this) }
+                            }, '停用')
+                        ];
+                        if(params.row.enable == '已开通' || params.row.enable == '1'){
+                            buttons = [BUTTON_LIST[0],BUTTON_LIST[2]];
+                        }else if(params.row.enable == '未开通' || params.row.enable == '0'){
+                            buttons = [BUTTON_LIST[0],BUTTON_LIST[1]];
+                        }
+                        return buttons;
+                    }.bind(this)
+                }
+            ],
+            table: {
+                height: 300
+            },
+            total: 0,
+            pageSize: 10,
+            page: 1,
+            editModel:false,
+            editLoading:false,
+            editForm:{},
+            addForm:{
+                companyId:'', 
+                appId:'', 
+                serviceId:'', 
+                operatingCompanyId:'', 
+                contractCode:'', 
+                contractStartDate:'',
+                contractEndDate:''
+            },
+            ruleEdit:{
+                contractStartDate: [
+                    { required: true, type: 'date', message: '请选择开始日期', trigger: 'change' }
+                ],
+                contractEndDate: [
+                    { required: true, type: 'date', message: '请选择结束日期', trigger: 'change' }
+                ]
+            },
+            addLoading:false,
+            addModel:false,
+            ruleAdd:{
+                appId:[
+                    { required: true, message: '请选择业务模块', trigger: 'change' }
+                ],
+                serviceId:[
+                    { required: true, message: '请选择服务项目', trigger: 'change' }
+                ],
+                contractCode:[
+                    { required: true, message: '请输入业务合同编号', trigger: 'blur' }
+                ],
+                contractStartDate: [
+                    { required: true, type: 'date', message: '请选择开始日期', trigger: 'change' }
+                ],
+                contractEndDate: [
+                    { required: true, type: 'date', message: '请选择结束日期', trigger: 'change' }
+                ]
+            },
+            businessList: [],
+            serveList:[],
+            businessId:'',
+            companyValue:'',
+            companyData:'',
+            id:'',
+            companyId:this.$utils.getParameter('companyId')
+        }
+    },
+    methods: {
+        onPageChange: function (page) { //页码回调
+            this.getData(page, this.pageSize);
+        },
+        onPageSizeChange: function (size) { //页面显示条数回调
+            this.getData(this.page,size);
+        },
+        getData:function(page,pageSize){ //请求列表
+            this.loading=true;
+            this.$utils.ajax({
+                url: '/platformcenter/company/service/pc/v1/page',
+                method:'get',
+                data:{
+                    companyId:this.companyId,
+                    page:page,
+                    rows:pageSize
+                },
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        this.tableData = res.data.list;
+                        this.total = res.data.total*1;
+                        _.map(this.tableData, function (result,index) {
+                            this.tableData[index].enable = this.tableData[index].enable == '1'?'已开通':this.tableData[index].enable == '0'?'未开通':'';
+                            this.tableData[index].contractDate = this.tableData[index].contractStartDate.split(' ')[0] +'至'+ this.tableData[index].contractEndDate.split(' ')[0];
+                        }.bind(this))
+                    } else {
+                        this.$Notice.error({
+                            title: '错误',
+                            desc: res.response.data.err
+                        });
+                    }
+                    this.loading=false;
+                }.bind(this),
+                error: function(err)  {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: err.response.data.err
+                    });
+                    this.loading=false;
+                }.bind(this)
+            })
+        },
+        isOpenServe:function(data,type){
+            var html = '';
+            if(type == '0'){
+                html = '<p>确认停用服务?</p>'
+            }else{
+                html = '<p>确认开通服务?</p>'
+            }
+            this.$Modal.confirm({
+                title: '提示',
+                content: html,
+                onOk: () => {
+                    this.openServe(data,type);
+                },
+                onCancel: () => {
+
+                }
+            });
+        },
+        openServe:function(data,type){ //开通or关闭服务
+            this.isLoading=true;
+            this.$utils.ajax({
+                url: '/platformcenter/company/service/pc/v1/'+data.row.id,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    enable:type
+                },
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        this.$Notice.success({
+                            title: '提示',
+                            desc: '操作成功'
+                        });
+                        this.getData(this.page,this.pageSize);
+                    } else {
+                        this.$Notice.error({
+                            title: '错误',
+                            desc: res.response.data.err
+                        });
+                    }
+                    this.isLoading=false;
+                }.bind(this),
+                error: function(err)  {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: err.response.data.err
+                    });
+                    this.isLoading=false;
+                }.bind(this)
+            })
+        },
+        openEditModel:function(data){ //编辑弹框
+            data.row.contractStartDate = new Date(data.row.contractStartDate);
+            data.row.contractEndDate = new Date(data.row.contractEndDate);
+            // console.log(data.row,'打开编辑');
+            this.id = data.row.id;
+            this.editModel = true;
+            this.editForm= {};
+            this.editForm = data.row;
+        },
+        editReset:function(name){
+            this.$refs[name].resetFields();
+        },
+        editInfo: function (name) {
+            this.$refs[name].validate(function(valid){
+                if (valid) {
+                    this.editSubmit();
+                }
+            }.bind(this),1000)
+        },
+        editSubmit:function(){ //编辑提交
+            this.editLoading=true;
+            var startDate = '';
+            var endDate = '';
+            if(this.editForm.contractStartDate instanceof Date == true){
+                startDate = new Date(this.editForm.contractStartDate).format('yyyy-MM-dd');
+            }
+            if(this.editForm.contractEndDate instanceof Date == true){
+                endDate = new Date(this.editForm.contractEndDate).format('yyyy-MM-dd')
+            }
+            this.$utils.ajax({ 
+                url: '/platformcenter/company/service/pc/v1/'+this.id,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    contractStartDate:startDate,
+                    contractEndDate:endDate
+                },
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        this.$Notice.success({
+                            title: '提示',
+                            desc: '编辑成功'
+                        });
+                        this.editModel = false;
+                        this.getData(this.page,this.pageSize);
+                    } else {
+                        this.$Notice.error({
+                            title: '错误',
+                            desc: res.response.data.err
+                        });
+                    }
+                    this.editLoading=false;
+                }.bind(this),
+                error: function (err) {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: err.response.data.err
+                    });
+                    this.editLoading=false;
+                }.bind(this)
+            })
+        },
+        addServe:function(){
+            this.addModel =true;
+            this.addServeReset('addForm');
+        },
+        getBusinessList:function(){ //获取业务模块列表
+            this.$utils.ajax({ 
+                url: '/platformcenter/resource/company/app/pc/v1/list',
+                method:'get',
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res.data,'业务模块');
+                        this.businessList = res.data;
+                    } else {
+                        this.$Notice.error({
+                            title: '错误',
+                            desc: res.response.data.err
+                        });
+                    }
+                }.bind(this),
+                error: function(err)  {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: err.response.data.err
+                    });
+                }.bind(this)
+            })
+        },
+        businessChange:function(value){
+            // console.log(value,'业务模块发生改变')
+            this.businessId = value;
+            this.serveList = [];
+            this.addForm.serviceId = '';
+            if(value){
+                this.getServeList(value);
+            }
+        },
+        getServeList:function(id){ //获取服务项目列表
+            this.$utils.ajax({
+                url: '/platformcenter/resource/company/app/service/pc/v1/list',
+                method:'get',
+                data:{
+                    appId:id
+                },
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        this.serveList = res.data;
+                    } else {
+                        this.$Notice.error({
+                            title: '错误',
+                            desc: res.response.data.err
+                        });
+                    }
+                }.bind(this),
+                error: function(err)  {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: err.response.data.err
+                    });
+                }.bind(this)
+            })
+        },
+        serveChange:function(value){
+            // console.log(value,'服务项目发生改变')
+            if(value){
+                this.getOperateCompany(value);
+            }
+        },
+        getOperateCompany:function(id){ //获取运营企业
+            this.$utils.ajax({
+                url: '/platformcenter/business/company/app/pc/v1/list',
+                method:'get',
+                data:{
+                    appId: this.businessId,
+                    serviceId:id
+                },
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        // console.log(res,'运营企业');
+                        this.companyData = res.data;
+                    } else {
+                        this.$Notice.error({
+                            title: '错误',
+                            desc: res.response.data.err
+                        });
+                    }
+                }.bind(this),
+                error: function(err)  {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: err.response.data.err
+                    });
+                }.bind(this)
+            })
+        },
+        addServeExamine: function (name) { //开通服务-表单校验
+            this.$refs[name].validate(function(valid){
+                if (valid) {
+                    this.addServeSave();
+                }
+            }.bind(this),1000)
+        },
+        addServeReset:function(name){
+            this.$refs[name].resetFields();
+            this.companyValue = '';
+            this.companyData  = [];
+            this.getBusinessList();
+        },
+        addServeSave:function(){
+            if(!this.companyValue){
+                this.$Notice.info({
+                    title: '提示',
+                    desc: '请选择运营企业'
+                });
+                return false;
+            }
+            var startDate = '';
+            var endDate = '';
+            if(this.addForm.contractStartDate instanceof Date == true){
+                startDate = new Date(this.addForm.contractStartDate).format('yyyy-MM-dd');
+            }
+            if(this.addForm.contractEndDate instanceof Date == true){
+                endDate = new Date(this.addForm.contractEndDate).format('yyyy-MM-dd')
+            }
+            this.$utils.ajax({ 
+                url: '/platformcenter/company/service/pc/v1',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data:{
+                    companyId:this.companyId,
+                    appId:this.addForm.appId,
+                    serviceId:this.addForm.serviceId,
+                    operatingCompanyId:this.companyValue,
+                    contractCode:this.addForm.contractCode,
+                    contractStartDate:startDate,
+                    contractEndDate:endDate,
+                },
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        this.$Notice.success({
+                            title: '提示',
+                            desc: '保存成功'
+                        });
+                        this.addModel = false;
+                        this.addServeReset('addForm');
+                        this.getData(this.page,this.pageSize);
+                    } else {
+                        this.$Notice.error({
+                            title: '错误',
+                            desc: res.response.data.err
+                        });
+                    }
+                    this.editLoading=false;
+                }.bind(this),
+                error: function(err)  {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: err.response.data.err
+                    });
+                    this.editLoading=false;
+                }.bind(this)
+            })
+        }
+    },
+    mounted :function() {
+        this.buttons = this.$utils.getButtons();
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.table.$el,
+            table: this.table
+        });
+        this.getData(this.page,this.pageSize);
+    },
+});
+</script>
+
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link class="skin" rel="stylesheet" type="text/css" href="../../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+</head>
+
+<body onload="utils.onload()">
+    <div id="app" v-cloak>
+        <div class="toolbar" ref="toolbar">
+            <div class="button-wrapper">
+                <i-button @click="openRoleDrawer" type="success" icon="md-add" size="small" v-if="buttons.hasPermission('platform.role.create')">新增角色</i-button>
+            </div>
+        </div>
+        <i-table border :columns="columns" :data="tableData" :loading="tableLoading" :height="table.height" ref="table"></i-table>
+        <bnd-page :total="total" :page-size="pageSize" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></bnd-page>
+        <drawer title="成员管理" v-model="memberDrawerVisible" width="80%">
+            <div class="drawer-box">
+                <div class="toolbar">
+                    <div class="button-wrapper">
+                        <i-button @click="addMember" type="success" v-if="buttons.hasPermission('platform.role.member')">添加</i-button>
+                        <i-button @click="removeMember()" type="error" v-if="buttons.hasPermission('platform.role.member')">移除</i-button>
+                    </div>
+                    <i-form ref="searchform" :model="searchform" inline>
+                        <form-item prop="username">
+                            <i-input v-model="searchform.username" placeholder="请输入姓名..." style="max-width:250px"></i-input>
+                        </form-item>
+                        <form-item>
+                            <i-button type="primary" :loading="searchLoading" @click="doSearch()">
+                                <span v-if="!searchLoading">筛选</span>
+                                <span v-else>请求中...</span>
+                            </i-button>
+                            <i-button @click="doReset()">重置</i-button>
+                        </form-item>
+                    </i-form>
+                </div>
+                <i-table border :columns="memberColumns" :data="memberTableData" :loading="memberTableLoading" :height="memberTable.height" ref="memberTable"></i-table>
+                <bnd-page :total="memberTotal" :page-size="memberPageSize" @on-change="onMemberPageChange" @on-page-size-change="onMemberPageSizeChange"></bnd-page>
+            </div>
+        </drawer>
+        <drawer :title="roleDrawerTitle" v-model="roleDrawerVisible" width="60%">
+            <div class="drawer-box">
+                <row>
+                    <i-form ref="form" :label-width="80" :rules="ruleValidate" :model="formData">
+                        <form-item label="角色名称" prop="roleName">
+                            <i-input v-model="formData.roleName" placeholder="请输入角色名称"></i-input>
+                        </form-item>
+                        <form-item label="角色职责" prop="remark">
+                            <i-input v-model="formData.remark" placeholder="请输入角色职责" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+                        </form-item>
+                    </i-form>
+                </row>
+            </div>
+            <div class="drawer-footer">
+                <i-button @click="closeRoleDrawer">取消</i-button>
+                <i-button type="primary" @click="roleSubmit">提交</i-button>
+            </div>
+        </drawer>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+'use strict';
+//role_type 1自定义 0 系统
+var ROLE_TYPE = [{ name: '系统', value: '0' }, { name: '自定义', value: '1' }];
+new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            buttons: [],
+            searchform: {},
+            searchLoading: false,
+            roleDrawerVisible: false,
+            drawerVisible: false,
+            memberDrawerVisible: false,
+            checkboxList: [{ label: '查看', value: 0 }, { label: '删除', value: 1 }, { label: '详情', value: 2 }, { label: '导出', value: 3 }, { label: '修改', value: 4 }],
+            checkboxList1: [{ label: '企业', value: 0 }, { label: '本部门', value: 1 }, { label: '同级', value: 2 }, { label: '下级', value: 3 }],
+            formData: {},
+            ruleValidate: {
+                roleName: [
+                    { required: true, message: '角色名称不能为空！', trigger: 'blur' }
+                ],
+                remark: [
+                    { required: true, message: '角色职责不能为空！', trigger: 'blur' }
+                ]
+            },
+            isDisabled: true,
+            treeLoading: false,
+            treeDataIndex: 0,
+            tableLoading: false,
+            treeData: [],
+            tableData: [],
+            total: 0,
+            pageNum: 1,
+            pageSize: 10,
+            table: {
+                height: 300
+            },
+            label: [],
+            currentRoleId: '',
+            isEdit: false,
+            memberTable: {
+                height: 300
+            },
+            memberTableLoading: false,
+            memberTableData: [],
+            memberTotal: 0,
+            memberPageNum: 1,
+            memberPageSize: 10,
+            memberColumns: [{
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                }, {
+                    title: '姓名',
+                    key: 'userName',
+                    minWidth: 100
+                }, {
+                    title: '手机号码',
+                    key: 'mobile',
+                    minWidth: 200
+                },
+                {
+                    title: '职位',
+                    key: 'jobName',
+                    minWidth: 100
+                }
+            ],
+            columns: [{
+                    title: '角色名称',
+                    key: 'roleName',
+                    minWidth: 100
+                },
+                {
+                    title: '角色职责',
+                    key: 'remark',
+                    minWidth: 100
+                },
+                {
+                    title: '角色类型',
+                    key: 'roleType',
+                    minWidth: 100,
+                    render: function (h, params) {
+                        return h('span', ROLE_TYPE.getName(params.row.roleType))
+                    }
+                },
+                {
+                    title: '角色成员数',
+                    key: 'employeeCount',
+                    minWidth: 100
+                },
+                {
+                    title: '修改时间',
+                    key: 'updateTime',
+                    minWidth: 150
+                },
+                {
+                    title: '操作',
+                    key: 'action',
+                    minWidth: 200,
+                    fixed: 'right',
+                    render: function (h, params) {
+                        var buttons = [];
+                        var BUTTON_LIST = {
+                            'platform.role.authorize': h('a', {
+                                style: { marginRight: '5px' },
+                                on: {
+                                    click: function () {
+                                        this.$permissionTree({
+                                            isPlatform: true,
+                                            roleId: params.row.id,
+                                            isDisabled: params.row.roleType === '0',
+                                            isAdmin: params.row.roleType === '0'
+                                        } )
+                                    }.bind(this)
+                                }
+                            }, params.row.roleType === '0' ? '查看授权' : '授权'),
+                            'platform.role.member': h('a', {
+                                style: { marginRight: '5px' },
+                                on: { click: function () { this.openMemberDrawer(params.row.id) }.bind(this) }
+                            }, '成员管理'),
+                            'platform.role.edit': h('a', {
+                                style: { marginRight: '5px' },
+                                on: { click: function () { this.openEditRoleDrawer(params) }.bind(this) }
+                            }, '编辑'),
+                            'platform.role.delete': h('a', {
+                                on: { click: function () { this.deleteRole(params.row.id) }.bind(this) }
+                            }, '删除')
+                        }
+                        if (params.row.roleType === '0') {
+                            for (var button in { 'platform.role.authorize': BUTTON_LIST['company.role.authorize'], 'platform.role.member': BUTTON_LIST['company.role.member'] }) {
+                                if (this.buttons.hasPermission(button)) {
+                                    buttons.push(BUTTON_LIST[button])
+                                }
+                            }
+                        } else {
+                            for (var button in BUTTON_LIST) {
+                                if (this.buttons.hasPermission(button)) {
+                                    buttons.push(BUTTON_LIST[button])
+                                }
+                            }
+                        }
+                        return h('div', buttons);
+                    }.bind(this)
+                }
+            ]
+        }
+    },
+    computed: {
+        drawerTitle: function () {
+            return this.isDisabled ? '查看授权' : '授权';
+        },
+        roleDrawerTitle: function () {
+            return this.isEdit ? '编辑角色' : '新增角色';
+        }
+    },
+    mounted: function () {
+        this.buttons = this.$utils.getButtons();
+        console.log(this.buttons);
+        this.getRoleData();
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.table.$el,
+            table: this.table
+        });
+    },
+    methods: {
+        doReset: function () {
+            this.searchLoading = true;
+            this.searchform = {}
+            this.getMemberData()
+        },
+        doSearch: function () {
+            this.searchLoading = true;
+            this.getMemberData()
+        },
+        removeMember: function (employeeId) {
+            var employeeIds = [];
+            if (typeof employeeId === 'string') {
+                employeeIds.push(employeeId)
+            } else {
+                var employees = this.$refs.memberTable.getSelection();
+                if (employees.length) {
+                    employees.forEach(function (item) {
+                        employeeIds.push(item.employeeId)
+                    });
+                } else {
+                    this.$Notice.error({
+                        title: '错误',
+                        desc: '未选择任何数据'
+                    });
+                    return false
+                }
+            }
+            this.$utils.ajax({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'delete',
+                url: '/platformcenter/role/employee/pc/v1/page',
+                data: {
+                    roleId: this.currentRoleId,
+                    employeeIds: employeeIds
+                },
+                success: function (res) {
+                    if (res.httpCode === '200') {
+                        this.$Notice.success({
+                            title: '提示',
+                            desc: '删除成功'
+                        })
+                        setTimeout(function () {
+                            this.getMemberData();
+                        }.bind(this), 500);
+                    }
+                }.bind(this)
+            })
+        },
+        addMember: function () {
+            this.$bndPicker({
+                type: 'employee',
+                platform: true,
+                title: '选择员工',
+                multiple: true,
+                data: {
+                    roleId: this.currentRoleId,
+                },
+                callback: function (result) {
+                    var employeeIds = []
+                    result.forEach(function (item) {
+                        employeeIds.push(item.employeeId)
+                    });
+                    this.$utils.ajax({
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        method: 'post',
+                        url: '/platformcenter/role/employee/pc/v1/page',
+                        data: {
+                            roleId: this.currentRoleId,
+                            employeeIds: employeeIds
+                        },
+                        success: function (res) {
+                            if (res.httpCode === '200') {
+                                this.$Notice.success({
+                                    title: '提示',
+                                    desc: '添加成功'
+                                })
+                                setTimeout(function () {
+                                    this.getMemberData();
+                                }.bind(this), 500);
+                            }
+                        }.bind(this)
+                    })
+                    console.log(result);
+                }.bind(this)
+            });
+        },
+        deleteMember: function () {
+            this.$Modal.confirm({
+                title: '提示',
+                content: '<p>确认要移除吗？</p>',
+                onOk: function () {
+                    this.$utils.ajax({
+                        method: 'delete',
+                        url: '/platformcenter/role/pc/v1/' + id,
+                        success: function (res) {
+                            if (res.httpCode === '200') {
+                                this.$Notice.success({
+                                    title: '提示',
+                                    desc: '删除成功'
+                                });
+                                this.getRoleData();
+                            } else {
+                                this.$Notice.error({
+                                    title: '错误',
+                                    desc: res.msg
+                                });
+                            }
+                        }.bind(this),
+                        error: function (err) {
+                            this.$Notice.error({
+                                title: '错误',
+                                desc: err.msg
+                            });
+                        }.bind(this)
+                    })
+                }.bind(this)
+            });
+        },
+        onMemberPageChange: function (page) {
+            this.getMemberData(page)
+        },
+        onMemberPageSizeChange: function (size) {
+            this.memberPageSize = size;
+            this.getMemberData();
+        },
+        openMemberDrawer: function (id) {
+            this.currentRoleId = id;
+            this.memberDrawerVisible = true;
+            this.getMemberData();
+            this.$utils.tableAutoHeight({
+                tableElement: this.$refs.memberTable.$el,
+                table: this.memberTable
+            });
+        },
+        deleteRole: function (id) {
+            this.$Modal.confirm({
+                title: '提示',
+                content: '<p>确认要删除吗？</p>',
+                onOk: function () {
+                    this.$utils.ajax({
+                        method: 'delete',
+                        url: '/platformcenter/role/pc/v1/' + id,
+                        success: function (res) {
+                            if (res.httpCode === '200') {
+                                this.$Notice.success({
+                                    title: '提示',
+                                    desc: '删除成功'
+                                });
+                                this.getRoleData();
+                            } else {
+                                this.$Notice.error({
+                                    title: '错误',
+                                    desc: res.msg
+                                });
+                            }
+                        }.bind(this),
+                        error: function (err) {
+                            this.$Notice.error({
+                                title: '错误',
+                                desc: err.msg
+                            });
+                        }.bind(this)
+                    })
+                }.bind(this)
+            });
+        },
+        roleSubmit: function () {
+            this.$refs.form.validate(function (valid) {
+                if (valid) {
+                    if (this.isEdit) {
+                        this.$utils.ajax({
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            method: 'post',
+                            url: '/platformcenter/role/pc/v1/' + this.currentRoleId,
+                            data: this.formData,
+                            success: function (res) {
+                                if (res.httpCode === '200') {
+                                    this.$Notice.success({
+                                        title: '提示',
+                                        desc: '修改成功'
+                                    });
+                                    this.getRoleData();
+                                    this.closeRoleDrawer();
+                                } else {
+                                    this.$Notice.error({
+                                        title: '错误',
+                                        desc: res.msg
+                                    });
+                                }
+                            }.bind(this),
+                            error: function (err) {
+                                this.$Notice.error({
+                                    title: '错误',
+                                    desc: err.msg
+                                });
+                            }.bind(this)
+                        })
+                        return false;
+                    }
+                    this.$utils.ajax({
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        url: '/platformcenter/role/pc/v1',
+                        data: this.formData,
+                        success: function (res) {
+                            if (res.httpCode === '200') {
+                                this.$Notice.success({
+                                    title: '提示',
+                                    desc: '新建成功'
+                                });
+                                this.getRoleData(this.pageNum);
+                                this.formData = {};
+                                this.closeRoleDrawer();
+                            } else {
+                                this.$Notice.error({
+                                    title: '错误',
+                                    desc: res.msg
+                                })
+                            }
+                        }.bind(this),
+                        error: function (err) {
+                            this.$Notice.error({
+                                title: '错误',
+                                desc: err.msg
+                            })
+                        }.bind(this)
+                    })
+                }
+            }.bind(this))
+        },
+        getMemberData: function (page) {
+            this.memberTableLoading = true;
+            this.$utils.ajax({
+                method: 'get',
+                url: '/platformcenter/role/employee/pc/v1/page',
+                data: {
+                    roleId: this.currentRoleId,
+                    exists: true,
+                    page: page || 1,
+                    rows: this.memberPageSize,
+                    userName: this.searchform.username || ''
+                },
+                success: function (res) {
+                    if (res.httpCode === '200') {
+                        this.memberTableData = res.data.list;
+                        this.memberTotal = res.data.total * 1;
+                    }
+                    this.memberTableLoading = false;
+                    this.searchLoading = false;
+                }.bind(this),
+                error: function (err) {
+                    this.memberTableLoading = false;
+                    this.searchLoading = false;
+                }.bind(this)
+            })
+        },
+        getRoleData: function (page) {
+            this.tableLoading = true;
+            this.$utils.ajax({
+                method: 'get',
+                url: '/platformcenter/role/pc/v1/page',
+                data: {
+                    page: page || 1,
+                    rows: this.pageSize
+                },
+                success: function (res) {
+                    if (res.httpCode === '200') {
+                        this.tableData = res.data.list;
+                        this.total = res.data.total * 1;
+                    }
+                    this.tableLoading = false;
+                }.bind(this),
+                error: function (err) {
+                    this.tableLoading = true;
+                }.bind(this)
+            })
+        },
+        openEditRoleDrawer: function (data) {
+            this.isEdit = true;
+            this.roleDrawerVisible = true;
+            this.currentRoleId = data.row.id;
+            this.formData = {
+                roleName: data.row.roleName,
+                rolePermission: data.row.rolePermission,
+                remark: data.row.remark
+            }
+        },
+        openRoleDrawer: function () {
+            this.isEdit = false;
+            this.roleDrawerVisible = true;
+            this.formData = {}
+        },
+        closeRoleDrawer: function () {
+            this.roleDrawerVisible = false;
+        },
+        openDrawer: function (params) {
+            this.drawerVisible = true;
+            this.currentRoleId = params.row.id;
+            this.getPermissionData(this.currentRoleId, function (data) {
+                if (params.row.roleType === '0') {
+                    this.isDisabled = true;
+                    this.setDisabled(data);
+                } else {
+                    this.setExpand(data);
+                    this.isDisabled = false;
+                }
+                this.treeData = data;
+                this.treeData.forEach(function (item) {
+                    this.label.push(function (h) {
+                        return [h('span', {
+                            class: ['app-id'],
+                            domProps: {
+                                'id': item.id
+                            }
+                        }, [h('checkbox', {
+                                props: {
+                                    'disabled': this.isDisabled,
+                                    'value': Boolean(item.checked) === true
+                                }
+                            }, ''), h('icon', {
+                                props: {
+                                    // type: 'logo-apple'
+                                }
+                            }),
+                            h('span', item.name)
+                        ])]
+                    })
+                }.bind(this));
+            }.bind(this))
+        },
+        closeDrawer: function () {
+            this.drawerVisible = false;
+        },
+        onPageChange: function (page) {
+            this.getRoleData(page);
+        },
+        onPageSizeChange: function (size) {
+            this.pageSize = size;
+            this.getRoleData();
+        }
+    }
+});
+</script>
+
+</html>

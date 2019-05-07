@@ -1,0 +1,501 @@
+@import './theme/default/default.css';
+
+body,
+html {
+    height: 100%;
+}
+
+.layout,
+.ivu-layout {
+    height: 100%;
+}
+
+.login-module {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 135px 0 0;
+}
+
+.login-iframe {
+    width: 970px;
+    height: 390px;
+    margin: auto;
+    position: relative;
+}
+
+.login-header {
+    width: 100%;
+    height: 80px;
+
+    background-color: #fff;
+
+    .logo-wrapper {
+        position: relative;
+
+        float: left;
+
+        box-sizing: border-box;
+        height: 80px;
+        padding-left: 80px;
+
+        transition: all .1s;
+
+        >img {
+            position: relative;
+            top: 50%;
+
+            display: block;
+            float: left;
+
+            width: 40px;
+            height: 40px;
+            margin-right: 5px;
+
+            transform: translateY(-50%);
+        }
+
+        >div {
+            position: relative;
+            top: 50%;
+
+            float: left;
+
+            transition: all .4s;
+            transform: translateY(-50%);
+            text-align: center;
+
+            opacity: 1;
+
+            h2 {
+                letter-spacing: 2px;
+            }
+
+            p {
+                letter-spacing: 1px;
+            }
+        }
+    }
+}
+
+.login-content {
+    position: relative;
+
+    overflow: hidden;
+
+    height: calc(~"100% - 160px");
+
+    .demo-carousel {
+        height: 100%;
+
+        background-color: #506b9e;
+    }
+
+    // .ivu-carousel-item{
+    //     height: calc(~"100% - 160px") !important;
+    // }
+    .ivu-carousel,
+    .ivu-carousel-list,
+    .ivu-carousel-track {
+        height: 100%;
+    }
+
+    .ivu-carousel-dots {
+        bottom: 152px;
+
+        padding-left: 346px;
+
+        text-align: left;
+
+        li button {
+            width: 60px;
+            height: 8px;
+
+            border: 1px solid rgba(255, 255, 255, 1);
+            border-radius: 4px;
+            background-color: transparent;
+        }
+    }
+
+    .ivu-carousel-dots li.ivu-carousel-active>button {
+        background-color: #fff;
+    }
+}
+
+
+
+.login-border {
+    position: absolute;
+    right: 0;
+    width: 350px;
+    height: 390px;
+    border-radius: 6px;
+    background-color: #fff;
+
+    .ivu-tabs-bar {
+        margin: 0;
+    }
+
+    .ivu-tabs-nav {
+        width: 100%;
+        height: 70px;
+
+        .ivu-tabs-tab {
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 54px;
+            padding-left: 0;
+            width: calc(~"33.33% - 10.66px");
+            padding-right: 0;
+            text-align: center;
+        }
+
+        .ivu-tabs-ink-bar {
+            height: 4px;
+        }
+    }
+
+    .ivu-input {
+        font-size: 14px;
+
+        height: 44px;
+    }
+
+    .acount-login {
+        position: relative;
+
+        margin: 34px 25px 0;
+    }
+
+    .ivu-form-item {
+        width: 100%;
+    }
+
+    .ivu-input-prefix i {
+        font-size: 22px;
+        line-height: 44px;
+    }
+
+    .ivu-input-icon {
+        line-height: 44px;
+
+        height: 44px;
+    }
+
+    .ivu-input-prefix {
+        width: 47px;
+    }
+
+    .ivu-input-with-prefix {
+        padding-left: 47px;
+    }
+
+    .ivu-btn {
+        font-size: 16px;
+
+        height: 44px;
+    }
+
+    .first-login {
+        font-size: 16px;
+
+        display: block;
+
+        width: 100%;
+        margin-top: 39px;
+        margin-bottom: 20px;
+
+        text-align: center;
+
+        color: #7f8fa4;
+    }
+
+    .QR-code {
+        width: 200px;
+        height: 200px;
+        border-radius: 4px;
+        border: 1px solid rgba(230, 234, 238, 1);
+        margin: 24px auto 0;
+        padding: 20px;
+        position: relative;
+
+        .refresh {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: hsla(0, 0%, 100%, .95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+
+            .qrcode-error {
+                text-align: center;
+
+                p {
+                    margin-bottom: 8px;
+                }
+
+                .ivu-btn {
+                    height: initial;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
+    .qrcode-desc {
+        width: 200px;
+        margin: 20px auto 0;
+
+        div {
+            &:nth-child(1) {
+                display: inline-block;
+                float: left;
+            }
+
+            &:nth-child(2) {
+                font-size: 12px;
+                padding-left: 42px;
+            }
+        }
+    }
+
+    .code-img {
+        position: relative;
+
+        width: 100%;
+        height: 100%;
+
+        img {
+            max-width: 100%;
+        }
+    }
+}
+
+.platform.login-iframe {
+    .login-border .ivu-tabs-nav .ivu-tabs-tab {
+        width: calc(~"50% - 8px");
+    }
+}
+
+.login-footer {
+    font-size: 12px;
+
+    width: 100%;
+    height: 80px;
+    padding: 22px 0;
+
+    color: #9fa9ba;
+    background-color: #fff;
+
+    p {
+        margin: 0;
+    }
+}
+
+.login-footer {
+    text-align: center;
+}
+
+.ivu-carousel-item {
+    span {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        background-position: center;
+        background-size: cover;
+    }
+}
+
+
+.login-content {
+    background-color: #f2f5f8;
+}
+
+.resetpass {
+    position: relative;
+    top: 50%;
+
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+
+    transform: translateY(-50%);
+}
+
+.tips {
+    font-size: 14px;
+    font-weight: bold;
+
+    position: absolute;
+    top: -38px;
+    right: 0;
+
+    color: #6c7c93;
+}
+
+.rp-border {
+    position: relative;
+    top: 50%;
+
+    width: 100%;
+    height: 540px;
+
+    border-radius: 6px;
+    background-color: #fff;
+
+    .step-header {
+        font-size: 20px;
+        line-height: 76px;
+
+        height: 76px;
+
+        text-align: center;
+
+        color: #fff;
+        border-radius: 6px 6px 0 0;
+        background-color: #0098ff;
+    }
+}
+
+.ivu-steps {
+    position: relative;
+    left: 18%;
+
+    width: 80%;
+    margin-top: 40px;
+}
+
+.step1 {
+    width: 400px;
+    margin-top: 60px;
+    margin-right: auto;
+    margin-left: auto;
+
+    .ivu-form-item {
+        &:nth-child(1) {
+            .ivu-input {
+                height: 44px;
+            }
+        }
+
+        &:nth-child(2) {
+            .ivu-form-item-content {
+                display: flex;
+            }
+        }
+
+        &:nth-child(3) {
+            .ivu-btn {
+                height: 44px;
+            }
+        }
+    }
+}
+
+.step2 {
+    width: 400px;
+    margin-top: 60px;
+    margin-right: auto;
+    margin-left: auto;
+
+    .ivu-form-item {
+
+        // color: #9FA9BA;
+        &:nth-child(1) {
+            .ivu-input {
+                height: 44px;
+            }
+
+            .ivu-btn {
+                width: 100%;
+                height: 44px;
+            }
+        }
+
+        &:nth-child(2) {
+            .ivu-input {
+                height: 44px;
+            }
+        }
+
+        &:nth-child(3) {
+            .ivu-input {
+                height: 44px;
+            }
+        }
+
+        &:nth-child(4) {
+            .ivu-btn {
+                height: 44px;
+            }
+        }
+    }
+}
+
+.step3 {
+    text-align: center;
+
+    .ivu-icon {
+        font-size: 65px;
+
+        margin-top: 80px;
+        margin-bottom: 25px;
+
+        color: #9fa9ba;
+    }
+
+    .callback {
+        font-size: 16px;
+
+        color: #9fa9ba;
+    }
+}
+
+.agreement {
+    cursor: pointer;
+
+    color: #128dff;
+}
+
+.ivu-checkbox-wrapper {
+    margin-right: 0;
+}
+
+.ivu-modal-wrap {
+    .ivu-modal {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+.demo-spin-icon-load {
+    animation: ani-demo-spin 1s linear infinite;
+}
+
+@keyframes ani-demo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.demo-spin-col {
+    height: 100px;
+    position: relative;
+    border: 1px solid #eee;
+}

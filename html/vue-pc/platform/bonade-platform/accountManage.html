@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+       <link class="skin" rel="stylesheet" type="text/css" href="../../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="app" class="pd15" v-cloak>
+        账户管理
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<script type="text/javascript">
+'use strict';
+new Vue({
+    el: '#app',
+    components: {
+    },
+    data: function(){
+        return {
+            
+            }
+    },
+    methods: {
+        getData:function(){
+            this.loading=true;
+            this.$utils.ajax({
+                url: 'http://192.168.0.251:82/api/companycenter/comCompany/pc/v1/queryCompanyInfoPage',
+                data:this.formInline,
+                success: function(res) {
+                    if (res.statusCode == 200) {
+                        console.log(res)
+                        this.data = res.data.list
+                        this.total = res.data.total
+                        _.map(this.data, function (result,index) {
+                            this.data[index].registerSource = this.data[index].registerSource==1?'平台注册':this.data[index].registerSource==2?'运营注册':this.data[index].registerSource==3?'企业注册':this.data[index].registerSource==4?'业务导入':''
+                            this.data[index].transferStatus = this.data[index].transferStatus==1?'是':'否'
+                            this.data[index].verifyStatus = this.data[index].verifyStatus==1?'待完善':this.data[index].verifyStatus==2?'待认证':this.data[index].verifyStatus==3?'通过':this.data[index].verifyStatus==4?'不通过':''
+                            this.data[index].billStatus =this.data[index].billStatus==1?'待完善':this.data[index].billStatus==2?'待认证':this.data[index].billStatus==3?'通过':this.data[index].billStatus==4?'不通过':''
+                        
+                        }.bind(this))
+
+                    } else {
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.msg
+                        });
+                    }
+                    this.loading=false;
+                }.bind(this),
+                error: function(res)  {
+                    this.$Notice.info({
+                            title: '提示',
+                            desc: res.msg
+                        });
+                    this.loading=false;
+                }.bind(this)
+            })
+        },
+    },
+    mounted :function() {
+
+    }
+});
+</script>
+
+</html>

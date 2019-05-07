@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>薪起程管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" href="./static/images/logo.png" />
+    <script type="text/javascript">
+    var cookies = document.cookie.split('; ');
+    var isLogin = false;
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].indexOf('ACCESS_TOKEN') === 0) {
+            isLogin = true;
+            break;
+        }
+    }
+    if (!isLogin) {
+        window.location.href = 'login.html';
+    }
+    </script>
+    <link class="skin" rel="stylesheet" type="text/css" href="./static/css/theme/default/default.css">
+    <link rel="stylesheet" type="text/css" href="./static/css/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+</head>
+
+<body>
+    <div id="app" class="page-index" v-cloak>
+        <layout>
+            <header>
+                <row :class="closeState">
+                    <div class="logo-wrapper">
+                        <img :src="currentCompany.logoUrl|| './static/images/logo.png'" />
+                        <div v-if="isPlatform">
+                            <h2>薪起程<span>管理系统</span></h2>
+                            <p>xinqichengguanlixitong</p>
+                        </div>
+                        <div v-else>
+                            <h2>{{currentCompany.companyShortName||currentCompany.companyName}}</h2>
+                            <p></p>
+                        </div>
+                        <i @click="silderTrigger" class="ivu-icon" :class="triggericon"></i>
+                    </div>
+                    <bnd-menu ref="menu" @on-change="onMenuChange"></bnd-menu>
+                    <div class="action-list">
+                        <dropdown transfer trigger="click">
+                            <avatar :src="avatarPath"></avatar><span class="username">{{userInfo.name||userInfo.account}}</span>
+                            <dropdown-menu slot="list" class="user">
+                                <dropdown-item @click.native="logOut">
+                                    <icon type="md-power"></icon><span>退出</span>
+                                </dropdown-item>
+                            </dropdown-menu>
+                        </dropdown>
+                        <dropdown transfer trigger="click" @on-click="onCompanyChange" v-if="companys.length">
+                            <icon type="ios-browsers"></icon>
+                            <span :title="currentCompany.companyName"> {{currentCompany.companyName}}</span>
+                            <icon type="ios-arrow-down"></icon>
+                            <dropdown-menu slot="list">
+                                <dropdown-item v-for="(item,index) in companys" :name="index" :selected="index===defaultIndex">{{item.companyName}}</dropdown-item>
+                            </dropdown-menu>
+                        </dropdown>
+                        <dropdown transfer trigger="click">
+                            <icon type="md-shirt"></icon>主题
+                            <dropdown-menu slot="list" class="skin">
+                                <dropdown-item v-for="item in skins" @click.native="changeSkin(item.skinPath)"><span :style="{'background-color':item.code}"></span>{{item.label}}</dropdown-item>
+                            </dropdown-menu>
+                        </dropdown>
+                        <fullscreen v-model="isFullscreen"></fullscreen>
+                    </div>
+                </row>
+            </header>
+            <layout>
+                <sider collapsible hide-trigger v-model="isCollapsed" ref="sider" class="border-right" width="215" collapsed-width="30">
+                    <i-menu width="auto" :open-names="openName" :class="menuClass" @on-open-change="getChildren" @on-select="onMenuClick" ref="menus" accordion>
+                        <template v-for="item in menu" v-bind:key="item.id">
+                            <menu-item :name="JSON.stringify(item)" v-if="item.state==='open'">
+                                <icon :type="item.iconcls"></icon>
+                                {{item.resourceName}}
+                            </menu-item>
+                            <submenu v-else :name="JSON.stringify(item)" class="second">
+                                <template slot="title">
+                                    <icon :type="item.iconcls"></icon>
+                                    {{item.resourceName}}
+                                </template>
+                                <template v-for="sub in item.children">
+                                    <menu-item :name="JSON.stringify(sub)" v-if="sub.state==='open'">
+                                        <icon :type="sub.iconcls"></icon>
+                                        {{sub.resourceName}}
+                                    </menu-item>
+                                    <submenu v-else :name="JSON.stringify(sub)" class="second">
+                                        <template slot="title">
+                                            <icon :type="sub.iconcls"></icon>
+                                            {{sub.resourceName}}
+                                        </template>
+                                    </submenu>
+                                </template>
+                            </submenu>
+                        </template>
+                    </i-menu>
+                </sider>
+                <i-content class="content">
+                    <bnd-tabs :tabs="tabs" ref="tabs"></bnd-tabs>
+                </i-content>
+            </layout>
+            <footer class="border-top">
+                <p>版权所有 © 2010－2019 博纳德投资管理集团有限公司 皖B2-20170029-1</p>
+            </footer>
+        </layout>
+    </div>
+</body>
+<script type="text/javascript" src="./static/js/config.js"></script>
+<script type="text/javascript" src="./static/js/browser-polyfill.min.js"></script>
+<script type="text/javascript" src="./static/js/js.cookie.min.js"></script>
+<script type="text/javascript" src="./static/js/vue.min.js"></script>
+<script type="text/javascript" src="./static/js/iview.min.js"></script>
+<script type="text/javascript" src="./static/js/underscore-min.js"></script>
+<script type="text/javascript" src="./static/js/axios.min.js"></script>
+<script type="text/javascript" src="./static/js/utils.js"></script>
+<script type="text/javascript" src="./static/components/index.js"></script>
+<script type="text/javascript" src="./static/components/index-menu.js"></script>
+<script type="text/javascript" src="./static/components/index-fullscreen.js"></script>
+<script type="text/javascript" src="./static/components/index-tabs.js"></script>
+<script type="text/javascript">
+'use strict';
+var indexVue = new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            isPlatform: false,
+            isFullscreen: false,
+            isCollapsed: false,
+            skins: [{ label: '默认', code: '#338bf8', skinPath: 'default' }, { label: '紫色', code: '#68217a', skinPath: 'purple' }], //, { label: '红色', code: '#dd001b', skinPath: 'red' }
+            menu: [],
+            menuTree: [{
+                title: 'parent',
+                loading: false,
+                children: []
+            }],
+            companys: [],
+            currentCompany: {},
+            defaultIndex: 0,
+            userInfo: {},
+            tabIndex: 2,
+            openName: '',
+            tabs: [{
+                label: '首页',
+                icon: 'md-home',
+                path: './home/index.html',
+                closable: false,
+                name: 'index'
+            }]
+        }
+    },
+    components: {
+        'bnd-menu': BndMenu,
+        'bnd-tabs': BndTabs,
+        'fullscreen': fullscreen
+    },
+    computed: {
+        avatarPath: function () {
+            return this.userInfo.userLogo || 'static/images/default_avatar.png'
+        },
+        closeState: function () {
+            return [
+                this.isCollapsed ? 'is-closed' : ''
+            ];
+        },
+        menuClass: function () {
+            return [
+                'menu-item',
+                this.isCollapsed ? 'collapsed-menu' : ''
+            ]
+        },
+        triggericon: function () {
+            return [
+                this.isCollapsed ? 'ivu-icon-ios-arrow-dropright-circle' : ' ivu-icon-ios-arrow-dropleft-circle'
+            ]
+        }
+    },
+    created: function () {
+        this.initUserInfo();
+    },
+    mounted: function () {
+        if (Cookies('isPlatform')) {
+            this.isPlatform = true;
+        }
+        this.$Loading.config({
+            color: '#fff'
+        });
+        window.$loading = this.$Loading;
+        window.$message = this.$Message;
+        window.$notice = this.$Notice;
+        window.$tabs = this.$refs.tabs;
+        this.$refs.tabs.load();
+    },
+    methods: {
+        onMenuClick: function (data) {
+            var tab = JSON.parse(data);
+            if (tab.url !== '') {
+                this.$refs.tabs.openTab({
+                    path: tab.url,
+                    label: tab.resourceName,
+                    name: tab.id,
+                    icon: tab.iconcls,
+                    buttons: JSON.stringify(tab.buttons)
+                })
+            }
+        },
+        getChildren: function (resource) {
+            if (resource[0]) {
+                var resource = JSON.parse(resource[0]);
+                console.log(resource)
+                if (resource.loaded) {
+                    return false
+                }
+                this.$utils.ajax({
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    url: this.isPlatform ? '/platformcenter/resource/submenu/pc/v1/list' : '/companycenter/resource/submenu/pc/v1/list',
+                    data: {
+                        resourceId: resource.id
+                    },
+                    success: function (res) {
+                        var index = _.findIndex(this.menu, { id: resource.id });
+                        if (index === -1) {
+
+                        }
+                        this.$set(this.menu[index], 'children', res.data);
+                        this.$set(this.menu[index], 'loaded', true);
+
+                        this.openName = JSON.stringify(this.menu[index]);
+                        this.$nextTick(function () {
+                            this.$refs.menus.updateOpened();
+                        }.bind(this));
+                    }.bind(this)
+                });
+            }
+        },
+        onMenuChange: function (menu) {
+            this.menu = menu;
+            if (this.menu.length) {
+                this.getChildren([JSON.stringify(this.menu[0])]);
+            }
+        },
+        changeSkin: function (path) {
+            this.$utils.changeSkin(path);
+        },
+        silderTrigger: function () {
+            this.$refs.sider.toggleCollapse();
+            setTimeout(function () {
+                this.$refs.menu.adjust();
+            }.bind(this), 0);
+        },
+        initUserInfo: function () {
+            this.companys = window.userRawData.employeeList;
+            this.userInfo = window.userRawData.userInfo;
+            console.log(this.companys)
+            //检查是否有记录
+            if (userRawData.currentCompany) {
+                var noHistory = true;
+                var currentCompanyId = window.userRawData.currentCompany.companyId;
+                if (currentCompanyId) {
+                    for (var i = 0; i < this.companys.length; i++) {
+                        if (this.companys[i].companyId === currentCompanyId) {
+                            this.defaultIndex = i;
+                            break;
+                        }
+                    }
+                }
+                this.currentCompany = window.userRawData.currentCompany;
+            } else {
+                if (!Cookies('isAdmin')) {
+                    this.$Notice.info({
+                        title: '提示',
+                        desc: '您目前还没有加入任何企业。',
+                        duration: 0
+                    });
+                }
+            }
+        },
+        updateCurrentCompany: function (companyId, callback) {
+            this.$utils.ajax({
+                url: 'companycenter/comCompany/pc/v1/changeCurrentCompany',
+                data: {
+                    companyId: companyId
+                },
+                success: function(res){
+                    if(res.httpCode == '200'){
+                        this.currentCompany.logoUrl = res.data.logoUrl
+                        callback()
+                    }else{
+                        this.$Notice.info({
+                            title: '提示',
+                            desc: res.msg,
+                            duration: 0
+                        });
+                    }
+                    
+                }.bind(this),
+                error: callback
+            });
+        },
+        updateUserInfo: function () {
+            window.userInfo = {
+                userId: userRawData.userInfo.userId,
+                username: userRawData.userInfo.name,
+                companyId: this.currentCompany.companyId,
+                companyName: this.currentCompany.companyName,
+                // employeeId: this.currentCompany.id
+            }
+            document.querySelectorAll('.inner-page').forEach(function (item) {
+                item.contentWindow.userInfo = window.userInfo;
+            });
+        },
+        onCompanyChange: function (index) {
+            if (this.defaultIndex !== index) {
+                this.defaultIndex = index;
+                // Cookies('currentCompanyId', this.companys[index].companyInfoId);
+                this.currentCompany = this.companys[index];
+                this.updateUserInfo();
+                console.log(this.companys)
+                console.log(this.currentCompany);
+                this.updateCurrentCompany(this.currentCompany.companyId, this.$refs.menu.getResourceMenu);
+                // this.$utils.setTopJUICookie(this.companys, this.userInfo, this.currentCompany);
+                this.$refs.tabs.closeOtherTab();
+                // this.getCompanyInfo();
+                // this.$refs.menu.getResourceMenu();
+            }
+        },
+        logOut: function () {
+            Cookies.remove('ACCESS_TOKEN');
+            Cookies.remove('isAdmin');
+            window.location.href = './login.html'
+            // this.$utils.ajax({
+            //     url: '/usercenter/basic/v1/userLoginOutByAccToken',
+            //     data: {
+            //         useScena: window.USE_SCENA
+            //     },
+            //     success: function (res) {
+            //         Cookies.remove('ACCESS_TOKEN');
+            //         var params = ''
+            //         if (Cookies('isPlatform')) {
+            //             params = '?platform=' + Cookies('isPlatform');
+            //             Cookies.remove('isPlatform');
+            //             Cookies.remove('isAdmin');
+            //         }
+            //         window.location.href = './login.html' + params;
+            //     }.bind(this),
+            //     error: function (err) {
+            //         this.$Notice.error({
+            //             title: '错误',
+            //             desc: '登出失败。'
+            //         });
+            //     }.bind(this)
+            // });
+        }
+    }
+});
+</script>
+
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link class="skin" rel="stylesheet" type="text/css" href="../../static/css/theme/default/default.css">
+    <!--[if IE 9]><link rel="stylesheet" type="text/css" href="./static/css/ie9.css"><![endif]-->
+</head>
+
+<body onload="utils.onload()">
+    <div id="app" v-cloak>
+        <div class="toolbar" ref="toolbar">
+            <div class="button-wrapper">
+                <i-button @click="openCreateDrawer" type="success" icon="md-add" size="small" v-if="buttons.hasPermission('platform.admin.create')">新增管理员</i-button>
+            </div>
+        </div>
+        <i-table border :columns="columns" :data="tableData" :loading="tableLoading" :height="table.height" ref="table"></i-table>
+        <bnd-page :total="total" :page-size="pageSize" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></bnd-page>
+        <drawer title="修改管理员密码" v-model="drawerVisible" width="70%">
+            <div class="drawer-box">
+                <i-form :model="form" :label-width="100" :rules="ruleValidate" ref="form" :model="form">
+                    <form-item label="管理员账号：" prop="account">
+                        <i-input :maxlength="20" placeholder="输入管理员账号..." style="max-width:450px" v-model="form.account" :disabled="!isCreate"></i-input>
+                    </form-item>
+                    <form-item label="密码：" prop="password">
+                        <i-input v-model="form.password" :maxlength="20" placeholder="输入新密码..." style="max-width:450px" type="password"></i-input>
+                    </form-item>
+                    <form-item>
+                        <i-button type="primary" :loading="loading" @click="doSave">
+                            <span v-if="!loading">保存</span>
+                            <span v-else>请求中...</span>
+                        </i-button>
+                        <i-button :loading="loading" @click="colseDrawer">
+                            <span>关闭</span>
+                        </i-button>
+                    </form-item>
+                </i-form>
+            </div>
+        </drawer>
+    </div>
+</body>
+<script type="text/javascript" src="../static/js/default.js"></script>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+'use strict';
+//role_type 1自定义 0 系统
+var ROLE_TYPE = [{ name: '系统', value: '0' }, { name: '自定义', value: '1' }];
+new Vue({
+    el: '#app',
+    data: function () {
+        return {
+            form: {},
+            drawerVisible: false,
+            loading: false,
+            buttons: [],
+            tableLoading: false,
+            total: 0,
+            pageNum: 1,
+            pageSize: 10,
+            table: {
+                height: 300
+            },
+            isCreate: true,
+            editRow: {},
+            tableData: [],
+            ruleValidate: {
+                account: [
+                    { required: true, message: '账号不能为空！', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '密码不能为空！', trigger: 'blur' }
+                ]
+            },
+            columns: [
+                { type: 'index', title: '序号', minWidth: 60, align: 'center' },
+
+                {
+                    title: '账号',
+                    key: 'account',
+                    minWidth: 100
+                },
+                {
+                    title: '操作',
+                    key: 'action',
+                    // fixed:'right',
+                    minWidth: 290,
+                    align: 'center',
+                    render: function (h, params) {
+                        var buttons = [];
+                        var BUTTON_LIST = {
+                            'platform.company.setting': h('a', {
+                                style: {
+                                    marginRight: '10px'
+                                },
+                                on: {
+                                    click: function () {
+                                        this.openEditDrawer(params.row)
+                                    }.bind(this)
+                                }
+                            }, '修改密码'),
+                            'platform.admin.delete': h('a', {
+                                style: {
+                                    color: "#ed4014"
+                                },
+                                on: {
+                                    click: function () {
+                                        this.deleteConfirm(params.row)
+                                    }.bind(this)
+                                }
+                            }, '移除该管理员')
+                        }
+                        for (var button in BUTTON_LIST) {
+                            if (this.buttons.hasPermission(button)) {
+                                buttons.push(BUTTON_LIST[button])
+                            }
+                        }
+                        return h('div', buttons);
+                    }.bind(this)
+                }
+            ]
+        }
+    },
+    computed: {
+
+    },
+    mounted: function () {
+        this.buttons = this.$utils.getButtons();
+        console.log(this.buttons);
+        this.getData();
+        this.$utils.tableAutoHeight({
+            tableElement: this.$refs.table.$el,
+            table: this.table
+        });
+    },
+    methods: {
+        deleteConfirm: function (data) {
+            this.$Modal.confirm({
+                title: '提示',
+                content: '<p>确认要移除管理员 ' + data.account + ' 吗？</p>',
+                onOk: function () {
+                    this.$utils.ajax({
+                        method: 'delete',
+                        url: '/platformcenter/admin/platform/pc/v1/' + data.id,
+                        success: function (res) {
+                            if (res.httpCode === '200') {
+                                this.$Notice.success({
+                                    title: '提示',
+                                    desc: '删除成功'
+                                });
+                                this.getData();
+                            } else {
+                                this.$Notice.error({
+                                    title: '错误',
+                                    desc: res.msg
+                                });
+                            }
+                        }.bind(this),
+                        error: function (err) {
+                            this.$Notice.error({
+                                title: '错误',
+                                desc: err.response.msg
+                            });
+                        }.bind(this)
+                    })
+                }.bind(this)
+            });
+        },
+        doSave: function () {
+            this.$refs['form'].validate(function (valid) {
+                if (valid) {
+                    require(['md5', 'jsencrypt'], function (md5, jsencrypt) {
+                        // 加密strar
+                        var jse = new jsencrypt.JSEncrypt();
+                        jse.setPublicKey(window.PRIVATE_KEY);
+                        var password = jse.encrypt(md5.hex_md5(this.form.password + 'xqc1254548787244'));
+                        //加密end
+                        this.$set(this.form, 'password', password);
+                        this.$utils.ajax({
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'post',
+                            url: '/platformcenter/admin/platform/pc/v1' + (this.isCreate ? '' : ('/' + this.form.id)),
+                            data: {
+                                account: this.form.account,
+                                pwd: this.form.password
+                            },
+                            success: function (res) {
+                                if (res.statusCode == 200) {
+                                    this.colseDrawer();
+                                    if (this.isCreate) {
+                                        setTimeout(function () {
+                                            this.getData();
+                                        }.bind(this), 500);
+                                    }
+                                    this.$Notice.success({ title: '提示', desc: '操作成功' });
+                                } else {
+                                    this.$Notice.info({ title: '提示', desc: res.msg });
+                                }
+                                this.loading = false;
+                            }.bind(this),
+                            error: function (err) {
+                                this.loading = false;
+                                this.$Notice.info({ title: '提示', desc: err.response.msg });
+                            }.bind(this)
+                        });
+                    }.bind(this));
+                }
+            }.bind(this))
+        },
+        openCreateDrawer: function () {
+            this.isCreate = true;
+            this.editRow = {};
+            this.$refs.form.resetFields();
+            this.drawerVisible = true;
+        },
+        openEditDrawer: function (data) {
+            console.log(data);
+            this.isCreate = false;
+            this.form = JSON.parse(JSON.stringify(data)); //避免对象指针
+            this.$refs.form.resetFields();
+            this.drawerVisible = true;
+        },
+        colseDrawer: function () {
+            this.drawerVisible = false;
+        },
+        getData: function (page) {
+            this.tableLoading = true;
+            this.$utils.ajax({
+                method: 'get',
+                url: '/platformcenter/admin/platform/pc/v1/page',
+                data: {
+                    page: page || 1,
+                    rows: this.pageSize
+                },
+                success: function (res) {
+                    if (res.httpCode === '200') {
+                        this.tableData = res.data.list;
+                        this.total = res.data.total * 1;
+                    }
+                    this.tableLoading = false;
+                }.bind(this),
+                error: function (err) {
+                    this.tableLoading = true;
+                }.bind(this)
+            })
+        },
+        onPageChange: function (page) {
+            this.getData(page);
+        },
+        onPageSizeChange: function (size) {
+            this.pageSize = size;
+            this.getData();
+        }
+    }
+});
+</script>
+
+</html>

@@ -1,0 +1,13 @@
+.page-index>.ivu-layout div.content {
+    position: absolute;
+    top: 0px;
+    z-index: 2;
+    left: 215px;
+    width: calc(100% - 215px);
+    height: 100%;
+}
+
+.page-index>.ivu-layout .ivu-layout-sider-collapsed+div.content {
+    width: calc(100% - 64px);
+    left: 64px;
+}
